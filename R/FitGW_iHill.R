@@ -242,7 +242,7 @@ FitGW_iHill <- function(X, p, N, EI, theta0, theta0Std, logdisp0, logdisp0Std, l
           ha <- h(theta,lambda)
           dha <- (1/theta)*(lambda^theta*log(lambda)-ha)
           id <- abs(theta)< .Machine$double.eps
-          if any(id) {dha[id] <- 0.5*(log(lambda))^2}
+          if (any(id)) {dha[id] <- 0.5*(log(lambda))^2}
           # the following asymptotic expression is somewhat crude in practice
           qStd[, i]= g*sqrt(ha^2*logdispStd^2+dha^2*thetaStd^2)
         }

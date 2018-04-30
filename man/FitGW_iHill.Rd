@@ -2,17 +2,52 @@
 % Please edit documentation in R/FitGW_iHill.R
 \name{FitGW_iHill}
 \alias{FitGW_iHill}
-\title{Fit GW Hill}
+\title{Fit GW_iHill}
 \usage{
-FitGW_iHill(X, p, N, EI, theta0, logdisp0, l0, XId)
+FitGW_iHill(X, p, N, EI, theta0, theta0Std, logdisp0, logdisp0Std, l0, XId)
 }
 \arguments{
 \item{X}{double(n)   data sample}
 
-\item{p}{probabilities of exceedance of quantiles to be estimated}
+\item{p}{double(np)  probabilities of exceedance of quantiles to be estimated}
+
+\item{N}{integer(1)  (optional) (effective) sample size (in case X is not complete but contains only (peak) values above some threshold)}
+
+\item{EI}{double(1)   (optional) extremal index (default: 1): reciprokal of cluster length in time-steps (e.g. estimated by ????) (EI <= 1!!!)}
+
+\item{theta0}{double(1)   (optional) value of theta0 in case it is imposed}
+
+\item{theta0Std}{double(1)   (optional) its standard deviation}
+
+\item{logdisp0}{double(1)   (optional) value of log of dispersion coeff. in case it is imposed (dispersion coeff. is the raio of scale par. to location par.)}
+
+\item{logdisp0Std}{double(1)   (optional) its standard deviation}
+
+\item{l0}{integer(0)  (optional) value of l (no. of order stats used) in case it is imposed}
+
+\item{XId}{character       (optional) data identifier to store with output for traceability}
+}
+\value{
+estimates, a list with members 
+  l                   no. of order statistics used for scale and quantile estimation    
+  k                   no. of order statistics used for tail index estimation 
+  sigma               = 1: fixed algorithm parameter (see ref. eq. (30))
+  theta               estimates or imposed value of log-GW tail index 
+  tailindexStd        standard deviations of tail index estimates
+  logdisp             estimates or imposed value of log of dispersion coeff.  
+  logdispStd          standard deviations of log of dispersion coeff. estimates
+  scale               estimates of log-GW scale parameter
+  locationStd         standard deviation of order statistic
+  lambda              ratio of logarithms of probabilities of exceedance of quantile and threshold  
+  p                   probabilities of exceedance of quantiles to be estimated 
+  quantile            quantile estimates
+  quantileStd         standard deviations of quantile estimates
+  orderstats          data X sorted (decreasing)
+  df                  = "GW": fitted distribution function tail (Generalised Weibull
+  estimator           = "iteratedHill": see "method" below
 }
 \description{
-Fit a Generalised Weibull (GW) tail to the sample X and
+Fit a Generalised Weibull (GW) tail to the sample X and (optionally) estimate quantiles for probabilities of exceedance in p
 }
 \author{
 Cees de Valk, KNMI
