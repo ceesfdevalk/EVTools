@@ -1,18 +1,65 @@
-#' @title Fit GW Hill
-#' @description Fit a Generalised Weibull (GW) tail to the sample X and
-#' @param X double(n)   data sample
-#' @param p probabilities of exceedance of quantiles to be estimated
+#' @title Fit GW_iHill
+#' @description Fit a Generalised Weibull (GW) tail to the sample X and (optionally) estimate quantiles for probabilities of exceedance in p
 #'
+#' @param X double(n)   data sample
+#' @param p double(np)  probabilities of exceedance of quantiles to be estimated
+#' @param N integer(1)  (optional) (effective) sample size (in case X is not complete but contains only (peak) values above some threshold)
+#' @param EI          double(1)   (optional) extremal index (default: 1): reciprokal of cluster length in time-steps (e.g. estimated by ????) (EI <= 1!!!)
+#' @param theta0      double(1)   (optional) value of theta0 in case it is imposed 
+#' @param theta0Std   double(1)   (optional) its standard deviation 
+#' @param logdisp0    double(1)   (optional) value of log of dispersion coeff. in case it is imposed (dispersion coeff. is the raio of scale par. to location par.)
+#' @param logdisp0Std double(1)   (optional) its standard deviation 
+#' @param l0          integer(0)  (optional) value of l (no. of order stats used) in case it is imposed 
+#' @param XId     character       (optional) data identifier to store with output for traceability
+#' 
+#' @return estimates, a list with members 
+#'   l                   no. of order statistics used for scale and quantile estimation    
+#'   k                   no. of order statistics used for tail index estimation 
+#'   sigma               = 1: fixed algorithm parameter (see ref. eq. (30))
+#'   theta               estimates or imposed value of log-GW tail index 
+#'   tailindexStd        standard deviations of tail index estimates
+#'   logdisp             estimates or imposed value of log of dispersion coeff.  
+#'   logdispStd          standard deviations of log of dispersion coeff. estimates
+#'   scale               estimates of log-GW scale parameter
+#'   locationStd         standard deviation of order statistic
+#'   lambda              ratio of logarithms of probabilities of exceedance of quantile and threshold  
+#'   p                   probabilities of exceedance of quantiles to be estimated 
+#'   quantile            quantile estimates
+#'   quantileStd         standard deviations of quantile estimates
+#'   orderstats          data X sorted (decreasing)
+#'   df                  = "GW": fitted distribution function tail (Generalised Weibull
+#'   estimator           = "iteratedHill": see "method" below
+#' 
+#'
+#' @section Remark 
+#'   In case quantiles are to be estimated for given frequencies mu and
+#'         (a) if X contains all values (possibly above some threshold), then set 
+#'               p <- mu*d/EI, 
+#'               N <- T/d (if X contains all observed values over time T, then T/d = n)
+#'               EI <- EI
+#'         with T the total observation period, and d the time step. 
+#'         Note that frequency and time step are defined with reference to the same unit of time!! 
+#'         (b) if X contains only the (approx. Poisson) peak values above some threshold (so you want 
+#'         to do a POT analysis), then 
+#'               p <- mu*d/EI, 
+#'               N <- (T/d)*EI,
+#'               EI <- 1
+#'         (note that d/EI is mean duration of an event, EI/d is mean number of events per unit of time)
+#'
+#' @section method
+#' See De Valk, C. and Cai, J.J. (2018), A high quantile estimator based on 
+#' the log-generalized Weibull tail limit. Econometrics and Statistics (in press)
+#
 #' @author Cees de Valk, KNMI
 #' @export
-FitGW_iHill <- function(X, p, N, EI, theta0, logdisp0, l0, XId) {
+FitGW_iHill <- function(X, p, N, EI, theta0, theta0Std, logdisp0, logdisp0Std, l0, XId) {
   #
   # module: FitGW_iHill.R
   # 
   # purpose: Fit a Generalised Weibull (GW) tail to the sample X and
   # (optionally) estimate quantiles for probabilities of exceedance in p
   #
-  # usage:  estimates <- FitGW_iHill(X, p, N, EI= 1, theta0= NULL, logdisp0= NULL, l0= NULL, XId= '')
+  # usage:  estimates <- FitGW_iHill(X, p, N, EI= 1, theta0= NULL, theta0Std= NULL< logdisp0= NULL, logdisp0Std= NULL, l0= NULL, XId= '')
   #
   # X           double(n)   data sample
   # p           double(np)  (optional) probabilities of exceedance of quantiles to be estimated
@@ -21,8 +68,10 @@ FitGW_iHill <- function(X, p, N, EI, theta0, logdisp0, l0, XId) {
   # EI          double(1)   (optional) extremal index (default: 1): reciprokal of cluster length in time-steps  
   #                         (e.g. estimated by ????) (EI <= 1!!!)
   # theta0      double(1)   (optional) value of theta0 in case it is imposed 
+  # theta0Std   double(1)   (optional) its standard deviation 
   # logdisp0    double(1)   (optional) value of log of dispersion coeff. in case it is imposed 
   #                         (dispersion coeff. is the raio of scale par. to location par.)
+  # logdisp0Std double(1)   (optional) its standard deviation 
   # l0          integer(0)  (optional) value of l (no. of order stats used) in case it is imposed 
   # XId     character       (optional) data identifier to store with output for traceability
   # estimates   list with members 
@@ -69,7 +118,9 @@ FitGW_iHill <- function(X, p, N, EI, theta0, logdisp0, l0, XId) {
   if (missing(N)) {N <- 0} 
   if (missing(EI)) {EI <- 1}
   if (missing(theta0)) {theta0 <- NULL}
+  if (missing(theta0Std)) {theta0Std <- NULL}
   if (missing(logdisp0)) {logdisp0 <- NULL}
+  if (missing(logdisp0Std)) {logdisp0Std <- NULL}
   if (missing(l0)) {l0 <- NULL}
   if (missing(XId)) {XId <- ''}
   X <- c(X)
@@ -146,9 +197,12 @@ FitGW_iHill <- function(X, p, N, EI, theta0, logdisp0, l0, XId) {
         thetaStd= sqrt(sigma2/(l*EI))
         sigma2m <- sigma2 #for use in estimation of stand. dev. of quantile
       } else {
-        theta <- rep(theta0[1],nl)
-        thetaStd <- rep(NA,nl)
-        sigma2m <- 0 #this will ensure a correct stand. dev. of the quantile
+        theta <- rep(theta0[1], nl)
+        if (length(theta0Std)> 0){
+           thetaStd <- rep(theta0Std[1], nl)
+        } else {
+          thetaStd <- rep(0, nl)
+        }
       }
       
       # Scale estimator
@@ -158,12 +212,16 @@ FitGW_iHill <- function(X, p, N, EI, theta0, logdisp0, l0, XId) {
           normg[i] <- mean(h(theta[i],th[1:(l[i]-1)]/th[l[i]]))
         }
         g <- hill0[l-1]/normg     
-        logdisp <- log(g/pmax(X0[l], .01))  # Log of dispersion coefficient
+        logdisp <- log(g/pmax(X0[l], .0001))  # Log of dispersion coefficient
         logdispStd <- sqrt(1/(EI*l))
       } else {
         g <- X0[l]*logdisp0
         logdisp <- rep(logdisp0, nl)
-        logdispStd <- rep(NA, nl)
+        if (length(logdisp0Std)> 0){
+          logdispStd <- rep(logdisp0Std[1], nl)
+        } else {
+          logdispStd <- rep(0 ,nl)
+        }        
       }
       
       # Standard deviation of X0[l] as estimator of location q(th[l])
@@ -180,10 +238,13 @@ FitGW_iHill <- function(X, p, N, EI, theta0, logdisp0, l0, XId) {
           # Quantiles
           q[, i] <- X0[l]+g*h(theta, lambda)
           
-          # Asymptotic standard deviations of quantiles (ADJUST!!!!)
+          # Asymptotic standard deviations of quantiles
           ha <- h(theta,lambda)
           dha <- (1/theta)*(lambda^theta*log(lambda)-ha)
-          qStd[, i]= g*sqrt(ha^2+sigma2m*dha^2)/sqrt(l*EI)
+          id <- abs(theta)< .Machine$double.eps
+          if any(id) {dha[id] <- 0.5*(log(lambda))^2}
+          # the following asymptotic expression is somewhat crude in practice
+          qStd[, i]= g*sqrt(ha^2*logdispStd^2+dha^2*thetaStd^2)
         }
       }
     }
