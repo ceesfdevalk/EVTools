@@ -61,6 +61,11 @@ orderstats          data X sorted (decreasing)
 df                  = "GW": fitted distribution function tail (Generalised Weibull
 
 estimator           = "iteratedHill": see "method" below
+
+#' \describe{
+  \item{One}{First item}
+  \item{Two}{Second item}
+}
 }
 \description{
 Fit a Generalised Weibull (GW) tail to the sample X and (optionally) estimate quantiles for probabilities of exceedance in p

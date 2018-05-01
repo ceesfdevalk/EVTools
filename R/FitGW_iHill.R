@@ -30,6 +30,12 @@
 #' @return    df                  = "GW": fitted distribution function tail (Generalised Weibull
 #' @return    estimator           = "iteratedHill": see "method" below
 #' 
+#' #' \describe{
+#'   \item{One}{First item}
+#'   \item{Two}{Second item}
+#' }
+#' 
+#' 
 #' @section Remark 
 #'   In case quantiles are to be estimated for given frequencies mu and
 #'         (a) if X contains all values (possibly above some threshold), then set 
