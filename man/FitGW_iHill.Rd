@@ -13,7 +13,7 @@ Value <- FitGW_iHill(X, p, N= 0, EI= 1, theta0= NULL, theta0Std= NULL, logdisp0=
 
 \item{N}{(optional) (effective) sample size, in case X is not complete but contains only (peak) values above some threshold (integer(1))}
 
-\item{EI}{(optional) extremal index (default: 1): reciprokal of cluster length in time-steps (see ????) (double(1))}
+\item{EI}{(optional) extremal index (default: 1): reciprokal of cluster length in time-steps (see ??) (double(1))}
 
 \item{theta0}{(optional) value of theta0 in case it is imposed (double(1))}
 

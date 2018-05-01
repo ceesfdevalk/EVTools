@@ -7,7 +7,7 @@
 #' @param X data sample (double(n))
 #' @param p probabilities of exceedance of the quantiles to be estimated (double(np))  
 #' @param N (optional) (effective) sample size, in case X is not complete but contains only (peak) values above some threshold (integer(1))
-#' @param EI (optional) extremal index (default: 1): reciprokal of cluster length in time-steps (see ????) (double(1))
+#' @param EI (optional) extremal index (default: 1): reciprokal of cluster length in time-steps (see ??) (double(1))
 #' @param theta0 (optional) value of theta0 in case it is imposed (double(1))
 #' @param theta0Std (optional) its standard deviation (double(1))
 #' @param logdisp0 (optional) value of log of dispersion coeff. in case it is imposed (dispersion coeff. is the raio of scale par. to location par.) (double(1))
