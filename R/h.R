@@ -16,22 +16,7 @@
 #' 
 #' @export
 h <- function(theta,lambda) {
-  #
-  # module: h.r
-  #
-  # purpose: calculate integral of y^theta, y from 1 to lambda
-  #
-  # usage:  x <- h(theta, lambda)
-  #
-  # theta       double(nt)
-  # lambda      double(nl)  must be positive
-  # x           double
-  #
-  # remark: If nt= nl, then x has length nt. Else, x has size (nt,nl).
-  #
-  # method: Analytic expressions (taking special care for very small theta)
-  #
-  eps <- 5.e-16
+  eps <- .Machine$double.eps*10
   nt <- length(theta)
   nl <- length(lambda)
   x <- NA
