@@ -2,74 +2,72 @@
 % Please edit documentation in R/FitGW_iHill.R
 \name{FitGW_iHill}
 \alias{FitGW_iHill}
-\title{Fit GW_iHill}
+\title{FitGW_iHill}
 \usage{
-FitGW_iHill(X, p, N, EI, theta0, theta0Std, logdisp0, logdisp0Std, l0, XId)
+Value <- FitGW_iHill(X, p, N= 0, EI= 1, theta0= NULL, theta0Std= NULL, logdisp0= NULL, logdisp0Std= NULL, l0= NULL, XId= '')
 }
 \arguments{
-\item{X}{double(n)   data sample}
+\item{X}{data sample (double(n))}
 
-\item{p}{double(np)  probabilities of exceedance of quantiles to be estimated}
+\item{p}{probabilities of exceedance of the quantiles to be estimated (double(np))}
 
-\item{N}{integer(1)  (optional) (effective) sample size (in case X is not complete but contains only (peak) values above some threshold)}
+\item{N}{(optional) (effective) sample size, in case X is not complete but contains only (peak) values above some threshold (integer(1))}
 
-\item{EI}{double(1)   (optional) extremal index (default: 1): reciprokal of cluster length in time-steps (e.g. estimated by ????) (EI <= 1!!!)}
+\item{EI}{(optional) extremal index (default: 1): reciprokal of cluster length in time-steps (see ????) (double(1))}
 
-\item{theta0}{double(1)   (optional) value of theta0 in case it is imposed}
+\item{theta0}{(optional) value of theta0 in case it is imposed (double(1))}
 
-\item{theta0Std}{double(1)   (optional) its standard deviation}
+\item{theta0Std}{(optional) its standard deviation (double(1))}
 
-\item{logdisp0}{double(1)   (optional) value of log of dispersion coeff. in case it is imposed (dispersion coeff. is the raio of scale par. to location par.)}
+\item{logdisp0}{(optional) value of log of dispersion coeff. in case it is imposed (dispersion coeff. is the raio of scale par. to location par.) (double(1))}
 
-\item{logdisp0Std}{double(1)   (optional) its standard deviation}
+\item{logdisp0Std}{(optional) its standard deviation (double(1))}
 
-\item{l0}{integer(0)  (optional) value of l (no. of order stats used) in case it is imposed}
+\item{l0}{(optional) value of l (no. of order stats used) in case it is imposed (integer(0))}
 
-\item{XId}{character       (optional) data identifier to store with output for traceability}
+\item{XId}{(optional) data identifier to store with output for traceability (character)}
 }
 \value{
-estimates, a list with members
-
-l                   no. of order statistics used for scale and quantile estimation
-
-k                   no. of order statistics used for tail index estimation
-
-sigma               = 1: fixed algorithm parameter (see ref. eq. (30))
-
-theta               estimates or imposed value of log-GW tail index
-
-tailindexStd        standard deviations of tail index estimates
-
-logdisp             estimates or imposed value of log of dispersion coeff.
-
-logdispStd          standard deviations of log of dispersion coeff. estimates
-
-scale               estimates of log-GW scale parameter
-
-locationStd         standard deviation of order statistic
-
-lambda              ratio of logarithms of probabilities of exceedance of quantile and threshold
-
-p                   probabilities of exceedance of quantiles to be estimated
-
-quantile            quantile estimates
-
-quantileStd         standard deviations of quantile estimates
-
-orderstats          data X sorted (decreasing)
-
-df                  = "GW": fitted distribution function tail (Generalised Weibull
-
-estimator           = "iteratedHill": see "method" below
-
-#' \describe{
-  \item{One}{First item}
-  \item{Two}{Second item}
-}
+A list, with members: 
+  \item{l}{no. of order statistics used for scale and quantile estimation}    
+  \item{k}{no. of order statistics used for tail index estimation} 
+  \item{sigma}{= 1: fixed algorithm parameter (see ref. eq. (30))}
+  \item{theta}{estimates or imposed value of log-GW tail index} 
+  \item{tailindexStd}{standard deviations of tail index estimates}
+  \item{logdisp}{estimates or imposed value of log of dispersion coeff.}  
+  \item{logdispStd}{standard deviations of log of dispersion coeff. estimates}
+  \item{scale}{estimates of log-GW scale parameter}
+  \item{locationStd}{standard deviation of order statistic}
+  \item{lambda}{ratio of logarithms of probabilities of exceedance of quantile and threshold}  
+  \item{p}{probabilities of exceedance of quantiles to be estimated} 
+  \item{quantile}{quantile estimates}
+  \item{quantileStd}{standard deviations of quantile estimates}
+  \item{orderstats}{data X sorted (decreasing)}
+  \item{df}{= "GW": fitted distribution function tail (Generalised Weibull}
+  \item{estimator}{= "iteratedHill": see "method" below}
 }
 \description{
-Fit a Generalised Weibull (GW) tail to the sample X and (optionally) estimate quantiles for probabilities of exceedance in p
+Fit a Generalised Weibull (GW) upper tail to the sample X and estimate quantiles
+}
+\details{
+In case a quantile is to be estimated for a \emph{frequency}, say f, and 
+  \enumerate{
+  \item{if X contains all values (possibly above some threshold), then set
+  p = f*d/EI, N = T/d, EI = EI, with T the length of the observation period and d the time step. 
+        Note that f and d are defined with reference to the same unit of time!!
+            }
+  \item{(b)} {if X contains only the (approximately Poisson) peak values above some threshold 
+        (i.e., you want to do a PoT analysis), then set p = f*d/EI, N = (T/d)*EI, 
+        EI = 1 (note that d/EI is the mean duration of an "event" and EI/d is the 
+        mean number of "events" per unit of time).
+             }
+}
+}
+\references{
+De Valk, C. and Cai, J.J. (2018), A high quantile estimator based on 
+the log-generalized Weibull tail limit. Econometrics and Statistics (in press, see
+\url{https://doi.org/10.1016/j.ecosta.2017.03.001}
 }
 \author{
-Cees de Valk, KNMI
+Cees de Valk \email{cees.de.valk@knmi.nl}
 }

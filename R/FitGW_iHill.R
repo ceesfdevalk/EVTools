@@ -1,121 +1,63 @@
-#' @title Fit GW_iHill
-#' @description Fit a Generalised Weibull (GW) tail to the sample X and (optionally) estimate quantiles for probabilities of exceedance in p
-#'
-#' @param X double(n)   data sample
-#' @param p double(np)  probabilities of exceedance of quantiles to be estimated
-#' @param N integer(1)  (optional) (effective) sample size (in case X is not complete but contains only (peak) values above some threshold)
-#' @param EI          double(1)   (optional) extremal index (default: 1): reciprokal of cluster length in time-steps (e.g. estimated by ????) (EI <= 1!!!)
-#' @param theta0      double(1)   (optional) value of theta0 in case it is imposed 
-#' @param theta0Std   double(1)   (optional) its standard deviation 
-#' @param logdisp0    double(1)   (optional) value of log of dispersion coeff. in case it is imposed (dispersion coeff. is the raio of scale par. to location par.)
-#' @param logdisp0Std double(1)   (optional) its standard deviation 
-#' @param l0          integer(0)  (optional) value of l (no. of order stats used) in case it is imposed 
-#' @param XId     character       (optional) data identifier to store with output for traceability
+#' @name  FitGW_iHill
 #' 
-#' @return estimates, a list with members 
-#' @return    l                   no. of order statistics used for scale and quantile estimation    
-#' @return    k                   no. of order statistics used for tail index estimation 
-#' @return    sigma               = 1: fixed algorithm parameter (see ref. eq. (30))
-#' @return    theta               estimates or imposed value of log-GW tail index 
-#' @return    tailindexStd        standard deviations of tail index estimates
-#' @return    logdisp             estimates or imposed value of log of dispersion coeff.  
-#' @return    logdispStd          standard deviations of log of dispersion coeff. estimates
-#' @return    scale               estimates of log-GW scale parameter
-#' @return    locationStd         standard deviation of order statistic
-#' @return    lambda              ratio of logarithms of probabilities of exceedance of quantile and threshold  
-#' @return    p                   probabilities of exceedance of quantiles to be estimated 
-#' @return    quantile            quantile estimates
-#' @return    quantileStd         standard deviations of quantile estimates
-#' @return    orderstats          data X sorted (decreasing)
-#' @return    df                  = "GW": fitted distribution function tail (Generalised Weibull
-#' @return    estimator           = "iteratedHill": see "method" below
+#' @title FitGW_iHill
 #' 
-#' #' \describe{
-#'   \item{One}{First item}
-#'   \item{Two}{Second item}
-#' }
+#' @description Fit a Generalised Weibull (GW) upper tail to the sample X and estimate quantiles
 #' 
+#' @param X data sample (double(n))
+#' @param p probabilities of exceedance of the quantiles to be estimated (double(np))  
+#' @param N (optional) (effective) sample size, in case X is not complete but contains only (peak) values above some threshold (integer(1))
+#' @param EI (optional) extremal index (default: 1): reciprokal of cluster length in time-steps (see ????) (double(1))
+#' @param theta0 (optional) value of theta0 in case it is imposed (double(1))
+#' @param theta0Std (optional) its standard deviation (double(1))
+#' @param logdisp0 (optional) value of log of dispersion coeff. in case it is imposed (dispersion coeff. is the raio of scale par. to location par.) (double(1))
+#' @param logdisp0Std (optional) its standard deviation (double(1))
+#' @param l0 (optional) value of l (no. of order stats used) in case it is imposed (integer(0))
+#' @param XId (optional) data identifier to store with output for traceability (character)
 #' 
-#' @section Remark 
-#'   In case quantiles are to be estimated for given frequencies mu and
-#'         (a) if X contains all values (possibly above some threshold), then set 
-#'               p <- mu*d/EI, 
-#'               N <- T/d (if X contains all observed values over time T, then T/d = n)
-#'               EI <- EI
-#'         with T the total observation period, and d the time step. 
-#'         Note that frequency and time step are defined with reference to the same unit of time!! 
-#'         (b) if X contains only the (approx. Poisson) peak values above some threshold (so you want 
-#'         to do a POT analysis), then 
-#'               p <- mu*d/EI, 
-#'               N <- (T/d)*EI,
-#'               EI <- 1
-#'         (note that d/EI is mean duration of an event, EI/d is mean number of events per unit of time)
-#'
-#' @section method
-#' See De Valk, C. and Cai, J.J. (2018), A high quantile estimator based on 
-#' the log-generalized Weibull tail limit. Econometrics and Statistics (in press)
+#' @usage Value <- FitGW_iHill(X, p, N= 0, EI= 1, theta0= NULL, theta0Std= NULL, logdisp0= NULL, logdisp0Std= NULL, l0= NULL, XId= '')
+#' 
+#' @return A list, with members: 
+#'   \item{l}{no. of order statistics used for scale and quantile estimation}    
+#'   \item{k}{no. of order statistics used for tail index estimation} 
+#'   \item{sigma}{= 1: fixed algorithm parameter (see ref. eq. (30))}
+#'   \item{theta}{estimates or imposed value of log-GW tail index} 
+#'   \item{tailindexStd}{standard deviations of tail index estimates}
+#'   \item{logdisp}{estimates or imposed value of log of dispersion coeff.}  
+#'   \item{logdispStd}{standard deviations of log of dispersion coeff. estimates}
+#'   \item{scale}{estimates of log-GW scale parameter}
+#'   \item{locationStd}{standard deviation of order statistic}
+#'   \item{lambda}{ratio of logarithms of probabilities of exceedance of quantile and threshold}  
+#'   \item{p}{probabilities of exceedance of quantiles to be estimated} 
+#'   \item{quantile}{quantile estimates}
+#'   \item{quantileStd}{standard deviations of quantile estimates}
+#'   \item{orderstats}{data X sorted (decreasing)}
+#'   \item{df}{= "GW": fitted distribution function tail (Generalised Weibull}
+#'   \item{estimator}{= "iteratedHill": see "method" below}
+#' 
+#' @details
+#'   In case a quantile is to be estimated for a \emph{frequency}, say f, and 
+#'   \enumerate{
+#'   \item{if X contains all values (possibly above some threshold), then set
+#'   p = f*d/EI, N = T/d, EI = EI, with T the length of the observation period and d the time step. 
+#'         Note that f and d are defined with reference to the same unit of time!!
+#'             }
+#'   \item{(b)} {if X contains only the (approximately Poisson) peak values above some threshold 
+#'         (i.e., you want to do a PoT analysis), then set p = f*d/EI, N = (T/d)*EI, 
+#'         EI = 1 (note that d/EI is the mean duration of an "event" and EI/d is the 
+#'         mean number of "events" per unit of time).
+#'              }
+#' }            
+#' @references
+#' De Valk, C. and Cai, J.J. (2018), A high quantile estimator based on 
+#' the log-generalized Weibull tail limit. Econometrics and Statistics (in press, see
+#' \url{https://doi.org/10.1016/j.ecosta.2017.03.001}
 #
-#' @author Cees de Valk, KNMI
+#' @author Cees de Valk \email{cees.de.valk@knmi.nl}
+#' 
 #' @export
 FitGW_iHill <- function(X, p, N, EI, theta0, theta0Std, logdisp0, logdisp0Std, l0, XId) {
-  #
-  # module: FitGW_iHill.R
-  # 
-  # purpose: Fit a Generalised Weibull (GW) tail to the sample X and
-  # (optionally) estimate quantiles for probabilities of exceedance in p
-  #
-  # usage:  estimates <- FitGW_iHill(X, p, N, EI= 1, theta0= NULL, theta0Std= NULL< logdisp0= NULL, logdisp0Std= NULL, l0= NULL, XId= '')
-  #
-  # X           double(n)   data sample
-  # p           double(np)  (optional) probabilities of exceedance of quantiles to be estimated
-  # N           integer(1)  (optional) (effective) sample size (in case X is not complete but
-  #                         contains only (peak) values above some threshold)
-  # EI          double(1)   (optional) extremal index (default: 1): reciprokal of cluster length in time-steps  
-  #                         (e.g. estimated by ????) (EI <= 1!!!)
-  # theta0      double(1)   (optional) value of theta0 in case it is imposed 
-  # theta0Std   double(1)   (optional) its standard deviation 
-  # logdisp0    double(1)   (optional) value of log of dispersion coeff. in case it is imposed 
-  #                         (dispersion coeff. is the raio of scale par. to location par.)
-  # logdisp0Std double(1)   (optional) its standard deviation 
-  # l0          integer(0)  (optional) value of l (no. of order stats used) in case it is imposed 
-  # XId     character       (optional) data identifier to store with output for traceability
-  # estimates   list with members 
-  #   l                   no. of order statistics used for scale and quantile estimation    
-  #   k                   no. of order statistics used for tail index estimation 
-  #   sigma               = 1: fixed algorithm parameter (see ref. eq. (30))
-  #   theta               estimates or imposed value of log-GW tail index 
-  #   tailindexStd        standard deviations of tail index estimates
-  #   logdisp             estimates or imposed value of log of dispersion coeff.  
-  #   logdispStd          standard deviations of log of dispersion coeff. estimates
-  #   scale               estimates of log-GW scale parameter
-  #   locationStd         standard deviation of order statistic
-  #   lambda              ratio of logarithms of probabilities of exceedance of quantile and threshold  
-  #   p                   probabilities of exceedance of quantiles to be estimated 
-  #   quantile            quantile estimates
-  #   quantileStd         standard deviations of quantile estimates
-  #   orderstats          data X sorted (decreasing)
-  #   df                  = "GW": fitted distribution function tail (Generalised Weibull
-  #   estimator           = "iteratedHill": see "method" below
-  #
-  # remark: In case quantiles are to be estimated for given frequencies mu and
-  #         (a) if X contains all values (possibly above some threshold), then set 
-  #               p <- mu*d/EI, 
-  #               N <- T/d (if X contains all observed values over time T, then T/d = n)
-  #               EI <- EI
-  #         with T the total observation period, and d the time step. 
-  #         Note that frequency and time step are defined with reference to the same unit of time!! 
-  #         (b) if X contains only the (approx. Poisson) peak values above some threshold (so you want 
-  #         to do a POT analysis), then 
-  #               p <- mu*d/EI, 
-  #               N <- (T/d)*EI,
-  #               EI <- 1
-  #         (note that d/EI is mean duration of an event, EI/d is mean number of events per unit of time)
-  #
-  # method: See De Valk, C. and Cai, J.J. (2018), A high quantile estimator
-  #         based on the log-generalized Weibull tail limit. Econometrics and 
-  #         Statistics (in press)
-  #
-  # Fixed parameter (controls the relationship between l and k)
+  # fixed parameter 
   sigma2 <- 1
    
   # Handle arguments
