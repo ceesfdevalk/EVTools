@@ -162,7 +162,7 @@ FitGW_iHill <- function(X, p, N, EI, theta0, theta0Std, logdisp0, logdisp0Std, l
         logdisp <- log(g/pmax(X0[l], .0001))  # Log of dispersion coefficient
         logdispStd <- sqrt(1/(EI*l))
       } else {
-        g <- X0[l]*logdisp0
+        g <- X0[l]*exp(logdisp0)
         logdisp <- rep(logdisp0, nl)
         if (length(logdisp0Std)> 0){
           logdispStd <- rep(logdisp0Std[1], nl)
@@ -185,7 +185,7 @@ FitGW_iHill <- function(X, p, N, EI, theta0, theta0Std, logdisp0, logdisp0Std, l
           # Quantiles
           q[, i] <- X0[l]+g*h(theta, lambda)
           
-          # Asymptotic standard deviations of quantiles
+          # Asymptotic standard deviations of quantiles (adjust!)
           ha <- h(theta,lambda)
           dha <- (1/theta)*(lambda^theta*log(lambda)-ha)
           id <- abs(theta)< .Machine$double.eps
