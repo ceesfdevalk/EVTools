@@ -13,24 +13,23 @@
 #' @param XId     character       (optional) data identifier to store with output for traceability
 #' 
 #' @return estimates, a list with members 
-#'   l                   no. of order statistics used for scale and quantile estimation    
-#'   k                   no. of order statistics used for tail index estimation 
-#'   sigma               = 1: fixed algorithm parameter (see ref. eq. (30))
-#'   theta               estimates or imposed value of log-GW tail index 
-#'   tailindexStd        standard deviations of tail index estimates
-#'   logdisp             estimates or imposed value of log of dispersion coeff.  
-#'   logdispStd          standard deviations of log of dispersion coeff. estimates
-#'   scale               estimates of log-GW scale parameter
-#'   locationStd         standard deviation of order statistic
-#'   lambda              ratio of logarithms of probabilities of exceedance of quantile and threshold  
-#'   p                   probabilities of exceedance of quantiles to be estimated 
-#'   quantile            quantile estimates
-#'   quantileStd         standard deviations of quantile estimates
-#'   orderstats          data X sorted (decreasing)
-#'   df                  = "GW": fitted distribution function tail (Generalised Weibull
-#'   estimator           = "iteratedHill": see "method" below
+#' @return    l                   no. of order statistics used for scale and quantile estimation    
+#' @return    k                   no. of order statistics used for tail index estimation 
+#' @return    sigma               = 1: fixed algorithm parameter (see ref. eq. (30))
+#' @return    theta               estimates or imposed value of log-GW tail index 
+#' @return    tailindexStd        standard deviations of tail index estimates
+#' @return    logdisp             estimates or imposed value of log of dispersion coeff.  
+#' @return    logdispStd          standard deviations of log of dispersion coeff. estimates
+#' @return    scale               estimates of log-GW scale parameter
+#' @return    locationStd         standard deviation of order statistic
+#' @return    lambda              ratio of logarithms of probabilities of exceedance of quantile and threshold  
+#' @return    p                   probabilities of exceedance of quantiles to be estimated 
+#' @return    quantile            quantile estimates
+#' @return    quantileStd         standard deviations of quantile estimates
+#' @return    orderstats          data X sorted (decreasing)
+#' @return    df                  = "GW": fitted distribution function tail (Generalised Weibull
+#' @return    estimator           = "iteratedHill": see "method" below
 #' 
-#'
 #' @section Remark 
 #'   In case quantiles are to be estimated for given frequencies mu and
 #'         (a) if X contains all values (possibly above some threshold), then set 
