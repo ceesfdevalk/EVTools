@@ -1,3 +1,20 @@
+#' @name  h
+#' 
+#' @title h
+#' 
+#' @description h(theta, lambda) is the integral of x^theta for x from 1 to lambda.
+#' 
+#' @param theta  the exponent(s) (double(nt))
+#' @param lambda the positive number(s) at which the integral is evaluated (double(nl))
+#' 
+#' @usage Value <- h(theta, lambda)
+#' 
+#' @return real number(s): if nt= nl or nt= 1 or nl= 1, then Value has length max(nt, nl). 
+#' Otherwise, Value is an nlxnt matrix.
+#
+#' @author Cees de Valk \email{ceesfdevalk@gmail.com}
+#' 
+#' @export
 h <- function(theta,lambda) {
   #
   # module: h.r
@@ -12,7 +29,7 @@ h <- function(theta,lambda) {
   #
   # remark: If nt= nl, then x has length nt. Else, x has size (nt,nl).
   #
-  # method: analytic
+  # method: Analytic expressions (taking special care for very small theta)
   #
   eps <- 5.e-16
   nt <- length(theta)
@@ -35,9 +52,9 @@ h <- function(theta,lambda) {
     id <- which(abs(theta)> eps)
     x[id] <- (lambda^theta[id]-1)/theta[id];
   } else {
-    theta <- rep(theta,nl)
-    lambda <- rep(lambda,nt)
-    x <- h(theta, lambda)
+    theta <- rep(theta, each= nl)
+    lambda <- rep(lambda, nt)
+    x <- matrix(h(theta, lambda), nl, nt)
   }
   return(x)
 }
