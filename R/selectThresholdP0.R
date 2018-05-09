@@ -54,8 +54,8 @@ selectThresholdP0 <- function(theta, thetaStd, l, l0) {
   # Pj <- Pj*(Pc> 0.1)
   # 
   # threshold choice a la Boucheron-Thomas (but more delicate)
-  # i <- max(which(P> max(P)*pthresh))        # threshold selection based on max of P
-  i <- max(which(P> quantile(P, 0.99)*pthresh))        # threshold selection based on high quantile of P
+  i <- max(which(P> max(P)*pthresh))              # threshold selection based on max of P
+  # i <- max(which(P> quantile(P, 0.99)*pthresh)) # threshold selection based on high quantile of P
   res <- list("i"= i, "P"= P, "bias"= bias)
 }
 
