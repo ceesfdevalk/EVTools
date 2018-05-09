@@ -127,7 +127,7 @@ FitGW_iHill <- function(X, p, N, EI, theta0, theta0Std, logdisp0, logdisp0Std, l
     if (length(k)> 0) {
       # Hill estimator
       hill0 <- cumsum(X0[1:(mk-1)])/L[1:(mk-1)]-X0[2:mk]
-      id <- (hill0== 0)
+      id <- (hill0<= 0)
       if (any(id)) {hill0[id] <- min(hill0[!id])}
       
       if (length(theta0)== 0) {
