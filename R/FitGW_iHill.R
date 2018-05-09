@@ -86,9 +86,6 @@ FitGW_iHill <- function(X, p, N, EI, theta0, theta0Std, logdisp0, logdisp0Std, l
     th <- th[1:n]
     H <- H[2:(n+1)]
     
-    # Defined as in proof of Theorem 2
-    u <- cumsum(log(th[2:(n-1)]))/(1:(n-2))-log(th[3:n])
-    
     #
     # k is found by iteration from l (see (30))
     #
@@ -137,6 +134,9 @@ FitGW_iHill <- function(X, p, N, EI, theta0, theta0Std, logdisp0, logdisp0Std, l
         # The mean excess and the mean excesss of its logarithm
         hill1 <- cumsum(log(hill0[1:(mk-2)]))/L[1:(mk-2)]-log(hill0[2:(mk-1)])
         
+        # u is defined as in proof of Theorem 2 of ref. 
+        u <- cumsum(log(th[2:(n-1)]))/(1:(n-2))-log(th[3:n])
+        
         # Simple estimator of GW index (nondimensional curvature)
         theta <- 1+hill1[k-2]/u[k-2]
         
@@ -162,8 +162,8 @@ FitGW_iHill <- function(X, p, N, EI, theta0, theta0Std, logdisp0, logdisp0Std, l
         logdisp <- log(g/pmax(X0[l], .0001))  # Log of dispersion coefficient
         logdispStd <- sqrt(1/(EI*l))
       } else {
-        g <- X0[l]*exp(logdisp0)
-        logdisp <- rep(logdisp0, nl)
+        g <- X0[l]*exp(logdisp0[1])
+        logdisp <- rep(logdisp0[1], nl)
         if (length(logdisp0Std)> 0){
           logdispStd <- rep(logdisp0Std[1], nl)
         } else {
@@ -185,13 +185,16 @@ FitGW_iHill <- function(X, p, N, EI, theta0, theta0Std, logdisp0, logdisp0Std, l
           # Quantiles
           q[, i] <- X0[l]+g*h(theta, lambda)
           
-          # Asymptotic standard deviations of quantiles (adjust!)
+          # Asymptotic standard deviations of quantiles
           ha <- h(theta,lambda)
           dha <- (1/theta)*(lambda^theta*log(lambda)-ha)
           id <- abs(theta)< .Machine$double.eps
           if (any(id)) {dha[id] <- 0.5*(log(lambda))^2}
-          # the following asymptotic expression is somewhat crude in practice
-          qStd[, i]= g*sqrt(ha^2*logdispStd^2+dha^2*thetaStd^2)
+          # the following asymptotic expression is pretty accurate
+          # (the last term can normally be ignored but with given, precise,
+          # theta and logdisp estimates, it may not be negligible)
+          var <- g^2*(ha^2*logdispStd^2+dha^2*thetaStd^2) + X0lStd^2
+          qStd[, i]= sqrt(var)
         }
       }
     }
