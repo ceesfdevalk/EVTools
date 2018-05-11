@@ -1,33 +1,40 @@
-selectThresholdP0 <- function(theta, thetaStd, l, l0) {
-  #
-  # module: selectThresholdP0.R
-  #
-  # purpose: Select a good threshold for estimation of (log)-GW tail index
-  #
-  # usage:  i <- selectThresholdP0(theta, thetaStd, l, l0= 50)
-  #
-  # theta       double(nl)  (log)-GW tail index estimates
-  # thetaStd    double(nl)  standard dev. of (log)-GW tail index estimates
-  # l           integer(nl) no. of upper order statistics used to estimate scale 
-  #                         (and indirectly, also the tail index)
-  # l0          integer     lower bound of range of l to check
-  # output: 
-  #    i            index into the vectors l and theta (and all similar output
-  #                 vectors of FitGW.M): l(i) is the selected no. of upper 
-  #                 order statistics
-  #
-  # remark:     works together with FitGW_iHill.M
-  #
-  # method: Based on De Valk, C. and Cai, J.J. (2018), A high quantile estimator
-  #         based on the log-generalized Weibull tail limit. Econometrics and 
-  #         Statistics (in press). In particular: on eq.(27)
-  #         Idea of simple estimate is from Boucheron & Thomas (2015); see also  
-  #         Drees and Kaufmann (1998)
-  #         Phi in this equation (see (22)) can be approximated by a rescaled Brownian
-  #         motion (in the large-sample limit); then we use the BM statistics as in
-  #         Lemma 1 of de Valk & Cai (2018)
-  #         Serial dependence is accounted for in a simplistic way using the EI.
-  #
+#' @name  selectThresholdP0
+#' 
+#' @title selectThresholdP0
+#' 
+#' @description Automatic threshold selection for GW (Generalised Weibull) tail 
+#'              estimation, based on fluctuation statistics of the GW tail index
+#' 
+#' @param tailindex    GW tail index estimates from FitGW_iHill.R (double(nl))
+#' @param tailindexStd Standard deviation of tail index from FitGW_iHill.R (double(nl))
+#' @param l            number of order statistics above the threshold for scale
+#'                     and location estimation from FitGW_iHill.R (double(nl))
+#' 
+#' @usage Value <- selectThresholdP0(tailindex, tailindexStd) 
+#' 
+#' @return list containing the elements
+#'   \item{i}{index in the vectors tailindex and l, representing the selected threshold}    
+#'   \item{P}{p-values of observed fluctuation statistic}    
+#'   \item{bias}{estimate of bias in tail index based on fluctuation statistic}    
+#'
+#' @author Cees de Valk \email{ceesfdevalk@gmail.com}
+#' 
+#' @details Works together with FitGW_iHill.M. 
+#'        Based on ref. De Valk and Cai(2018), in particular on eq.(27).
+#         Idea of simple estimate is from Boucheron & Thomas (2015); see also  
+#         Drees and Kaufmann (1998).
+#         Phi in this equation (see (22)) can be approximated by a rescaled Brownian
+#         motion in the large-sample limit; then we use the BM statistics as in
+#         Lemma 1 of de Valk & Cai (2018)
+#         Serial dependence is accounted for in a simplistic way using the EI.
+#'           
+#' @references
+#' De Valk, C. and Cai, J.J. (2018), A high quantile estimator based on 
+#' the log-generalized Weibull tail limit. Econometrics and Statistics 6, 107-128, see
+#' \url{https://doi.org/10.1016/j.ecosta.2017.03.001}
+#' 
+#' @export
+selectThresholdP0 <- function(theta, thetaStd, l) {
   pthresh <- 0.3 # parameter: fluctuation probability threshold
 
   nl <-  length(l)

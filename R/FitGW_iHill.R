@@ -50,7 +50,7 @@
 #' }            
 #' @references
 #' De Valk, C. and Cai, J.J. (2018), A high quantile estimator based on 
-#' the log-generalized Weibull tail limit. Econometrics and Statistics (in press, see
+#' the log-generalized Weibull tail limit. Econometrics and Statistics 6, 107-128, see
 #' \url{https://doi.org/10.1016/j.ecosta.2017.03.001}
 #
 #' @author Cees de Valk \email{ceesfdevalk@gmail.com}
