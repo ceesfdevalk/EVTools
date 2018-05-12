@@ -2,3 +2,7 @@
 
 export(FitGW_iHill)
 export(h)
+export(qGW)
+export(qGWdisp)
+export(selectThresholdBT)
+export(selectThresholdP0)
