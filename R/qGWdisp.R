@@ -1,11 +1,11 @@
-#' @name  qGW
+#' @name  qGWdisp
 #' 
 #' @title qGWdisp
 #' 
-#' @description As qGW, GW scale parameter scale is replaced by the logarithm of the disperson coefficient 
+#' @description As qGW, but the GW scale parameter "scale" is replaced by the logarithm of the disperson coefficient 
 #'  
 #' 
-#' @param logdisp      logarithm of the dispersion coefficient; the latter is scale/q0 (double(1))
+#' @param logdisp      logarithm of the dispersion coefficient scale/q0 (double(1))
 #' @param logdispStd   (optional) standard deviation of logdisp
 #' 
 #' @usage Value <- QGW(p, p0, q0, logdisp, theta, q0Std, logdispStd, thetaStd)
