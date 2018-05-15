@@ -234,7 +234,7 @@ FitGW_iHill <- function(X, p, N, EI, theta0, theta0Std, logdisp0, logdisp0Std, l
       #
       # compute refined estimate including estimate of bias
       #
-      rP0 <- selectThresholdP0(vtest, vtestStd, l, 50)
+      rP0 <- selectThresholdP0(vtest, vtestStd, l)
       i <- rP0$i
       Pfluctuation <- rP0$P
       bias <- rP0$bias
