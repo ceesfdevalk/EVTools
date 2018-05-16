@@ -4,11 +4,14 @@
 \alias{selectThresholdP0}
 \title{selectThresholdP0}
 \usage{
-Value <- selectThresholdP0(tailindex, tailindexStd)
+Value <- selectThresholdP0(tailindex, tailindexStd, l, rthresh)
 }
 \arguments{
 \item{l}{number of order statistics above the threshold for scale
 and location estimation from FitGW_iHill.R (double(nl))}
+
+\item{rthresh}{(optional) ratio of the probability of nonexceedance of fluctuation 
+size to its maximum, for threshold to be accepted. Default is 0.4.}
 
 \item{tailindex}{GW tail index estimates from FitGW_iHill.R (double(nl))}
 
