@@ -9,8 +9,10 @@
 #' @param tailindexStd Standard deviation of tail index from FitGW_iHill.R (double(nl))
 #' @param l            number of order statistics above the threshold for scale
 #'                     and location estimation from FitGW_iHill.R (double(nl))
-#' 
-#' @usage Value <- selectThresholdP0(tailindex, tailindexStd) 
+#' @param rthresh      (optional) ratio of the probability of nonexceedance of fluctuation 
+#'                     size to its maximum, for threshold to be accepted. Default is 0.4.             
+#'  
+#' @usage Value <- selectThresholdP0(tailindex, tailindexStd, l, rthresh) 
 #' 
 #' @return list containing the elements
 #'   \item{i}{index in the vectors tailindex and l, representing the selected threshold}    
@@ -34,8 +36,9 @@
 #' \url{https://doi.org/10.1016/j.ecosta.2017.03.001}
 #' 
 #' @export
-selectThresholdP0 <- function(theta, thetaStd, l) {
-  pthresh <- 0.3 # parameter: fluctuation probability threshold
+selectThresholdP0 <- function(theta, thetaStd, l, rthresh) {
+  if (missing(rthresh)) {rthresh <- 0.4}
+  # parameter: fluctuation probability threshold
 
   nl <-  length(l)
   ll <- log(pmax(l,3))
@@ -61,8 +64,8 @@ selectThresholdP0 <- function(theta, thetaStd, l) {
   # Pj <- Pj*(Pc> 0.1)
   # 
   # threshold choice a la Boucheron-Thomas (but more delicate)
-  i <- max(which(P> max(P)*pthresh))              # threshold selection based on max of P
-  # i <- max(which(P> quantile(P, 0.99)*pthresh)) # threshold selection based on high quantile of P
+  i <- max(which(P> max(P)*rthresh))              # threshold selection based on max of P
+  # i <- max(which(P> quantile(P, 0.99)*rthresh)) # threshold selection based on high quantile of P
   res <- list("i"= i, "P"= P, "bias"= bias)
 }
 
