@@ -4,7 +4,7 @@
 \alias{FitGW_iHill}
 \title{FitGW_iHill}
 \usage{
-Value <- FitGW_iHill(X, p, N= 0, EI= 1, theta0= NULL, theta0Std= NULL, logdisp0= NULL, logdisp0Std= NULL, l0= NULL, XId= '')
+Value <- FitGW_iHill(X, p, N= 0, EI= 1, r11= 1, fixedpar= NULL, l0= NULL, XId= '')
 }
 \arguments{
 \item{X}{data sample (double(n))}
@@ -15,13 +15,9 @@ Value <- FitGW_iHill(X, p, N= 0, EI= 1, theta0= NULL, theta0Std= NULL, logdisp0=
 
 \item{EI}{(optional) extremal index (default: 1): reciprokal of cluster length in time-steps (see ??) (double(1))}
 
-\item{theta0}{(optional) value of theta0 in case it is imposed (double(1))}
+\item{r11}{(optional) factor to increase estimator variance with to account for serial dependence (default: 1) (double(1))}
 
-\item{theta0Std}{(optional) its standard deviation (double(1))}
-
-\item{logdisp0}{(optional) value of log of dispersion coeff. in case it is imposed (dispersion coeff. is the raio of scale par. to location par.) (double(1))}
-
-\item{logdisp0Std}{(optional) its standard deviation (double(1))}
+\item{fixedpar}{(optional): fixed model parameters not to be estimated, and their standard errors (list; see Details)}
 
 \item{l0}{(optional) value of l (no. of order stats used) in case it is imposed (integer(0))}
 
@@ -32,7 +28,7 @@ A list, with members:
   \item{l}{no. of order statistics used for scale and quantile estimation}    
   \item{k}{no. of order statistics used for tail index estimation} 
   \item{sigma}{= 1: fixed algorithm parameter (see ref. eq. (30))}
-  \item{theta}{estimates or imposed value of log-GW tail index} 
+  \item{tailindex}{estimates or imposed value of log-GW tail index} 
   \item{tailindexStd}{standard deviations of tail index estimates}
   \item{logdisp}{estimates or imposed value of log of dispersion coeff.}  
   \item{logdispStd}{standard deviations of log of dispersion coeff. estimates}
@@ -56,12 +52,20 @@ In case a quantile is to be estimated for a \emph{frequency}, say f, and
   p = f*d/EI, N = T/d, EI = EI, with T the length of the observation period and d the time step. 
         Note that f and d are defined with reference to the same unit of time!!
             }
-  \item{(b)} {if X contains only the (approximately Poisson) peak values above some threshold 
+  \item{if X contains only the (approximately Poisson) peak values above some threshold 
         (i.e., you want to do a PoT analysis), then set p = f*d/EI, N = (T/d)*EI, 
         EI = 1 (note that d/EI is the mean duration of an "event" and EI/d is the 
         mean number of "events" per unit of time).
              }
-}
+}   
+ 
+ Fixed model parameters are to be supplied in the list fixedpar (see above):
+ \itemize{
+  \item{$theta0: (optional) value of tailindex in case it is imposed (double(1))}
+  \item{$theta0Std: (optional) its standard deviation (double(1))}
+  \item{$logdisp0: (optional) value of log of dispersion coeff. in case it is imposed (dispersion coeff. is the raio of scale par. to location par.) (double(1))}
+  \item{$logdisp0Std: (optional) its standard deviation (double(1))}        
+  }
 }
 \references{
 De Valk, C. and Cai, J.J. (2018), A high quantile estimator based on 

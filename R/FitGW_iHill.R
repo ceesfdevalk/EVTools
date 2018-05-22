@@ -8,20 +8,18 @@
 #' @param p probabilities of exceedance of the quantiles to be estimated (double(np))  
 #' @param N (optional) (effective) sample size, in case X is not complete but contains only (peak) values above some threshold (integer(1))
 #' @param EI (optional) extremal index (default: 1): reciprokal of cluster length in time-steps (see ??) (double(1))
-#' @param theta0 (optional) value of theta0 in case it is imposed (double(1))
-#' @param theta0Std (optional) its standard deviation (double(1))
-#' @param logdisp0 (optional) value of log of dispersion coeff. in case it is imposed (dispersion coeff. is the raio of scale par. to location par.) (double(1))
-#' @param logdisp0Std (optional) its standard deviation (double(1))
+#' @param r11 (optional) factor to increase estimator variance with to account for serial dependence (default: 1) (double(1))
+#' @param fixedpar (optional): fixed model parameters not to be estimated, and their standard errors (list; see Details)
 #' @param l0 (optional) value of l (no. of order stats used) in case it is imposed (integer(0))
 #' @param XId (optional) data identifier to store with output for traceability (character)
 #' 
-#' @usage Value <- FitGW_iHill(X, p, N= 0, EI= 1, theta0= NULL, theta0Std= NULL, logdisp0= NULL, logdisp0Std= NULL, l0= NULL, XId= '')
+#' @usage Value <- FitGW_iHill(X, p, N= 0, EI= 1, r11= 1, fixedpar= NULL, l0= NULL, XId= '')
 #' 
 #' @return A list, with members: 
 #'   \item{l}{no. of order statistics used for scale and quantile estimation}    
 #'   \item{k}{no. of order statistics used for tail index estimation} 
 #'   \item{sigma}{= 1: fixed algorithm parameter (see ref. eq. (30))}
-#'   \item{theta}{estimates or imposed value of log-GW tail index} 
+#'   \item{tailindex}{estimates or imposed value of log-GW tail index} 
 #'   \item{tailindexStd}{standard deviations of tail index estimates}
 #'   \item{logdisp}{estimates or imposed value of log of dispersion coeff.}  
 #'   \item{logdispStd}{standard deviations of log of dispersion coeff. estimates}
@@ -42,12 +40,21 @@
 #'   p = f*d/EI, N = T/d, EI = EI, with T the length of the observation period and d the time step. 
 #'         Note that f and d are defined with reference to the same unit of time!!
 #'             }
-#'   \item{(b)} {if X contains only the (approximately Poisson) peak values above some threshold 
+#'   \item{if X contains only the (approximately Poisson) peak values above some threshold 
 #'         (i.e., you want to do a PoT analysis), then set p = f*d/EI, N = (T/d)*EI, 
 #'         EI = 1 (note that d/EI is the mean duration of an "event" and EI/d is the 
 #'         mean number of "events" per unit of time).
 #'              }
-#' }            
+#' }   
+#'  
+#'  Fixed model parameters are to be supplied in the list fixedpar (see above):
+#'  \itemize{
+#'   \item{$theta0: (optional) value of tailindex in case it is imposed (double(1))}
+#'   \item{$theta0Std: (optional) its standard deviation (double(1))}
+#'   \item{$logdisp0: (optional) value of log of dispersion coeff. in case it is imposed (dispersion coeff. is the raio of scale par. to location par.) (double(1))}
+#'   \item{$logdisp0Std: (optional) its standard deviation (double(1))}        
+#'   }
+#'           
 #' @references
 #' De Valk, C. and Cai, J.J. (2018), A high quantile estimator based on 
 #' the log-generalized Weibull tail limit. Econometrics and Statistics 6, 107-128, see
@@ -56,7 +63,7 @@
 #' @author Cees de Valk \email{ceesfdevalk@gmail.com}
 #' 
 #' @export
-FitGW_iHill <- function(X, p, N, EI, theta0, theta0Std, logdisp0, logdisp0Std, l0, XId) {
+FitGW_iHill <- function(X, p, N, EI, r11, fixedpar, l0, XId) {
   # fixed parameter 
   sigma2 <- 1
    
@@ -64,12 +71,16 @@ FitGW_iHill <- function(X, p, N, EI, theta0, theta0Std, logdisp0, logdisp0Std, l
   if (missing(p)) {p <- NULL}
   if (missing(N)) {N <- 0} 
   if (missing(EI)) {EI <- 1}
-  if (missing(theta0)) {theta0 <- NULL}
-  if (missing(theta0Std)) {theta0Std <- NULL}
-  if (missing(logdisp0)) {logdisp0 <- NULL}
-  if (missing(logdisp0Std)) {logdisp0Std <- NULL}
+  if (missing(r11)) {r11 <- 1}
+  if (missing(fixedpar)) {fixedpar <- NULL}
   if (missing(l0)) {l0 <- NULL}
   if (missing(XId)) {XId <- ''}
+ 
+  theta0 <- fixedpar$theta0
+  theta0Std <- fixedpar$theta0Std
+  logdisp0 <- fixedpar$logdisp0
+  logdisp0Std <- fixedpar$logdisp0Std
+ 
   X <- c(X)
   n <- length(X)  
   estimates <- NULL
