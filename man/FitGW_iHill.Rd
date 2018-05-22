@@ -4,7 +4,7 @@
 \alias{FitGW_iHill}
 \title{FitGW_iHill}
 \usage{
-Value <- FitGW_iHill(X, p, N= 0, EI= 1, r11= 1, fixedpar= NULL, l0= NULL, XId= '')
+Value <- FitGW_iHill(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, XId= '')
 }
 \arguments{
 \item{X}{data sample (double(n))}
@@ -12,8 +12,6 @@ Value <- FitGW_iHill(X, p, N= 0, EI= 1, r11= 1, fixedpar= NULL, l0= NULL, XId= '
 \item{p}{probabilities of exceedance of the quantiles to be estimated (double(np))}
 
 \item{N}{(optional) (effective) sample size, in case X is not complete but contains only (peak) values above some threshold (integer(1))}
-
-\item{EI}{(optional) extremal index (default: 1): reciprokal of cluster length in time-steps (see ??) (double(1))}
 
 \item{r11}{(optional) factor to increase estimator variance by, to account for serial dependence (default: 1) (double(1))}
 
@@ -46,26 +44,28 @@ A list, with members:
 Fit a Generalised Weibull (GW) upper tail to the sample X and estimate quantiles
 }
 \details{
-In case a quantile is to be estimated for a \emph{frequency}, say f, and 
-  \enumerate{
-  \item{if X contains all values (possibly above some threshold), then set
-  p = f*d/EI, N = T/d, EI = EI, with T the length of the observation period and d the time step. 
-        Note that f and d are defined with reference to the same unit of time!!
-            }
-  \item{if X contains only the (approximately Poisson) peak values above some threshold 
-        (i.e., you want to do a PoT analysis), then set p = f*d/EI, N = (T/d)*EI, 
-        EI = 1 (note that d/EI is the mean duration of an "event" and EI/d is the 
-        mean number of "events" per unit of time).
-             }
-}   
- 
- Fixed model parameters are to be supplied in the list fixedpar (see above):
+Pre-determined model parameters are to be supplied in the list fixedpar (see above):
  \itemize{
   \item{$theta0: (optional) value of tailindex in case it is imposed (double(1))}
   \item{$theta0Std: (optional) its standard deviation (double(1))}
   \item{$logdisp0: (optional) value of log of dispersion coeff. in case it is imposed (dispersion coeff. is the raio of scale par. to location par.) (double(1))}
   \item{$logdisp0Std: (optional) its standard deviation (double(1))}        
   }
+  
+  In case a quantile is to be estimated for a \emph{frequency}, say f, and 
+  \enumerate{
+  \item{if X contains all values (possibly above some threshold), then with
+  EI an estimate of the Extremal Index, set
+  p = f*d/EI and N = T/d, with T the length of the observation period and d the time step. 
+        Note that f and d are defined with reference to the same unit of time!! In this case,
+        r11 needs to be estimated.
+            }
+  \item{if X contains only the (approximately Poisson) peak values above some threshold 
+        (i.e., you want to do a PoT analysis), then set p = f*d/EI, N = (T/d)*EI, r11= 1 
+        (note that d/EI is the mean duration of an "event" and EI/d is the 
+        mean number of "events" per unit of time).
+             }
+}
 }
 \references{
 De Valk, C. and Cai, J.J. (2018), A high quantile estimator based on 
