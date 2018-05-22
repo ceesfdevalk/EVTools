@@ -15,7 +15,7 @@ Value <- FitGW_iHill(X, p, N= 0, EI= 1, r11= 1, fixedpar= NULL, l0= NULL, XId= '
 
 \item{EI}{(optional) extremal index (default: 1): reciprokal of cluster length in time-steps (see ??) (double(1))}
 
-\item{r11}{(optional) factor to increase estimator variance with to account for serial dependence (default: 1) (double(1))}
+\item{r11}{(optional) factor to increase estimator variance by, to account for serial dependence (default: 1) (double(1))}
 
 \item{fixedpar}{(optional): fixed model parameters not to be estimated, and their standard errors (list; see Details)}
 

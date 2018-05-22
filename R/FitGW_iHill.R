@@ -8,7 +8,7 @@
 #' @param p probabilities of exceedance of the quantiles to be estimated (double(np))  
 #' @param N (optional) (effective) sample size, in case X is not complete but contains only (peak) values above some threshold (integer(1))
 #' @param EI (optional) extremal index (default: 1): reciprokal of cluster length in time-steps (see ??) (double(1))
-#' @param r11 (optional) factor to increase estimator variance with to account for serial dependence (default: 1) (double(1))
+#' @param r11 (optional) factor to increase estimator variance by, to account for serial dependence (default: 1) (double(1))
 #' @param fixedpar (optional): fixed model parameters not to be estimated, and their standard errors (list; see Details)
 #' @param l0 (optional) value of l (no. of order stats used) in case it is imposed (integer(0))
 #' @param XId (optional) data identifier to store with output for traceability (character)
@@ -152,7 +152,7 @@ FitGW_iHill <- function(X, p, N, EI, r11, fixedpar, l0, XId) {
         theta <- 1+hill1[k-2]/u[k-2]
         
         # Asymptotic standard deviation of theta
-        thetaStd= sqrt(sigma2/(l*EI))
+        thetaStd= sqrt(sigma2*r11/l)
         sigma2m <- sigma2 #for use in estimation of stand. dev. of quantile
       } else {
         theta <- rep(theta0[1], nl)
@@ -171,7 +171,7 @@ FitGW_iHill <- function(X, p, N, EI, r11, fixedpar, l0, XId) {
         }
         g <- hill0[l-1]/normg     
         logdisp <- log(g/pmax(X0[l], .0001))  # Log of dispersion coefficient
-        logdispStd <- sqrt(1/(EI*l))
+        logdispStd <- sqrt(r11/l)
       } else {
         g <- X0[l]*exp(logdisp0[1])
         logdisp <- rep(logdisp0[1], nl)
@@ -183,7 +183,7 @@ FitGW_iHill <- function(X, p, N, EI, r11, fixedpar, l0, XId) {
       }
       
       # Standard deviation of X0[l] as estimator of location q(th[l])
-        X0lStd <- hill0[l-1]/sqrt(l*EI)
+        X0lStd <- hill0[l-1]*sqrt(r11/l)
 
       # Quantile estimation
       lp= length(p)
@@ -233,7 +233,7 @@ FitGW_iHill <- function(X, p, N, EI, r11, fixedpar, l0, XId) {
       
       i <- selectThresholdBT(vtest, vtestStd, l, 50)
       estimatesBT <- list("k"= k[i], "l"= l[i], "y"= th[l[i]], 
-                          "N"= N, "sigma"= sqrt(sigma2), "EI"= EI,
+                          "N"= N, "sigma"= sqrt(sigma2), "EI"= EI,"r11"= r11,
                           "tailindex"= theta[i], "scale"= g[i], 
                           "location"= X0[l[i]], "locationStd"= X0lStd[i],
                           "logdisp"= logdisp[i], "logdispStd"= logdispStd[i],
@@ -250,7 +250,7 @@ FitGW_iHill <- function(X, p, N, EI, r11, fixedpar, l0, XId) {
       Pfluctuation <- rP0$P
       bias <- rP0$bias
       estimatesP0 <- list("k"= k[i], "l"= l[i], "y"= th[l[i]], 
-                          "N"= N, "sigma"= sqrt(sigma2), "EI"= EI,
+                          "N"= N, "sigma"= sqrt(sigma2), "EI"= EI, "r11"= r11,
                           "tailindex"= theta[i], "scale"= g[i], 
                           "logdisp"= logdisp[i], "logdispStd"= logdispStd[i],
                           "location"= X0[l[i]], "locationStd"= X0lStd[i],
@@ -260,6 +260,7 @@ FitGW_iHill <- function(X, p, N, EI, r11, fixedpar, l0, XId) {
                           "estimator"= "iteratedHill", "XId"= XId)
     }
     
+    # Below is all outdated stuff, don't use it
     # # Average weighted with inverse of variance times jump probability
     # weight= Pj/thetaStd^2
     # thetaP <- sum(theta*weight)/sum(weight) 
@@ -317,7 +318,7 @@ FitGW_iHill <- function(X, p, N, EI, r11, fixedpar, l0, XId) {
   } # if (n > 0)
   
   estimates <- list("k"= k, "l"= l, "y"= th[l], 
-                    "N"= N, "sigma"= sqrt(sigma2), "EI"= EI,
+                    "N"= N, "sigma"= sqrt(sigma2), "EI"= EI, "r11"= r11,
                     "tailindex"= theta, "tailindexStd"= thetaStd, 
                     "scale"= g, "logdisp"= logdisp, "logdispStd"= logdispStd,
                     "location"= X0[l], "locationStd"= X0lStd,
