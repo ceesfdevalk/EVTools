@@ -52,7 +52,8 @@ selectThresholdP0 <- function(theta, thetaStd, l, rthresh) {
     bias[j+1] <- max(abs(theta[1:j]-theta[j+1])-thetaStd[1:j]*slf[j+1])
   }
   bias <- pmax(bias,0)                # this is unbiased if nonzero! not soft-clipping
-  a <- ll^(2*(alpha-1))*sqrt((4*pi)/lf)
+  # a <- ll^(2*(alpha-1))*sqrt(4*pi/lf)
+  a <- ll^(2*(alpha-1))*sqrt(pi/lf)   # this is for abs. value; see Darling & Erdos
   P <- 1-exp(-1/a)                    # probability of being outside alpha
   P[nl] <- 0                          # otherwise threshold chouce may not be defined
   
