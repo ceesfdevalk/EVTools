@@ -125,6 +125,7 @@ FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, XId) {
     }
     nl <- length(k)
     mk <- max(k)
+    ml <- max(l)
     
     theta <- NULL
     thetaStd <- NULL
@@ -167,9 +168,18 @@ FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, XId) {
       # Scale estimator
       if (length(logdisp0)== 0) {
         normg <- rep(0,nl)
-        for (i in 1:nl) {
-          normg[i] <- mean(h(theta[i],th[1:(l[i]-1)]/th[l[i]]))
+        # approximation (theta is rounded to a resolution of 0.01 for scale)
+        thetar <- round(theta*100)*.01
+        thetau <- unique(thetar)
+        for (i in 1:length(thetau)) {
+          ti <- thetau[i]
+          id <- thetar %in% ti
+          temp <- cumsum(h(ti, th[1:ml]))/L[1:ml]
+          normg[id] <- th[l[id]]^(-ti)*temp[l[id]-1] + h(ti, 1/th[l[id]])
         }
+        # for (i in 1:nl) {
+        #   normg[i] <- mean(h(theta[i],th[1:(l[i]-1)]/th[l[i]]))
+        # }
         g <- hill0[l-1]/normg     
         logdisp <- log(g/pmax(X0[l], .0001))  # Log of dispersion coefficient
         logdispStd <- sqrt(r11/l)
