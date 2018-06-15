@@ -107,9 +107,9 @@ FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, XId) {
       l <- l0
     }
     nl <- length(l)
-    k <- rep(NA, nl)
-    for (jj in 1:length(l)) {
-      k[jj] <- which.min(abs((L[1:n]-1)/th^2-l[jj]/sigma2))
+    k <- l  # start Newton iteration for k 
+    for (jj in 1:10) {
+      k <- k-(k-l*th[k]^2)/(1+2*l*th[k]/k)
     }
     k <- pmax(k, l)
     k <- pmin(pmax(1, k), n+1);
