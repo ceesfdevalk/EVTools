@@ -68,7 +68,7 @@
 FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, XId) {
   # fixed parameter 
   sigma2 <- 1
-   
+  
   # Handle arguments
   if (missing(p)) {p <- NULL}
   if (missing(N)) {N <- 0} 
@@ -76,12 +76,12 @@ FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, XId) {
   if (missing(fixedpar)) {fixedpar <- NULL}
   if (missing(l0)) {l0 <- NULL}
   if (missing(XId)) {XId <- ''}
- 
+  
   theta0 <- fixedpar$theta0
   theta0Std <- fixedpar$theta0Std
   logdisp0 <- fixedpar$logdisp0
   logdisp0Std <- fixedpar$logdisp0Std
- 
+  
   X <- c(X)
   n <- length(X)  
   estimates <- NULL
@@ -159,7 +159,7 @@ FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, XId) {
       } else {
         theta <- rep(theta0[1], nl)
         if (length(theta0Std)> 0){
-           thetaStd <- rep(theta0Std[1], nl)
+          thetaStd <- rep(theta0Std[1], nl)
         } else {
           thetaStd <- rep(0, nl)
         }
@@ -194,8 +194,8 @@ FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, XId) {
       }
       
       # Standard deviation of X0[l] as estimator of location q(th[l])
-        X0lStd <- hill0[l-1]*sqrt(r11/l)
-
+      X0lStd <- hill0[l-1]*sqrt(r11/l)
+      
       # Quantile estimation
       lp= length(p)
       if (lp> 0) {
@@ -225,52 +225,50 @@ FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, XId) {
     # compute Boucheron-Thomas (cf. Drees-Kaufmann) type simple choice of 
     # threshold l
     # 
-    estimatesBT <- NULL  
-    estimatesP0 <- NULL  
-    P <- NULL
-    bias <- NULL  
-
-    if (length(l0)== 0) {
-      if (length(theta0)== 0) { 
-        vtest <- theta
-        vtestStd <- thetaStd    
-      } else if (length(logdisp0)== 0) {
-        vtest <- logdisp
-        vtestStd <- logdispStd  
-      } else {
-        vtest <- X0[l]
-        vtestStd <- X0lStd              
-      }
-      
-      i <- selectThresholdBT(vtest, vtestStd, l, 50)
-      estimatesBT <- list("k"= k[i], "l"= l[i], "y"= th[l[i]], 
-                          "N"= N, "sigma"= sqrt(sigma2),"r11"= r11,
-                          "tailindex"= theta[i], "scale"= g[i], 
-                          "location"= X0[l[i]], "locationStd"= X0lStd[i],
-                          "logdisp"= logdisp[i], "logdispStd"= logdispStd[i],
-                          "p"= p, "quantile"= q[i, ], 
-                          "tailindexStd"= thetaStd[i], "quantileStd"= qStd[i, ], 
-                          "df"= "GW", 
-                          "estimator"= "iteratedHill", "XId"= XId)
-      
-      #
-      # compute refined estimate including estimate of bias
-      #
-      rP0 <- selectThresholdP0(vtest, vtestStd, l)
-      i <- rP0$i
-      Pfluctuation <- rP0$P
-      bias <- rP0$bias
-      estimatesP0 <- list("k"= k[i], "l"= l[i], "y"= th[l[i]], 
-                          "N"= N, "sigma"= sqrt(sigma2), "r11"= r11,
-                          "tailindex"= theta[i], "scale"= g[i], 
-                          "logdisp"= logdisp[i], "logdispStd"= logdispStd[i],
-                          "location"= X0[l[i]], "locationStd"= X0lStd[i],
-                          "p"= p, "quantile"= q[i, ], 
-                          "tailindexStd"= thetaStd[i], "quantileStd"= qStd[i, ], 
-                          "df"= "GW", 
-                          "estimator"= "iteratedHill", "XId"= XId)
-    }
-    
+    #    estimatesBT <- NULL  
+    # estimatesP0 <- NULL  
+    # P <- NULL
+    # bias <- NULL  
+    # 
+    # if (length(l0)== 0) {
+    #   if (length(theta0)== 0) { 
+    #     vtest <- theta
+    #     vtestStd <- thetaStd    
+    #   } else if (length(logdisp0)== 0) {
+    #     vtest <- logdisp
+    #     vtestStd <- logdispStd  
+    #   } else {
+    #     vtest <- X0[l]
+    #     vtestStd <- X0lStd              
+    #   }
+    #   
+    # i <- selectThresholdBT(vtest, vtestStd, l, 50)
+    # estimatesBT <- list("k"= k[i], "l"= l[i], "y"= th[l[i]], 
+    #                     "N"= N, "sigma"= sqrt(sigma2),"r11"= r11,
+    #                     "tailindex"= theta[i], "scale"= g[i], 
+    #                     "location"= X0[l[i]], "locationStd"= X0lStd[i],
+    #                     "logdisp"= logdisp[i], "logdispStd"= logdispStd[i],
+    #                     "p"= p, "quantile"= q[i, ], 
+    #                     "tailindexStd"= thetaStd[i], "quantileStd"= qStd[i, ], 
+    #                     "df"= "GW", 
+    #                     "estimator"= "iteratedHill", "XId"= XId)
+    #
+    # compute refined estimate including estimate of bias
+    #
+    # rP0 <- selectThresholdP0(vtest, vtestStd, l)
+    # i <- rP0$i
+    # Pfluctuation <- rP0$P
+    # bias <- rP0$bias
+    # estimatesP0 <- list("k"= k[i], "l"= l[i], "y"= th[l[i]], 
+    #                     "N"= N, "sigma"= sqrt(sigma2), "r11"= r11,
+    #                     "tailindex"= theta[i], "scale"= g[i], 
+    #                     "logdisp"= logdisp[i], "logdispStd"= logdispStd[i],
+    #                     "location"= X0[l[i]], "locationStd"= X0lStd[i],
+    #                     "p"= p, "quantile"= q[i, ], 
+    #                     "tailindexStd"= thetaStd[i], "quantileStd"= qStd[i, ], 
+    #                     "df"= "GW", 
+    #                     "estimator"= "iteratedHill", "XId"= XId)
+    # }
     # Below is all outdated stuff, don't use it
     # # Average weighted with inverse of variance times jump probability
     # weight= Pj/thetaStd^2
@@ -323,26 +321,24 @@ FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, XId) {
     #                    "p"= p, "quantile"= qPP, "quantileStd"= qStdPP, 
     #                    "df"= "GW", 
     #                    "estimator"= "iteratedHill", "XId"= XId)
-    
     # plot(l, P, type= 'l', log= 'x', ylim= c(0,1)); grid()
     
+    estimates <- list("k"= k, "l"= l, "y"= th[l], 
+                      "N"= N, "sigma"= sqrt(sigma2), "r11"= r11,
+                      "tailindex"= theta, "tailindexStd"= thetaStd, 
+                      "scale"= g, "logdisp"= logdisp, "logdispStd"= logdispStd,
+                      "location"= X0[l], "locationStd"= X0lStd,
+                      "p"= p, "quantile"= q, "quantileStd"= qStd, 
+                      "orderstats"= X0, "df"= "GW", 
+                      "estimator"= "iteratedHill", "XId"= XId)
+                      # "estimatesBT"= estimatesBT,  # Boucheron-Thomas estimate
+                      # "Pfluctuation"= Pfluctuation,# fluctuation size p-value
+                      # "bias"= bias,                # order of magnitude of bias
+                      # "estimatesP0"= estimatesP0)  # single-threshold-estimates (a la B-T)
+                      # "estimatesP"= estimatesP,    # multi-threshold mean (jump points)
+                      # "estimatesPP"= estimatesPP)  # multi-threshold median (jump points)
+                      
   } # if (n > 0)
-  
-  estimates <- list("k"= k, "l"= l, "y"= th[l], 
-                    "N"= N, "sigma"= sqrt(sigma2), "r11"= r11,
-                    "tailindex"= theta, "tailindexStd"= thetaStd, 
-                    "scale"= g, "logdisp"= logdisp, "logdispStd"= logdispStd,
-                    "location"= X0[l], "locationStd"= X0lStd,
-                    "p"= p, "quantile"= q, "quantileStd"= qStd, 
-                    "orderstats"= X0, "df"= "GW", 
-                    "estimator"= "iteratedHill", "XId"= XId, 
-                    "estimatesBT"= estimatesBT,  # Boucheron-Thomas estimate
-                    "Pfluctuation"= Pfluctuation,# fluctuation size p-value
-                    "bias"= bias,                # order of magnitude of bias
-                    "estimatesP0"= estimatesP0)  # single-threshold-estimates (a la B-T)
-                    # "estimatesP"= estimatesP,    # multi-threshold mean (jump points)
-                    # "estimatesPP"= estimatesPP)  # multi-threshold median (jump points)
-  
   return(estimates)
 }
 
