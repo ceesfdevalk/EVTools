@@ -22,8 +22,7 @@
 #' 
 #' @export
 qGW <- function(p, es, l) {
-
-  if (missing(l)) {
+ if (missing(l)) {
     if (length(es$l)> 1) {
       stop('Argument l must be supplied: es contains values for 
            multiple thresholds.')
@@ -61,4 +60,6 @@ qGW <- function(p, es, l) {
   qStd <- sqrt(ha^2*scaleStd^2 + scale^2*dha^2*thetaStd^2 + q0Std^2)
   
   res <- list(quantile= q, quantileStd= qStd)
-}
+ }
+  
+  
