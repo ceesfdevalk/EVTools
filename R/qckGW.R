@@ -2,7 +2,7 @@
 #' 
 #' @title qckGW
 #' 
-#' @description quantile of the GW (Generalised Weibull) tail and (optionally) its standard deviation 
+#' @description quantile of the GW (Generalised Weibull) tail and its standard deviation 
 #' 
 #' @param p            probability(ies) of exceedance at which to evaluate the quantile(s) (double(np))
 #' @param es           fitted GW model (see e.g. FitGW_iHill.R)
@@ -21,8 +21,8 @@
 #' \url{https://doi.org/10.1016/j.ecosta.2017.03.001}
 #' 
 #' @export
-qGW <- function(p, es, l) {
- if (missing(l)) {
+qckGW <- function(p, es, l) {
+  if (missing(l)) {
     if (length(es$l)> 1) {
       stop('Argument l must be supplied: es contains values for 
            multiple thresholds.')
@@ -31,6 +31,7 @@ qGW <- function(p, es, l) {
     } else {
       stop('es$l not a positive number.')
     }
+  }
   i0 <- which(es$l== l) 
   if (length(i0)< 1) {
     stop('l is not in es$l.')
@@ -48,7 +49,7 @@ qGW <- function(p, es, l) {
   lambda <- -log(p)/es$y
   ha <- h(theta,lambda)
   q <- q0 + scale*ha
-
+  
   # derivative of ha to theta
   dha <- (1/theta)*(lambda^theta*log(lambda)-ha)
   id <- abs(theta)< .Machine$double.eps
@@ -60,6 +61,5 @@ qGW <- function(p, es, l) {
   qStd <- sqrt(ha^2*scaleStd^2 + scale^2*dha^2*thetaStd^2 + q0Std^2)
   
   res <- list(quantile= q, quantileStd= qStd)
- }
-  
-  
+}
+
