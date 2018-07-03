@@ -13,7 +13,7 @@
 #' @param scaleStd     (optional) standard deviation of scale (double(1))
 #' @param thetaStd     (optional) standard deviation of theta (double(1))
 #' 
-#' @usage Value <- QGW(p, p0, q0, scale, theta, q0Std, scaleStd, thetaStd)
+#' @usage Value <- qGW(p, p0, q0, scale, theta, q0Std, scaleStd, thetaStd)
 #' 
 #' @return list containing quantile(s) and optionally, their standard deviations 
 #

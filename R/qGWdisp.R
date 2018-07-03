@@ -8,7 +8,7 @@
 #' @param logdisp      logarithm of the dispersion coefficient scale/q0 (double(1))
 #' @param logdispStd   (optional) standard deviation of logdisp
 #' 
-#' @usage Value <- QGW(p, p0, q0, logdisp, theta, q0Std, logdispStd, thetaStd)
+#' @usage Value <- qGW_disp(p, p0, q0, logdisp, theta, q0Std, logdispStd, thetaStd)
 #' 
 #' @return list containing quantile(s) and optionally, their standard deviations 
 #
