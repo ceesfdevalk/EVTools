@@ -339,6 +339,7 @@ FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, XId) {
                       # "estimatesPP"= estimatesPP)  # multi-threshold median (jump points)
                       
   } # if (n > 0)
+  
   return(estimates)
 }
 
