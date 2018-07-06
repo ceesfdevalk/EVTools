@@ -4,7 +4,7 @@
 \alias{qGWdisp}
 \title{qGWdisp}
 \usage{
-Value <- QGW(p, p0, q0, logdisp, theta, q0Std, logdispStd, thetaStd)
+Value <- qGW_disp(p, p0, q0, logdisp, theta, q0Std, logdispStd, thetaStd)
 }
 \arguments{
 \item{logdisp}{logarithm of the dispersion coefficient scale/q0 (double(1))}

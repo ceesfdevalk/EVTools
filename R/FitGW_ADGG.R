@@ -3,7 +3,7 @@
 #' @title FitGW_ADGG
 #' 
 #' @description Fit a Generalised Weibull (GW) upper tail to the sample X and estimate quantiles, using
-#' the moment estimator of Albert et al. (2018) 
+#' the moment estimator of Albert et al. (2018).
 #' 
 #' @param X data sample (double(n))
 #' @param p probabilities of exceedance of the quantiles to be estimated (double(np))  
@@ -13,7 +13,7 @@
 #' @param l0 (optional) value of l (no. of order stats used) in case it is imposed (integer(0))
 #' @param XId (optional) data identifier to store with output for traceability (character)
 #' 
-#' @usage Value <- FitGW_iHill(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, XId= '')
+#' @usage Value <- FitGW_ADGG(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, XId= '')
 #' 
 #' @return A list, with members: 
 #'   \item{l}{no. of order statistics used for scale and quantile estimation}    
@@ -62,6 +62,8 @@
 #' }   
 #'           
 #' @references
+#' Albert, C., Dutfoy,A., Gardes, L., Girard, S. (2018), An extreme quantile estimator 
+#' for the log-generalized Weibull-tail model. See: https://hal.inria.fr/hal-01783929v1.
 #' De Valk, C. and Cai, J.J. (2018), A high quantile estimator based on 
 #' the log-generalized Weibull tail limit. Econometrics and Statistics 6, 107-128, see
 #' \url{https://doi.org/10.1016/j.ecosta.2017.03.001}
@@ -350,7 +352,7 @@ FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, XId) {
                       "location"= X0[l], "locationStd"= X0lStd,
                       "p"= p, "quantile"= q, "quantileStd"= qStd, 
                       "orderstats"= X0, "df"= "GW", 
-                      "estimator"= "iteratedHill", "XId"= XId)
+                      "estimator"= "MomentMethod-ADGG", "XId"= XId)
                       # "estimatesBT"= estimatesBT,  # Boucheron-Thomas estimate
                       # "Pfluctuation"= Pfluctuation,# fluctuation size p-value
                       # "bias"= bias,                # order of magnitude of bias

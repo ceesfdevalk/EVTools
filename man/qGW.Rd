@@ -4,7 +4,7 @@
 \alias{qGW}
 \title{qGW}
 \usage{
-Value <- QGW(p, p0, q0, scale, theta, q0Std, scaleStd, thetaStd)
+Value <- qGW(p, p0, q0, scale, theta, q0Std, scaleStd, thetaStd)
 }
 \arguments{
 \item{p}{probability(ies) of exceedance at which to evaluate the quantile(s) (double(np))}
