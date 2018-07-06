@@ -71,7 +71,7 @@
 #' @author Cees de Valk \email{ceesfdevalk@gmail.com}
 #' 
 #' @export
-FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, XId) {
+FitGW_ADGG <- function(X, p, N, r11, fixedpar, l0, XId) {
   # fixed parameter 
   sigma2 <- 0
   
