@@ -67,7 +67,7 @@
 #' @export
 FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, XId) {
   # fixed parameter 
-  sigma2 <- 1
+  sigma2 <- Inf
   
   # Handle arguments
   if (missing(p)) {p <- NULL}
@@ -108,8 +108,10 @@ FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, XId) {
     }
     nl <- length(l)
     k <- l  # start Newton iteration for k 
-    for (jj in 1:10) {
-      k <- k-(k-l*th[k]^2)/(1+2*l*th[k]/k)
+    if (sigma2< Inf) {
+      for (jj in 1:10) {
+        k <- k-(k-l*th[k]^2)/(1+2*l*th[k]/k)
+      }
     }
     k <- pmax(k, l)
     k <- pmin(pmax(1, k), n+1);
@@ -118,7 +120,8 @@ FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, XId) {
     X0 <- -sort(-X)
     
     # Adjust l and k based on requirements 
-    ind <- which(k> 2 & X0[k]> -Inf & l> 0 & k> l*2 & k< n)
+    # ind <- which(k> 2 & X0[k]> -Inf & l> 0 & k> l*2 & k< n)
+    ind <- which(k> 2 & X0[k]> -Inf & l> 0  & k< n)
     if (length(ind)> 0) {
       k <- k[ind]
       l <- l[ind]
@@ -220,108 +223,6 @@ FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, XId) {
         }
       }
     }
-    
-    #
-    # compute Boucheron-Thomas (cf. Drees-Kaufmann) type simple choice of 
-    # threshold l
-    # 
-    #    estimatesBT <- NULL  
-    # estimatesP0 <- NULL  
-    # P <- NULL
-    # bias <- NULL  
-    # 
-    # if (length(l0)== 0) {
-    #   if (length(theta0)== 0) { 
-    #     vtest <- theta
-    #     vtestStd <- thetaStd    
-    #   } else if (length(logdisp0)== 0) {
-    #     vtest <- logdisp
-    #     vtestStd <- logdispStd  
-    #   } else {
-    #     vtest <- X0[l]
-    #     vtestStd <- X0lStd              
-    #   }
-    #   
-    # i <- selectThresholdBT(vtest, vtestStd, l, 50)
-    # estimatesBT <- list("k"= k[i], "l"= l[i], "y"= th[l[i]], 
-    #                     "N"= N, "sigma"= sqrt(sigma2),"r11"= r11,
-    #                     "tailindex"= theta[i], "scale"= g[i], 
-    #                     "location"= X0[l[i]], "locationStd"= X0lStd[i],
-    #                     "logdisp"= logdisp[i], "logdispStd"= logdispStd[i],
-    #                     "p"= p, "quantile"= q[i, ], 
-    #                     "tailindexStd"= thetaStd[i], "quantileStd"= qStd[i, ], 
-    #                     "df"= "GW", 
-    #                     "estimator"= "iteratedHill", "XId"= XId)
-    #
-    # compute refined estimate including estimate of bias
-    #
-    # rP0 <- selectThresholdP0(vtest, vtestStd, l)
-    # i <- rP0$i
-    # Pfluctuation <- rP0$P
-    # bias <- rP0$bias
-    # estimatesP0 <- list("k"= k[i], "l"= l[i], "y"= th[l[i]], 
-    #                     "N"= N, "sigma"= sqrt(sigma2), "r11"= r11,
-    #                     "tailindex"= theta[i], "scale"= g[i], 
-    #                     "logdisp"= logdisp[i], "logdispStd"= logdispStd[i],
-    #                     "location"= X0[l[i]], "locationStd"= X0lStd[i],
-    #                     "p"= p, "quantile"= q[i, ], 
-    #                     "tailindexStd"= thetaStd[i], "quantileStd"= qStd[i, ], 
-    #                     "df"= "GW", 
-    #                     "estimator"= "iteratedHill", "XId"= XId)
-    # }
-    # Below is all outdated stuff, don't use it
-    # # Average weighted with inverse of variance times jump probability
-    # weight= Pj/thetaStd^2
-    # thetaP <- sum(theta*weight)/sum(weight) 
-    # # thetaStd= sqrt(sigma2/(l*EI))
-    # temp <- sqrt(sum(Pj^2*l+2*Pj*cumsum(Pj*l)))/sum(Pj*l)
-    # thetaStdP <- temp*sqrt(sigma2/EI) # from B.M. statistics
-    # qP <- qStdP <- p # as dummy
-    # for (j in (1:lp)) {                     # same for the quantiles
-    #   qP[j] <- sum(q[, j]*weight)/sum(weight) 
-    #   # qStdP[j] <- sqrt(sum(qStd[, j]^2*weight)/sum(weight))
-    #   # from B.M. statistics: 
-    #   Q <- qStd[, j]*sqrt(l)
-    #   qStdP[j] <- sqrt(sum(Pj^2*l*Q^2+2*Pj*Q*cumsum(Pj*Q*l)))/sum(Pj*l)
-    # }
-    # 
-    # # As above, but weighted median estimates (robust)
-    # thetaPP <- weightedMedian(theta,weight) 
-    # thetaStdPP <- thetaStdP*sqrt(pi/2)  # maybe wrong but not very wrong
-    # qPP <- qStdPP <- p                           
-    # for (j in (1:lp)) {qPP[j] <- weightedMedian(q[, j],weight)} 
-    # qStdPP <- qStdP*sqrt(pi/2)          # maybe wrong but not very wrong
-    
-    # the estimator below is suboptimal (relatively hight variance)
-    # sP <- sum(P)
-    # lP <- sum(P*l)/sP    
-    # thetaP <- sum(P*theta)/sP
-    # thetaStdP <- sqrt(sum(P*thetaStd^2)/sP)
-    # Pm <- matrix(P, nl, lp)
-    # sPm <- colSums(Pm)
-    # qP <- colSums(Pm*q)/sPm
-    # qStdP <- sqrt(colSums(Pm*qStd^2)/sPm)
-    #
-    # # weighted median estimates (robust)
-    # thetaPP <- weightedMedian(theta,P) 
-    # qPP <- qP
-    # for (j in (1:lp)) {qPP[j] <- weightedMedian(q[, j],P)} 
-    # lPP <- weightedMedian(l,P) 
-    #
-    # estimatesP <- list("l"= l[Pj> 0], "sigma"= sqrt(sigma2), "EI"= EI, "N"= N,
-    #                    "tailindex"= thetaP, "tailindexStd"= thetaStdP, 
-    #                    "scale"= gP, 
-    #                    "p"= p, "quantile"= qP, "quantileStd"= qStdP, 
-    #                    "df"= "GW", 
-    #                    "estimator"= "iteratedHill", "XId"= XId)
-    # 
-    # estimatesPP <- list("l"= l[Pj> 0], "sigma"= sqrt(sigma2), "EI"= EI, "N"= N,
-    #                    "tailindex"= thetaPP, "tailindexStd"= thetaStdPP, 
-    #                    "scale"= gPP, 
-    #                    "p"= p, "quantile"= qPP, "quantileStd"= qStdPP, 
-    #                    "df"= "GW", 
-    #                    "estimator"= "iteratedHill", "XId"= XId)
-    # plot(l, P, type= 'l', log= 'x', ylim= c(0,1)); grid()
     
     estimates <- list("k"= k, "l"= l, "y"= th[l], 
                       "N"= N, "sigma"= sqrt(sigma2), "r11"= r11,
