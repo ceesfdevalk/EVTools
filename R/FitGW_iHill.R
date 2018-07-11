@@ -10,14 +10,15 @@
 #' @param r11 (optional) factor to increase estimator variance by, to account for serial dependence (default: 1) (double(1))
 #' @param fixedpar (optional): fixed model parameters not to be estimated, and their standard errors (list; see Details)
 #' @param l0 (optional) value of l (no. of order stats used) in case it is imposed (integer(0))
+#' @param sigma (optional) determines the ratio of k to l (double(1))
 #' @param XId (optional) data identifier to store with output for traceability (character)
 #' 
-#' @usage Value <- FitGW_iHill(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, XId= '')
+#' @usage Value <- FitGW_iHill(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= 1, XId= '')
 #' 
 #' @return A list, with members: 
 #'   \item{l}{no. of order statistics used for scale and quantile estimation}    
 #'   \item{k}{no. of order statistics used for tail index estimation} 
-#'   \item{sigma}{= 1: fixed algorithm parameter (see ref. eq. (30))}
+#'   \item{sigma}{algorithm parameter (see ref. eq. (30))}
 #'   \item{tailindex}{estimates or imposed value of log-GW tail index} 
 #'   \item{tailindexStd}{standard deviations of tail index estimates}
 #'   \item{logdisp}{estimates or imposed value of log of dispersion coeff.}  
@@ -65,17 +66,19 @@
 #' @author Cees de Valk \email{ceesfdevalk@gmail.com}
 #' 
 #' @export
-FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, XId) {
-  # fixed parameter 
-  sigma2 <- Inf
-  
+FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
+
   # Handle arguments
   if (missing(p)) {p <- NULL}
   if (missing(N)) {N <- 0} 
   if (missing(r11)) {r11 <- 1}
   if (missing(fixedpar)) {fixedpar <- NULL}
   if (missing(l0)) {l0 <- NULL}
+  if (missing(sigma)) {sigma <- 1}
   if (missing(XId)) {XId <- ''}
+  
+  # fixed parameters 
+  sigma2 <- sigma^2
   
   theta0 <- fixedpar$theta0
   theta0Std <- fixedpar$theta0Std
