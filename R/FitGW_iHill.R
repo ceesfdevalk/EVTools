@@ -127,6 +127,9 @@ FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
     if (length(ind)> 0) {
       k <- k[ind]
       l <- l[ind]
+    } else {
+      k <- NULL
+      l <- NULL
     }
     nl <- length(k)
     mk <- max(k)
@@ -142,7 +145,7 @@ FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
     logdisp <- NULL
     logdispStd <- NULL
     
-    if (length(k)> 0) {
+    if (nl> 0) {
       # Hill estimator
       hill0 <- cumsum(X0[1:(mk-1)])/L[1:(mk-1)]-X0[2:mk]
       id <- (hill0<= 0)
@@ -159,7 +162,7 @@ FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
         theta <- 1+hill1[k-2]/u[k-2]
         
         # Asymptotic standard deviation of theta
-        thetaStd= sqrt(sigma2*r11/l)
+        thetaStd= th[k]*sqrt(r11/k)
         sigma2m <- sigma2 #for use in estimation of stand. dev. of quantile
       } else {
         theta <- rep(theta0[1], nl)

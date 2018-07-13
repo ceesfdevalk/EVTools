@@ -4,7 +4,7 @@
 \alias{FitGW_iHill}
 \title{FitGW_iHill}
 \usage{
-Value <- FitGW_iHill(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, XId= '')
+Value <- FitGW_iHill(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= 1, XId= '')
 }
 \arguments{
 \item{X}{data sample (double(n))}
@@ -19,13 +19,15 @@ Value <- FitGW_iHill(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, XId= '')
 
 \item{l0}{(optional) value of l (no. of order stats used) in case it is imposed (integer(0))}
 
+\item{sigma}{(optional) determines the ratio of k to l (double(1))}
+
 \item{XId}{(optional) data identifier to store with output for traceability (character)}
 }
 \value{
 A list, with members: 
   \item{l}{no. of order statistics used for scale and quantile estimation}    
   \item{k}{no. of order statistics used for tail index estimation} 
-  \item{sigma}{= 1: fixed algorithm parameter (see ref. eq. (30))}
+  \item{sigma}{algorithm parameter (see ref. eq. (30))}
   \item{tailindex}{estimates or imposed value of log-GW tail index} 
   \item{tailindexStd}{standard deviations of tail index estimates}
   \item{logdisp}{estimates or imposed value of log of dispersion coeff.}  
