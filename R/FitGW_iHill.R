@@ -116,15 +116,14 @@ FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
         k <- k-(k-l*th[k]^2)/(1+2*l*th[k]/k)
       }
     }
-    k <- pmax(k, l)
-    k <- pmin(pmax(1, k), n+1);
+    k <- pmin(pmax(1, k), n);
     
     # Order statistics, decreasing
     X0 <- -sort(-X)
     
     # Adjust l and k based on requirements 
     # ind <- which(k> 2 & X0[k]> -Inf & l> 0 & k> l*2 & k< n)
-    ind <- which(k> 2 & X0[k]> -Inf & l> 0  & k< n)
+    ind <- which(k> 2 & X0[k]> -Inf & l> 0  & k<= n & k>= l)
     if (length(ind)> 0) {
       k <- k[ind]
       l <- l[ind]
