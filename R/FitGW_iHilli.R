@@ -223,12 +223,12 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
           lambda <- -log(p[i])/th[l] # factor of -logs of probabilities
           
           # Quantiles
-          q[, i] <- X0[l]+g*h(theta, lambda)
+          q[, i] <- X0[l]+g*h(thetaref, lambda)
           
           # Asymptotic standard deviations of quantiles
-          ha <- h(theta, lambda)
-          dha <- (1/theta)*(lambda^theta*log(lambda)-ha)
-          id <- abs(theta)< .Machine$double.eps
+          ha <- h(thetaref, lambda)
+          dha <- (1/thetaref)*(lambda^thetaref*log(lambda)-ha)
+          id <- abs(thetaref)< .Machine$double.eps
           if (any(id)) {dha[id] <- 0.5*(log(lambda))^2}
           # the following asymptotic expression is pretty accurate
           # (the last term can normally be ignored but with given, precise,
