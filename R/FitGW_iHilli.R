@@ -180,6 +180,7 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
       
       err <- rep(Inf, mk-1)    # error tracking (lowest value sofar)
       g <- rep(NA, nl)         # scale estimates
+      thetaref <- rep(NA, nl)
       for (i in 1:lg) {
         ti <- thetagrid[i]
         temp <- cumsum(h(ti, th[1:(mk-1)]))/L[2:mk]
@@ -225,7 +226,7 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
           q[, i] <- X0[l]+g*h(theta, lambda)
           
           # Asymptotic standard deviations of quantiles
-          ha <- h(theta,lambda)
+          ha <- h(theta, lambda)
           dha <- (1/theta)*(lambda^theta*log(lambda)-ha)
           id <- abs(theta)< .Machine$double.eps
           if (any(id)) {dha[id] <- 0.5*(log(lambda))^2}
@@ -240,7 +241,8 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
     
     estimates <- list("k"= k, "l"= l, "y"= th[l], 
                       "N"= N, "sigma"= sqrt(sigma2), "r11"= r11,
-                      "tailindex"= theta, "tailindexStd"= thetaStd, 
+                      "tailindex"= theta, "tailindexref"= thetaref,
+                      "tailindexStd"= thetaStd, 
                       "scale"= g, "logdisp"= logdisp, "logdispStd"= logdispStd,
                       "location"= X0[l], "locationStd"= X0lStd,
                       "p"= p, "quantile"= q, "quantileStd"= qStd, 
