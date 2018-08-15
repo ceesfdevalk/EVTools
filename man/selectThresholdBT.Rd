@@ -16,6 +16,9 @@ and location estimation from FitGW_iHill.R (double(nl))}
 
 \item{tailindexStd}{Standard deviation of tail index from FitGW_iHill.R (double(nl))}
 }
+\value{
+i Index in the vectors tailindex and l, representing the selected threshold
+}
 \description{
 Automatic threshold selection for GW (Generalised Weibull) tail 
              estimation, based on fluctuation statistics of the GW tail index
