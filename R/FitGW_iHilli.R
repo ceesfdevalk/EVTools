@@ -137,6 +137,7 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
     ml <- max(l)
     
     theta <- NULL
+    thetaref <- NULL    
     thetaStd <- NULL
     g <- NULL
     q <- NULL
@@ -228,8 +229,8 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
           # Asymptotic standard deviations of quantiles
           ha <- h(thetaref, lambda)
           dha <- (1/thetaref)*(lambda^thetaref*log(lambda)-ha)
-          id <- abs(thetaref)< .Machine$double.eps
-          if (any(id)) {dha[id] <- 0.5*(log(lambda))^2}
+          # id <- abs(thetaref)< .Machine$double.eps
+          # if (any(id)) {dha[id] <- 0.5*(log(lambda))^2}
           # the following asymptotic expression is pretty accurate
           # (the last term can normally be ignored but with given, precise,
           # theta and logdisp estimates, it may not be negligible)
