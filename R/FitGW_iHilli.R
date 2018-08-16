@@ -197,6 +197,7 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
           g[id] <- hill0[l[id]-1]/w[l[id]-1]
         }
       }
+      theta <- thetaref   # the refined estimator is the output
       
       # Scale estimator (continued)
       if (length(logdisp0)== 0) {
@@ -224,12 +225,12 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
           lambda <- -log(p[i])/th[l] # factor of -logs of probabilities
           
           # Quantiles
-          q[, i] <- X0[l]+g*h(thetaref, lambda)
+          q[, i] <- X0[l]+g*h(theta, lambda)
           
           # Asymptotic standard deviations of quantiles
-          ha <- h(thetaref, lambda)
-          dha <- (1/thetaref)*(lambda^thetaref*log(lambda)-ha)
-          # id <- abs(thetaref)< .Machine$double.eps
+          ha <- h(theta, lambda)
+          dha <- (1/theta)*(lambda^theta*log(lambda)-ha)
+          # id <- abs(theta)< .Machine$double.eps
           # if (any(id)) {dha[id] <- 0.5*(log(lambda))^2}
           # the following asymptotic expression is pretty accurate
           # (the last term can normally be ignored but with given, precise,
@@ -242,8 +243,7 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
     
     estimates <- list("k"= k, "l"= l, "y"= th[l], 
                       "N"= N, "sigma"= sqrt(sigma2), "r11"= r11,
-                      "tailindex"= theta, "tailindexref"= thetaref,
-                      "tailindexStd"= thetaStd, 
+                      "tailindex"= theta, "tailindexStd"= thetaStd, 
                       "scale"= g, "logdisp"= logdisp, "logdispStd"= logdispStd,
                       "location"= X0[l], "locationStd"= X0lStd,
                       "p"= p, "quantile"= q, "quantileStd"= qStd, 
