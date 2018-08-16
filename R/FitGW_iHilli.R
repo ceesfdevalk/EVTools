@@ -68,7 +68,7 @@
 #' 
 #' @export
 FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
-
+  
   # Handle arguments
   if (missing(p)) {p <- NULL}
   if (missing(N)) {N <- 0} 
@@ -179,19 +179,19 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
       thetagrid <- seq(-1.99, 1.99, .02)   # wide range
       lg <- length(thetagrid)
       
-      err <- rep(Inf, mk-1)    # error tracking (lowest value sofar)
+      err <- rep(Inf, nl)    # error tracking (lowest value sofar)
       g <- rep(NA, nl)         # scale estimates
       thetaref <- rep(NA, nl)
       for (i in 1:lg) {
         ti <- thetagrid[i]
-        temp <- cumsum(h(ti, th[1:(mk-1)]))/L[2:mk]
+        temp <- cumsum(h(ti, th[1:(mk-1)]))/L[1:(mk-1)]
         w <- th[2:mk]^(-ti)*temp + h(ti, 1/th[2:mk])
         w1 <- cumsum(log(w[1:(mk-2)]))/L[1:(mk-2)]-log(w[2:(mk-1)])
         
         err1 <- abs(ti + 1 - theta + w1[k-2]/u[k-2])
         id <- (err1< err)
         if (!any(is.na(id))) {
-          thetaref[id] <- tj
+          thetaref[id] <- ti
           err[id] <- err1[id]
           # g <- hill0[l-1]/normg
           g[id] <- hill0[l[id]-1]/w[l[id]-1]
@@ -249,13 +249,13 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
                       "p"= p, "quantile"= q, "quantileStd"= qStd, 
                       "orderstats"= X0, "df"= "GW", 
                       "estimator"= "iteratedHill", "XId"= XId)
-                      # "estimatesBT"= estimatesBT,  # Boucheron-Thomas estimate
-                      # "Pfluctuation"= Pfluctuation,# fluctuation size p-value
-                      # "bias"= bias,                # order of magnitude of bias
-                      # "estimatesP0"= estimatesP0)  # single-threshold-estimates (a la B-T)
-                      # "estimatesP"= estimatesP,    # multi-threshold mean (jump points)
-                      # "estimatesPP"= estimatesPP)  # multi-threshold median (jump points)
-                      
+    # "estimatesBT"= estimatesBT,  # Boucheron-Thomas estimate
+    # "Pfluctuation"= Pfluctuation,# fluctuation size p-value
+    # "bias"= bias,                # order of magnitude of bias
+    # "estimatesP0"= estimatesP0)  # single-threshold-estimates (a la B-T)
+    # "estimatesP"= estimatesP,    # multi-threshold mean (jump points)
+    # "estimatesPP"= estimatesPP)  # multi-threshold median (jump points)
+    
   } # if (n > 0)
   
   return(estimates)
