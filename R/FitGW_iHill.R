@@ -116,7 +116,7 @@ FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
         k <- k-(k-l*th[k]^2)/(1+2*l*th[k]/k)
       }
     }
-    k <- round(k)
+    k <- round(k) 
     k <- pmin(pmax(1, k), n);
     
     # Order statistics, decreasing
