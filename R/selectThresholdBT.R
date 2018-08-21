@@ -13,7 +13,7 @@
 #' 
 #' @usage Value <- selectThresholdBT(tailindex, tailindexStd, l, l0) 
 #' 
-#' @return i     index in the vectors tailindex and l, representing the selected threshold}    
+#' @return i Index in the vectors tailindex and l, representing the selected threshold   
 #'
 #' @author Cees de Valk \email{ceesfdevalk@gmail.com}
 #' 
