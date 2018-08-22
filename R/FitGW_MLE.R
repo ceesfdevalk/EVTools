@@ -188,11 +188,15 @@ FitGW_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
         if (class(par1)== 'try-error') {
           par1 <- try(optim(par0, negllGW, method= "Nelder-Mead"), silent=TRUE)
         }
-        if (class(par1)!= 'try-error') {        
-          theta[j] <- par1[2]
-          g[j] <- exp(par1[1])
+        if (class(par1)!= 'try-error') {   
+          if (is.numeric(pR1)) {
+            theta[j] <- par1[2]
+            g[j] <- exp(par1[1])
+          } else {
+            cat("/n", "optim failed", "/n", par1, "/n")
+          }
         }
-  
+        
         if (lj< kj) {           # estimate scale at a different threshold
           par2 <- log(g[j])
           thetaglobal <- theta[j]
