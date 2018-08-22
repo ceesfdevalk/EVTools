@@ -198,7 +198,7 @@ FitGW_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
           par2 <- log(g[j])
           thetaglobal <- theta[j]
           xglobal <- X0[1:lj]
-          optimout <- optim(par2, negllGW, method= "Brent", lower= par2-10, upper= par2+10)$par
+          optimout <- optim(par2, negllGW, method= "Brent", lower= par2-10, upper= par2+10)
           par3 <- optimout$par
           g[j] <- exp(par3)
         }
