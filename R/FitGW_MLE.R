@@ -184,24 +184,22 @@ FitGW_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
         xglobal <- X0[1:kj]
         Nglobal <- N
         par0 <- c(0, 0.1)
-        par1 <- try(optim(par0, negllGW, method= "BFGS"), silent=TRUE)
-        if (class(par1)== 'try-error') {
-          par1 <- try(optim(par0, negllGW, method= "Nelder-Mead"), silent=TRUE)
+        optimout <- try(optim(par0, negllGW, method= "BFGS"), silent=TRUE)
+        if (class(optimout)== 'try-error') {
+          optimout <- try(optim(par0, negllGW, method= "Nelder-Mead"), silent=TRUE)
         }
-        if (class(par1)!= 'try-error') {   
-          if (is.numeric(par1)) {
-            theta[j] <- par1[2]
-            g[j] <- exp(par1[1])
-          } else {
-            cat("/n", "optim failed", "/n", par1, "/n")
-          }
+        if (class(optimout)!= 'try-error') {   
+          par1 <- optimout$par
+          theta[j] <- par1[2]
+          g[j] <- exp(par1[1])
         }
         
-        if (lj< kj) {           # estimate scale at a different threshold
+        if (lj< kj) {           # then estimate scale at a different threshold
           par2 <- log(g[j])
           thetaglobal <- theta[j]
           xglobal <- X0[1:lj]
-          par3 <- optim(par2, negllGW, method= "Brent", lower= par2-10, upper= par2+10)$par
+          optimout <- optim(par2, negllGW, method= "Brent", lower= par2-10, upper= par2+10)$par
+          par3 <- optimout$par
           g[j] <- exp(par3)
         }
       }
