@@ -10,7 +10,7 @@
 #' @param ngr (optional, default= 10) number of levels (integer(1))
 #' @param makeplot (optional, default= FALSE) (logical(1))
 #' 
-#' @usage r11 <- r11((X, l, ngr, makeplot) 
+#' @usage Value <- r11((X, l, ngr, makeplot) 
 #' 
 #' @return A list, with members: 
 #'   \item{k}{no. of data points above level, for each of ngr levels}    

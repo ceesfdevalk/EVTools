@@ -4,7 +4,7 @@
 \alias{r11}
 \title{r11}
 \usage{
-r11 <- r11((X, l, ngr, makeplot)
+Value <- r11((X, l, ngr, makeplot)
 }
 \arguments{
 \item{X}{time series (double(nX))}
