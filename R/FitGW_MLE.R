@@ -20,11 +20,11 @@
 #'   \item{l}{no. of order statistics used for scale and quantile estimation}    
 #'   \item{k}{no. of order statistics used for tail index estimation} 
 #'   \item{sigma}{fixed algorithm parameter (see ref. eq. (30))}
-#'   \item{tailindex}{estimates or imposed value of log-GW tail index} 
+#'   \item{tailindex}{estimates or imposed value of GW tail index} 
 #'   \item{tailindexStd}{standard deviations of tail index estimates}
 #'   \item{logdisp}{estimates or imposed value of log of dispersion coeff.}  
 #'   \item{logdispStd}{standard deviations of log of dispersion coeff. estimates}
-#'   \item{scale}{estimates of log-GW scale parameter}
+#'   \item{scale}{estimates of GW scale parameter}
 #'   \item{locationStd}{standard deviation of order statistic}
 #'   \item{lambda}{ratio of logarithms of probabilities of exceedance of quantile and threshold}  
 #'   \item{p}{probabilities of exceedance of quantiles to be estimated} 
