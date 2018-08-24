@@ -18,15 +18,18 @@ Value <- EI((X, l, ngr, makeplot)
 \value{
 A list, with members: 
   \item{k}{no. of data points above level, for each of ngr levels}    
-  \item{r}{corresponding estimate of r(1,1)}
+  \item{EIupcross}{estimate of EI based on upcrossings} 
+  \item{EIFS}{estimate of EI from Ferro & Segers (2003)}
 }
 \description{
-Computes estimates of the extremal dependence coeficient r(1,1) of 
-Rootzen (1995)
+Computes estimates of the Extremal Index
 }
 \references{
-Rootzen, H. (1995), The tail empirical process for stationary sequences. Technical report,
- Department of Mathematics, Chalmers University, Sweden.
+M. R. Leadbetter, M.R., Lindgren, G. and Rootzen, H. (1983), 
+ Extremes and Related Properties of Random Sequences and Processes. 
+ Springer.
+ Ferro, A.T. and J. Segers (2003), Inference for clusters 
+ of extreme values. J. R. Statist. Soc. B (2003) 65, 545–556.
 }
 \author{
 Cees de Valk \email{ceesfdevalk@gmail.com}
