@@ -268,7 +268,7 @@ FitGW_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
                     "location"= X0[l], "locationStd"= X0lStd,
                     "p"= p, "quantile"= q, "quantileStd"= qStd, 
                     "orderstats"= X0, "df"= "GW", 
-                    "estimator"= "MomentMethod-Mom", "XId"= XId)
+                    "estimator"= "Maximum likelihood", "XId"= XId)
   # "estimatesBT"= estimatesBT,  # Boucheron-Thomas estimate
   # "Pfluctuation"= Pfluctuation,# fluctuation size p-value
   # "bias"= bias,                # order of magnitude of bias

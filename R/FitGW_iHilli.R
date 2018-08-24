@@ -248,7 +248,7 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
                       "location"= X0[l], "locationStd"= X0lStd,
                       "p"= p, "quantile"= q, "quantileStd"= qStd, 
                       "orderstats"= X0, "df"= "GW", 
-                      "estimator"= "iteratedHill", "XId"= XId)
+                      "estimator"= "iterated Hill implicit", "XId"= XId)
     # "estimatesBT"= estimatesBT,  # Boucheron-Thomas estimate
     # "Pfluctuation"= Pfluctuation,# fluctuation size p-value
     # "bias"= bias,                # order of magnitude of bias

@@ -286,7 +286,7 @@ library(gsl)
                       "location"= X0[l], "locationStd"= X0lStd,
                       "p"= p, "quantile"= q, "quantileStd"= qStd, 
                       "orderstats"= X0, "df"= "GW", 
-                      "estimator"= "MomentMethod-Mom", "XId"= XId)
+                      "estimator"= "Moment Estimator (Albert et al.)", "XId"= XId)
                       # "estimatesBT"= estimatesBT,  # Boucheron-Thomas estimate
                       # "Pfluctuation"= Pfluctuation,# fluctuation size p-value
                       # "bias"= bias,                # order of magnitude of bias
