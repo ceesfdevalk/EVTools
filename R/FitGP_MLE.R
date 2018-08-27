@@ -1,8 +1,8 @@
-#' @name  FitGW_MLE
+#' @name  FitGP_MLE
 #' 
-#' @title FitGW_MLE
+#' @title FitGP_MLE
 #' 
-#' @description Fit a Generalised Weibull (GW) upper tail to the sample X and estimate quantiles, using
+#' @description Fit a Generalised Pareto (GP) upper tail to the sample X and estimate quantiles, using
 #' the ML estimator for tail index and scale 
 #' 
 #' @param X data sample (double(n))
@@ -11,35 +11,33 @@
 #' @param r11 (optional) factor to increase estimator variance by, to account for serial dependence (default: 1) (double(1))
 #' @param fixedpar (optional): fixed model parameters not to be estimated, and their standard errors (list; see Details)
 #' @param l0 (optional) value of l (no. of order stats used) in case it is imposed (integer(0))
-#' @param sigma (optional) fixed algorithm parameter (see de Valk & Cai (2018) eq. (30)) (double(1)) 
 #' @param XId (optional) data identifier to store with output for traceability (character)
 #' 
-#' @usage Value <- FitGW_MLE(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= 1, XId= '')
+#' @usage Value <- FitGP_MLE(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, XId= '')
 #' 
 #' @return A list, with members: 
 #'   \item{l}{no. of order statistics used for scale and quantile estimation}    
 #'   \item{k}{no. of order statistics used for tail index estimation} 
-#'   \item{sigma}{fixed algorithm parameter (see ref. eq. (30))}
-#'   \item{tailindex}{estimates or imposed value of GW tail index} 
+#'   \item{tailindex}{estimates or imposed value of GP tail index} 
 #'   \item{tailindexStd}{standard deviations of tail index estimates}
 #'   \item{logdisp}{estimates or imposed value of log of dispersion coeff.}  
 #'   \item{logdispStd}{standard deviations of log of dispersion coeff. estimates}
-#'   \item{scale}{estimates of GW scale parameter}
+#'   \item{scale}{estimates of GP scale parameter}
 #'   \item{locationStd}{standard deviation of order statistic}
 #'   \item{lambda}{ratio of logarithms of probabilities of exceedance of quantile and threshold}  
 #'   \item{p}{probabilities of exceedance of quantiles to be estimated} 
 #'   \item{quantile}{quantile estimates}
 #'   \item{quantileStd}{standard deviations of quantile estimates}
 #'   \item{orderstats}{data X sorted (decreasing)}
-#'   \item{df}{= "GW": fitted distribution function tail (Generalised Weibull}
-#'   \item{estimator}{= "iteratedHill": see "method" below}
+#'   \item{df}{= "GP": fitted distribution function tail (Generalised Pareto)}
+#'   \item{estimator}{= "maximum likelihood": see "method" below}
 #' 
 #' @details
 #'  
 #'  Pre-determined model parameters are to be supplied in the list fixedpar (see above):
 #'  \itemize{
-#'   \item{$theta0: (optional) value of tailindex in case it is imposed (double(1))}
-#'   \item{$theta0Std: (optional) its standard deviation (double(1))}
+#'   \item{$gamma0: (optional) value of tailindex in case it is imposed (double(1))}
+#'   \item{$gamma0Std: (optional) its standard deviation (double(1))}
 #'   \item{$logdisp0: (optional) value of log of dispersion coeff. in case it is imposed (dispersion coeff. is the raio of scale par. to location par.) (double(1))}
 #'   \item{$logdisp0Std: (optional) its standard deviation (double(1))}        
 #'   }
@@ -60,15 +58,12 @@
 #' }   
 #'           
 #' @references
-#' De Valk, C. and Cai, J.J. (2018), A high quantile estimator based on 
-#' the log-generalized Weibull tail limit. Econometrics and Statistics 6, 107-128, see
-#' \url{https://doi.org/10.1016/j.ecosta.2017.03.001}
-#' Ferreira & Dombry (??) ML for GEV as example
+#' De Haan, L. and A. Ferreira (2006), Extreme Value Theory - An Introduction. Springer. 
 #
 #' @author Cees de Valk \email{ceesfdevalk@gmail.com}
 #' 
 #' @export
-FitGW_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
+FitGP_MLE <- function(X, p, N, r11, fixedpar, l0, XId) {
   
   # Handle arguments
   if (missing(p)) {p <- NULL}
@@ -76,14 +71,11 @@ FitGW_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
   if (missing(r11)) {r11 <- 1}
   if (missing(fixedpar)) {fixedpar <- NULL}
   if (missing(l0)) {l0 <- NULL}
-  if (missing(sigma)) {sigma <- 1}
   if (missing(XId)) {XId <- ''}
   
-  # fixed parameter 
-  sigma2 <- sigma^2
   
-  theta0 <- fixedpar$theta0
-  theta0Std <- fixedpar$theta0Std
+  gamma0 <- fixedpar$gamma0
+  gamma0Std <- fixedpar$gamma0Std
   logdisp0 <- fixedpar$logdisp0
   logdisp0Std <- fixedpar$logdisp0Std
   
@@ -113,15 +105,7 @@ FitGW_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
       l <- l0
     }
     nl <- length(l)
-    k <- l  # Newton iteration for k if sigma2> 0
-    if (sigma2< Inf){
-      for (jj in 1:10) {
-        thk <- log(N/k)
-        k <- k-(k-l*thk^2/sigma2)/(1+2/thk)
-      }
-    }
-    k <- round(k)
-    k <- pmin(pmax(1, k), n);
+    k <- l  
     
     # Order statistics of logarithms, decreasing
     X0 <- -sort(-X)
@@ -145,15 +129,15 @@ FitGW_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
     mk <- max(k)
     ml <- max(l)
     
-    theta <- rep(NA, nl)
-    g <- rep(1, nl)    # needed as starting value
+    gamma <- rep(NA, nl)
+    g  <-rep(1, nl)    
     
     #
     # function to be minimized
     #
-    negllGW <- function(par) {
+    negllGP <- function(par) {
       #
-      # negative log-likelihood of conditional GW distribution given the exceedance
+      # negative log-likelihood of conditional GP distribution given the exceedance
       # of min(x), minimised for y= -log(p0) (see header)
       #
       k <- length(xglobal)
@@ -161,15 +145,13 @@ FitGW_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
       logg <- par[1]
       g <- exp(logg)
       if (length(par)< 2) {
-        theta <- thetaglobal
+        gamma <- gammaglobal
       } else {
-        theta <- par[2]  
+        gamma <- par[2]  
       }
       z <- (xglobal[1:k1]-xglobal[k])/g
-      y <- log(Nglobal/k)
-      f <- -k1*log(y) + k1*logg - (1/theta-1)*sum(log(pmax(0, 1+theta*z))) +
-        y*sum(pmax(0, 1+theta*z)^(1/theta)-1)
-      if (min(1+z*theta)<= 0) {f <- Inf}
+      f <- k1*logg + (1/gamma+1)*sum(log(pmax(0, 1+gamma*z)))
+      if (min(1+z*gamma)<= 0) {f <- Inf}
       f
     }
     
@@ -180,34 +162,36 @@ FitGW_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
       
       pb <- txtProgressBar(1, nl)
       for (j in (1:nl)) {
+        
         lj <- l[j]
         kj <- k[j]
         
-        if (length(theta0)== 0) {
+        if (length(gamma0)== 0) {
           xglobal <- X0[1:kj]
           Nglobal <- N
           par0 <- c(0, 0.1)
-          optimout <- try(optim(par0, negllGW, method= "BFGS"), silent=TRUE)
+          optimout <- try(optim(par0, negllGP, method= "BFGS"), silent=TRUE)
           if (class(optimout)== 'try-error') {
-            optimout <- try(optim(par0, negllGW, method= "Nelder-Mead"), silent=TRUE)
+            optimout <- try(optim(par0, negllGP, method= "Nelder-Mead"), silent=TRUE)
           }
           if (class(optimout)!= 'try-error') {   
             par1 <- optimout$par
-            theta[j] <- par1[2]
+            gamma[j] <- par1[2]
             g[j] <- exp(par1[1])
           }
         } else {
-          theta[j] <- theta0[1]
+          gamma[j] <- gamma0[1]
         }
         
-        if ((lj< kj)| (length(theta0)> 0)) {           # then estimate scale at a different threshold
+        if ((lj< kj)| (length(gamma0)> 0)) {           # then estimate scale at a different threshold
           par2 <- log(g[j])
-          thetaglobal <- theta[j]
+          gammaglobal <- gamma[j]
           xglobal <- X0[1:lj]
-          optimout <- optim(par2, negllGW, method= "Brent", lower= par2-10, upper= par2+10)
+          optimout <- optim(par2, negllGP, method= "Brent", lower= par2-10, upper= par2+10)
           par3 <- optimout$par
           g[j] <- exp(par3)
         }
+        
         setTxtProgressBar(pb, j)
       }   # for j in ....
       
@@ -215,15 +199,15 @@ FitGW_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
       # NOTE: if k= l, the asymptotic covariance matrix of the parameters 
       # possibly has nonzero diagonal elements 
       
-      # Asymptotic standard deviation of theta
-      thetaStd= sqrt(r11/k)*th[k]   # ??????
+      # Asymptotic standard deviation of gamma
+      gammaStd= sqrt(r11/k*(1+gamma))   # ??????
       
-      if (length(theta0)> 0){
-        if (length(theta0Std)> 0){
-          thetaStd <- rep(theta0Std[1], nl)
+      if (length(gamma0)> 0){
+        if (length(gamma0Std)> 0){
+          gammaStd <- rep(gamma0Std[1], nl)
         } else {
-          thetaStd <- rep(0, nl)
-        }      
+          gammaStd <- rep(0, nl)
+        }
       }
       
       # Scale estimator
@@ -252,28 +236,28 @@ FitGW_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
           lambda <- -log(p[i])/y # factor of -logs of probabilities
           
           # Quantiles
-          q[, i] <- X0[l]+g*h(theta, lambda)
+          q[, i] <- X0[l]+g*h(gamma, lambda)
           
           # Asymptotic standard deviations of quantiles  All Questionable!!!
-          ha <- h(theta, lambda)
-          dha <- (1/theta)*(lambda^theta*log(lambda)-ha)
-          id <- abs(theta)< .Machine$double.eps
+          ha <- h(gamma, lambda)
+          dha <- (1/gamma)*(lambda^gamma*log(lambda)-ha)
+          id <- abs(gamma)< .Machine$double.eps
           if (any(id)) {dha[id] <- 0.5*(log(lambda))^2}
           # the following asymptotic expression is pretty accurate
           # (the last term can normally be ignored but with given, precise,
-          # theta and logdisp estimates, it may not be negligible)
-          var <- g^2*(ha^2*logdispStd^2 + dha^2*thetaStd^2) + X0lStd^2
+          # gamma and logdisp estimates, it may not be negligible)
+          var <- g^2*(ha^2*logdispStd^2 + dha^2*gammaStd^2) + X0lStd^2
           qStd[, i]= sqrt(var)
         }
       }
       
       estimates <- list("k"= k, "l"= l, "y"= y, 
-                        "N"= N, "sigma"= sqrt(sigma2), "r11"= r11,
-                        "tailindex"= theta, "tailindexStd"= thetaStd, 
+                        "N"= N, "r11"= r11,
+                        "tailindex"= gamma, "tailindexStd"= gammaStd, 
                         "scale"= g, "logdisp"= logdisp, "logdispStd"= logdispStd,
                         "location"= X0[l], "locationStd"= X0lStd,
                         "p"= p, "quantile"= q, "quantileStd"= qStd, 
-                        "orderstats"= X0, "df"= "GW", 
+                        "orderstats"= X0, "df"= "GP", 
                         "estimator"= "Maximum likelihood", "XId"= XId)
       # "estimatesBT"= estimatesBT,  # Boucheron-Thomas estimate
       # "Pfluctuation"= Pfluctuation,# fluctuation size p-value
@@ -282,7 +266,7 @@ FitGW_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
       # "estimatesP"= estimatesP,    # multi-threshold mean (jump points)
       # "estimatesPP"= estimatesPP)  # multi-threshold median (jump points)
       
-    }  
+    }
   }
   return(estimates)
 }
