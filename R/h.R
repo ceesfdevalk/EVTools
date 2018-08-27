@@ -16,7 +16,7 @@
 #' 
 #' @export
 h <- function(theta,lambda) {
-  eps <- .Machine$double.eps*10
+  eps <- 1.e-10
   nt <- length(theta)
   nl <- length(lambda)
   x <- NA

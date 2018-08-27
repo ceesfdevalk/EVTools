@@ -150,7 +150,11 @@ FitGP_MLE <- function(X, p, N, r11, fixedpar, l0, XId) {
         gamma <- par[2]  
       }
       z <- (xglobal[1:k1]-xglobal[k])/g
-      f <- k1*logg + (1/gamma+1)*sum(log(pmax(0, 1+gamma*z)))
+      if (abs(gamma)< 1.e-10) {
+        f <- k1*logg + sum(z)
+      } else {
+        f <- k1*logg + (1/gamma+1)*sum(log(pmax(0, 1+gamma*z)))
+      }
       if (min(1+z*gamma)<= 0) {f <- Inf}
       f
     }
@@ -241,7 +245,7 @@ FitGP_MLE <- function(X, p, N, r11, fixedpar, l0, XId) {
           # Asymptotic standard deviations of quantiles  All Questionable!!!
           ha <- h(gamma, lambda)
           dha <- (1/gamma)*(lambda^gamma*log(lambda)-ha)
-          id <- abs(gamma)< .Machine$double.eps
+          id <- abs(gamma)< 1.e-10
           if (any(id)) {dha[id] <- 0.5*(log(lambda))^2}
           # the following asymptotic expression is pretty accurate
           # (the last term can normally be ignored but with given, precise,

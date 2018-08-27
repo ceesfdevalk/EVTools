@@ -167,8 +167,12 @@ FitGW_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
       }
       z <- (xglobal[1:k1]-xglobal[k])/g
       y <- log(Nglobal/k)
-      f <- -k1*log(y) + k1*logg - (1/theta-1)*sum(log(pmax(0, 1+theta*z))) +
-        y*sum(pmax(0, 1+theta*z)^(1/theta)-1)
+      if (abs(theta)< 1.e-10) {
+        f <- -k1*log(y) + k1*logg - sum(z) + y*sum(exp(z)-1)   
+      } else {
+        f <- -k1*log(y) + k1*logg - (1/theta-1)*sum(log(pmax(0, 1+theta*z))) +
+          y*sum(pmax(0, 1+theta*z)^(1/theta)-1)
+      }
       if (min(1+z*theta)<= 0) {f <- Inf}
       f
     }
@@ -257,7 +261,7 @@ FitGW_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
           # Asymptotic standard deviations of quantiles  All Questionable!!!
           ha <- h(theta, lambda)
           dha <- (1/theta)*(lambda^theta*log(lambda)-ha)
-          id <- abs(theta)< .Machine$double.eps
+          id <- abs(theta)< 1.e-10
           if (any(id)) {dha[id] <- 0.5*(log(lambda))^2}
           # the following asymptotic expression is pretty accurate
           # (the last term can normally be ignored but with given, precise,

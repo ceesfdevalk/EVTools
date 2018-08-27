@@ -219,7 +219,7 @@ FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
           # Asymptotic standard deviations of quantiles
           ha <- h(theta,lambda)
           dha <- (1/theta)*(lambda^theta*log(lambda)-ha)
-          id <- abs(theta)< .Machine$double.eps
+          id <- abs(theta)< 1.e-10
           if (any(id)) {dha[id] <- 0.5*(log(lambda))^2}
           # the following asymptotic expression is pretty accurate
           # (the last term can normally be ignored but with given, precise,
