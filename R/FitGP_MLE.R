@@ -119,7 +119,7 @@ FitGP_MLE <- function(X, p, N, r11, fixedpar, l0, XId) {
       k <- NULL
       l <- NULL
     }
-    y <- log(N/l)
+    p0 <- l/N
     
     #
     # to do: possibly further reduce size of arrays l and k here
@@ -233,7 +233,7 @@ FitGP_MLE <- function(X, p, N, r11, fixedpar, l0, XId) {
         q <- matrix(NA, nl, lp)
         qStd <- q
         for (i in 1:lp) {
-          lambda <- -log(p[i])/y # factor of -logs of probabilities
+          lambda <- p0/p[i] # factor of -logs of probabilities
           
           # Quantiles
           q[, i] <- X0[l]+g*h(gamma, lambda)
