@@ -138,7 +138,7 @@ FitGP_MLE <- function(X, p, N, r11, fixedpar, l0, XId) {
     negllGP <- function(par) {
       #
       # negative log-likelihood of conditional GP distribution given the exceedance
-      # of min(x), minimised for y= -log(p0) (see header)
+      # of min(x)
       #
       k <- length(xglobal)
       k1 <- k-1
@@ -251,7 +251,7 @@ FitGP_MLE <- function(X, p, N, r11, fixedpar, l0, XId) {
         }
       }
       
-      estimates <- list("k"= k, "l"= l, "y"= y, 
+      estimates <- list("k"= k, "l"= l, 
                         "N"= N, "r11"= r11,
                         "tailindex"= gamma, "tailindexStd"= gammaStd, 
                         "scale"= g, "logdisp"= logdisp, "logdispStd"= logdispStd,
