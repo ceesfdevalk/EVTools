@@ -60,9 +60,9 @@ EI <- function(X, l= 50, ngr= 10, makeplot= FALSE) {
   
   if (makeplot) {
     par(pty = "s")
-    title <- "Extremal Index: upcrossings (circle); Ferro-Segers (triangle)"
+    title <- "Naive: circle; Ferro-Segers: triangle"
     plot(k, EIupcross, log= 'x', ylim= c(0, 1), 
-         main= title, xlab= "rank", ylab= "EI")
+         main= title, xlab= "rank no.", ylab= "Extremal Index")
     points(k, EIFS, pch= 2)
     grid()
   }

@@ -44,7 +44,8 @@ r11 <- function(X, l= 50, ngr= 10, makeplot= FALSE) {
   
   if (makeplot) {
     par(pty = "s")
-    plot(k, r, log= 'x', ylim= c(1,l))
+    plot(k, 1/r, log= 'x', ylim= c(1,l), 
+         main= "Serial tail dependence", xlab= "rank no.", ylab= '1/r(1,1)')
     grid()
   }
   
