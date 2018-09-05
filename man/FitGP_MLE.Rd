@@ -13,9 +13,9 @@ Value <- FitGP_MLE(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, XId= '')
 
 \item{N}{(optional) (effective) sample size, in case X is not complete but contains only (peak) values above some threshold (integer(1))}
 
-\item{r11}{(optional) factor to increase estimator variance by, to account for serial dependence (default: 1) (double(1))}
+\item{r11}{(optional) factor to increase estimator variance by, to account for serial dependence (default: 1) (double(1) or list, see Details)}
 
-\item{fixedpar}{(optional): fixed model parameters not to be estimated, and their standard errors (list; see Details)}
+\item{fixedpar}{(optional): fixed model parameters not to be estimated, and their standard errors (double(1) or list, see Details)}
 
 \item{l0}{(optional) value of l (no. of order stats used) in case it is imposed (integer(0))}
 
@@ -52,10 +52,13 @@ Pre-determined model parameters are to be supplied in the list fixedpar (see abo
   \item{$logdisp0Std: (optional) its standard deviation (double(1))}        
   }
   
+  The serial dependence coefficient r11 can be a positive number, or a list 
+  produced by R11.R. 
+  
   In case a quantile is to be estimated for a \emph{frequency}, say f, and 
   \enumerate{
   \item{if X contains all values (possibly above some threshold), then with
-  EI an estimate of the Extremal Index, set
+  EI an estimate of the Extremal Index from EI.R, set
   p = f*d/EI and N = T/d, with T the length of the observation period and d the time step. 
         Note that f and d are defined with reference to the same unit of time!! In this case,
         r11 needs to be estimated.
@@ -63,7 +66,7 @@ Pre-determined model parameters are to be supplied in the list fixedpar (see abo
   \item{if X contains only the (approximately Poisson) peak values above some threshold 
         (i.e., you want to do a PoT analysis), then set p = f*d/EI, N = (T/d)*EI, r11= 1 
         (note that d/EI is the mean duration of an "event" and EI/d is the 
-        mean number of "events" per unit of time).
+        mean number of "events" per unit of time estimated by EI.R).
              }
 }
 }
