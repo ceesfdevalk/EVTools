@@ -184,7 +184,7 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
       }
       
       # Refinement of GW index estimator
-      thetagrid <- seq(-1.99, 1.99, .02)   # wide range
+      thetagrid <- seq(-1.995, 1.995, .01)   # wide range
       lg <- length(thetagrid)
       
       err <- rep(Inf, nl)    # error tracking (lowest value sofar)

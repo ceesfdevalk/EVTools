@@ -8,7 +8,7 @@
 #' @param X data sample (double(n))
 #' @param p probabilities of exceedance of the quantiles to be estimated (double(np))  
 #' @param N (optional) (effective) sample size, in case X is not complete but contains only (peak) values above some threshold (integer(1))
-#' @param r11 (optional) factor to increase estimator variance by, to account for serial dependence (default: 1) (double(1))
+#' @param r11 (optional) factor to increase estimator variance by, to account for serial dependence (default: 1) (double(1) or list, see Details)
 #' @param fixedpar (optional): fixed model parameters not to be estimated, and their standard errors (list; see Details)
 #' @param l0 (optional) value of l (no. of order stats used) in case it is imposed (integer(0))
 #' @param sigma (optional) fixed algorithm parameter (see de Valk & Cai (2018) eq. (30)) (double(1)) 
@@ -47,10 +47,13 @@
 #'   \item{$logdisp0Std: (optional) its standard deviation (double(1))}        
 #'   }
 #'   
+#'   The serial dependence coefficient r11 can be a positive number, or a list 
+#'   produced by R11.R. 
+#'   
 #'   In case a quantile is to be estimated for a \emph{frequency}, say f, and 
 #'   \enumerate{
 #'   \item{if X contains all values (possibly above some threshold), then with
-#'   EI an estimate of the Extremal Index, set
+#'   EI an estimate of the Extremal Index from EI.R, set
 #'   p = f*d/EI and N = T/d, with T the length of the observation period and d the time step. 
 #'         Note that f and d are defined with reference to the same unit of time!! In this case,
 #'         r11 needs to be estimated.
@@ -58,7 +61,7 @@
 #'   \item{if X contains only the (approximately Poisson) peak values above some threshold 
 #'         (i.e., you want to do a PoT analysis), then set p = f*d/EI, N = (T/d)*EI, r11= 1 
 #'         (note that d/EI is the mean duration of an "event" and EI/d is the 
-#'         mean number of "events" per unit of time).
+#'         mean number of "events" per unit of time estimated by EI.R).
 #'              }
 #' }   
 #'           
@@ -223,7 +226,13 @@ library(gsl)
         theta <- theta[k]
   
         # Asymptotic standard deviation of theta
-        thetaStd= sqrt(r11/k)*th[k]
+        if (is.list(r11)) {
+          r11value <- approx(r11$k, r11$r, k, rule= 2)$y 
+        } else {
+          r11value <- r11
+        }
+        thetaStd= th[k]*sqrt(r11value/k)
+
         # sigma2m <- sigma2 #for use in estimation of stand. dev. of quantile
       } else {
         theta <- rep(theta0[1], nl)
@@ -234,13 +243,19 @@ library(gsl)
         }
       }
       
+      if (is.list(r11)) {
+        r11value <- approx(r11$k, r11$r, l, rule= 2)$y 
+      } else {
+        r11value <- r11
+      }
+      
       # Scale estimator
       if (length(logdisp0)== 0) {
         mm <- mom1[l]/mu1t[l]
         g <- mm*X0[l]
         
         logdisp <- log(mm)  # Log of dispersion coefficient
-        logdispStd <- sqrt(r11/l)
+        logdispStd <- sqrt(r11value/l)
       } else {
         g <- X0[l]*exp(logdisp0[1])
         logdisp <- rep(logdisp0[1], nl)
@@ -252,7 +267,7 @@ library(gsl)
       }
       
       # Standard deviation of X0[l] as estimator of location q(th[l])
-      X0lStd <- g*sqrt(r11/l)/th[l]
+      X0lStd <- g*sqrt(r11value/l)/th[l]
       
       # Quantile estimation
       lp= length(p)
