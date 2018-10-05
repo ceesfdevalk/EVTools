@@ -212,7 +212,7 @@ FitGP_MLE <- function(X, p, N, r11, fixedpar, l0, XId) {
       } else {
         r11value <- r11
       }
-      gammaStd= sqrt(r11value/k*(1+gamma))   # ??????
+      gammaStd= sqrt(r11value/k)*(1+gamma)   # ??????
       
       if (length(gamma0)> 0){
         if (length(gamma0Std)> 0){
@@ -231,7 +231,7 @@ FitGP_MLE <- function(X, p, N, r11, fixedpar, l0, XId) {
       # Scale estimator
       if (length(logdisp0)== 0) {
         logdisp <- log(g/X0[l])  # Log of dispersion coefficient
-        logdispStd <- sqrt(r11value/l)  # ??????
+        logdispStd <- sqrt(r11value/l)*sqrt(1+(1+gamma)^2)
       } else {
         g <- X0[l]*exp(logdisp0[1])
         logdisp <- rep(logdisp0[1], nl)
@@ -261,10 +261,14 @@ FitGP_MLE <- function(X, p, N, r11, fixedpar, l0, XId) {
           dha <- (1/gamma)*(lambda^gamma*log(lambda)-ha)
           id <- abs(gamma)< 1.e-10
           if (any(id)) {dha[id] <- 0.5*(log(lambda))^2}
-          # the following asymptotic expression is pretty accurate
+          # the following asymptotic expression is from de Haan & Ferreira
+          # section 4.3.1
           # (the last term can normally be ignored but with given, precise,
           # gamma and logdisp estimates, it may not be negligible)
-          var <- g^2*(ha^2*logdispStd^2 + dha^2*gammaStd^2) + X0lStd^2
+          varfac <- (1+gamma)^2
+          id <- gamma<0
+          varfac[id] <- 1+4*gamma[id]+5*gamma[id]^2+2*gamma[id]^3+2*amma[id]^4
+          var <- g^2*dha^2*varfac*r11value/l + X0lStd^2
           qStd[, i]= sqrt(var)
         }
       }
