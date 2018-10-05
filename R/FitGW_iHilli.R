@@ -184,28 +184,35 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
       }
       
       # Refinement of GW index estimator
-      thetagrid <- seq(-1.995, 1.995, .01)   # wide range
-      lg <- length(thetagrid)
-      
-      err <- rep(Inf, nl)    # error tracking (lowest value sofar)
-      g <- rep(NA, nl)         # scale estimates
-      thetaref <- rep(NA, nl)
-      for (i in 1:lg) {
-        ti <- thetagrid[i]
+      if (length(theta0)== 0) {
+        thetagrid <- seq(-1.995, 1.995, .01)   # wide range
+        lg <- length(thetagrid)
+        
+        err <- rep(Inf, nl)    # error tracking (lowest value sofar)
+        g <- rep(NA, nl)         # scale estimates
+        thetaref <- rep(NA, nl)
+        for (i in 1:lg) {
+          ti <- thetagrid[i]
+          temp <- cumsum(h(ti, th[1:(mk-1)]))/L[1:(mk-1)]
+          w <- th[2:mk]^(-ti)*temp + h(ti, 1/th[2:mk])
+          w1 <- cumsum(log(w[1:(mk-2)]))/L[1:(mk-2)]-log(w[2:(mk-1)])
+          
+          err1 <- abs(ti + 1 - theta + w1[k-2]/u[k-2])
+          id <- (err1< err)
+          if (!any(is.na(id))) {
+            thetaref[id] <- ti
+            err[id] <- err1[id]
+            # g <- hill0[l-1]/normg
+            g[id] <- hill0[l[id]-1]/w[l[id]-1]
+          }
+        }
+        theta <- thetaref   # the refined estimator is the output
+      } else {
+        ti <- theta
         temp <- cumsum(h(ti, th[1:(mk-1)]))/L[1:(mk-1)]
         w <- th[2:mk]^(-ti)*temp + h(ti, 1/th[2:mk])
-        w1 <- cumsum(log(w[1:(mk-2)]))/L[1:(mk-2)]-log(w[2:(mk-1)])
-        
-        err1 <- abs(ti + 1 - theta + w1[k-2]/u[k-2])
-        id <- (err1< err)
-        if (!any(is.na(id))) {
-          thetaref[id] <- ti
-          err[id] <- err1[id]
-          # g <- hill0[l-1]/normg
-          g[id] <- hill0[l[id]-1]/w[l[id]-1]
-        }
+        g <- hill0[l-1]/w[l-1]
       }
-      theta <- thetaref   # the refined estimator is the output
       
       # value of r11 with l as threshold
       if (is.list(r11)) {
