@@ -208,7 +208,7 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
         }
         theta <- thetaref   # the refined estimator is the output
       } else {
-        ti <- theta
+        ti <- theta[1]
         temp <- cumsum(h(ti, th[1:(mk-1)]))/L[1:(mk-1)]
         w <- th[2:mk]^(-ti)*temp + h(ti, 1/th[2:mk])
         g <- hill0[l-1]/w[l-1]
