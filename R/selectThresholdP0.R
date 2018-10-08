@@ -47,9 +47,11 @@ selectThresholdP0 <- function(theta, thetaStd, l, rthresh) {
   
   alpha <- bias <- rep(0, nl) 
   
+  pb <- txtProgressBar(1, nl)
   for (j in (1:(nl-1))) {
     alpha[j+1] <- max(abs(theta[1:j]-theta[j+1])/thetaStd[1:j])/slf[j+1]
     bias[j+1] <- max(abs(theta[1:j]-theta[j+1])-thetaStd[1:j]*slf[j+1])
+    setTxtProgressBar(pb, j)
   }
   bias <- pmax(bias,0)                # this is unbiased if nonzero! not soft-clipping
   # a <- ll^(2*(alpha-1))*sqrt(4*pi/lf)
