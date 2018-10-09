@@ -120,6 +120,7 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
         k <- k-(k-l*th[k]^2/sigma2)/(1+2*l*th[k]/k/sigma2)
       }
     }
+    k <- round(k)
     k <- pmin(pmax(1, k), n);
     
     # Order statistics, decreasing
