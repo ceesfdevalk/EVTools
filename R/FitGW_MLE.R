@@ -120,7 +120,7 @@ FitGW_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
     if (sigma2< Inf){
       for (jj in 1:10) {
         thk <- log(N/k)
-        k <- k-(k-l*thk^2/sigma2)/(1+2/thk)
+        k <- k-(k-l*thk^2/sigma2)/(1+2*l*thk/k/sigma2)
       }
     }
     k <- round(k)

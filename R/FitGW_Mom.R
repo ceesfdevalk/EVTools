@@ -125,7 +125,7 @@ library(gsl)
     if (sigma2< Inf){
       for (jj in 1:10) {
         thk <- log(N/k)
-        k <- k-(k-l*thk^2/sigma2)/(1+2/thk)
+        k <- k-(k-l*thk^2/sigma2)/(1+2*l*thk/k/sigma2)
       }
     }
     k <- round(k)
