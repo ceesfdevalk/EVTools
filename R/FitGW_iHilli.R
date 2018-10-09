@@ -122,7 +122,7 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
     }
     k <- round(k)
     k <- pmin(pmax(1, k), n);
-    k <- max(k, l)      # experimental
+    k <- pmax(k, l)      # experimental
     
     # Order statistics, decreasing
     X0 <- -sort(-X)
