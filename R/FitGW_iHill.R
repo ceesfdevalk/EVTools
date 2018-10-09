@@ -116,7 +116,7 @@ FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
     k <- l  # start Newton iteration for k 
     if (sigma2< Inf) {
       for (jj in 1:10) {
-        k <- k-(k-l*thk^2/sigma2)/(1+2*l*thk/k/sigma2)
+        k <- k-(k-l*th[k]^2/sigma2)/(1+2*l*th[k]/k/sigma2)
       }
     }
     k <- round(k) 
