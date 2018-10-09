@@ -130,6 +130,7 @@ library(gsl)
     }
     k <- round(k)
     k <- pmin(pmax(1, k), n);
+    k <- max(k, l)      # experimental
     
     # Order statistics of logarithms, decreasing
     X0 <- -sort(-X)
