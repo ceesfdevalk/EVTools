@@ -117,6 +117,7 @@ FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
     if (sigma2< Inf) {
       for (jj in 1:10) {
         k <- k-(k-l*th[k]^2/sigma2)/(1+2*l*th[k]/k/sigma2)
+        k <- pmin(round(k), n)
       }
     }
     k <- round(k) 
