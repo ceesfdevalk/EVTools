@@ -159,6 +159,7 @@ FitGP_MLE <- function(X, p, N, r11, fixedpar, l0, XId) {
         f <- k1*logg + (1/gamma+1)*sum(log(pmax(0, 1+gamma*z)))
       }
       if (min(1+z*gamma)<= 0) {f <- Inf}
+      f
     }
     
     #
@@ -255,7 +256,7 @@ FitGP_MLE <- function(X, p, N, r11, fixedpar, l0, XId) {
           # Quantiles
           q[, i] <- X0[l]+g*h(gamma, lambda)
           
-          # Asymptotic standard deviations of quantiles  All Questionable!!!
+          # Asymptotic standard deviations of quantiles  !
           ha <- h(gamma, lambda)
           dha <- (1/gamma)*(lambda^gamma*log(lambda)-ha)
           id <- abs(gamma)< 1.e-10
