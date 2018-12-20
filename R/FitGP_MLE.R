@@ -159,7 +159,6 @@ FitGP_MLE <- function(X, p, N, r11, fixedpar, l0, XId) {
         f <- k1*logg + (1/gamma+1)*sum(log(pmax(0, 1+gamma*z)))
       }
       if (min(1+z*gamma)<= 0) {f <- Inf}
-      f
     }
     
     #
