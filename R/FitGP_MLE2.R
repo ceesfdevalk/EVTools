@@ -1,4 +1,4 @@
-' @title FitGP_MLE2
+#' @title FitGP_MLE2
 #' 
 #' @description As FitGP_MLE: test version with distinct thresholds for scale and shape 
 #' 
