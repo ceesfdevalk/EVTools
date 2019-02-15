@@ -65,7 +65,7 @@ EI <- function(X, l= 50, ngr= 10, makeplot= FALSE) {
     title <- "Naive: circle; Ferro-Segers: triangle"
     plot(p, EIupcross, log= 'x', ylim= c(0, 1), 
          main= title, xlab= "sample fraction", ylab= "Extremal Index")
-    points(k, EIFS, pch= 2)
+    points(p, EIFS, pch= 2)
     grid()
   }
   
