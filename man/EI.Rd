@@ -4,7 +4,7 @@
 \alias{EI}
 \title{EI}
 \usage{
-Value <- EI((X, l, ngr, makeplot)
+Value <- EI(X, l, ngr, makeplot)
 }
 \arguments{
 \item{X}{time series (double(nX))}
@@ -18,6 +18,7 @@ Value <- EI((X, l, ngr, makeplot)
 \value{
 A list, with members: 
   \item{k}{no. of data points above level, for each of ngr levels}    
+  \item{p}{sample fraction above level, for each of ngr levels}    
   \item{EIupcross}{estimate of EI based on upcrossings} 
   \item{EIFS}{estimate of EI from Ferro & Segers (2003)}
 }

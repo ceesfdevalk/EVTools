@@ -10,10 +10,11 @@
 #' @param ngr (optional, default= 10) number of levels (integer(1))
 #' @param makeplot (optional, default= FALSE) (logical(1))
 #' 
-#' @usage Value <- EI((X, l, ngr, makeplot) 
+#' @usage Value <- EI(X, l, ngr, makeplot) 
 #' 
 #' @return A list, with members: 
 #'   \item{k}{no. of data points above level, for each of ngr levels}    
+#'   \item{p}{sample fraction above level, for each of ngr levels}    
 #'   \item{EIupcross}{estimate of EI based on upcrossings} 
 #'   \item{EIFS}{estimate of EI from Ferro & Segers (2003)} 
 #'
@@ -32,7 +33,8 @@ EI <- function(X, l= 50, ngr= 10, makeplot= FALSE) {
   n <- length(X)
   gr <- seq(log(l), log(n/5), length.out= ngr)
   k <- ceiling(exp(gr)) 
-  
+  p= k/n
+
   EIupcross <- rep(NA, ngr)
   EIFS <- rep(NA, ngr)
   
@@ -61,11 +63,11 @@ EI <- function(X, l= 50, ngr= 10, makeplot= FALSE) {
   if (makeplot) {
     par(pty = "s")
     title <- "Naive: circle; Ferro-Segers: triangle"
-    plot(k, EIupcross, log= 'x', ylim= c(0, 1), 
-         main= title, xlab= "rank no.", ylab= "Extremal Index")
+    plot(p, EIupcross, log= 'x', ylim= c(0, 1), 
+         main= title, xlab= "sample fraction", ylab= "Extremal Index")
     points(k, EIFS, pch= 2)
     grid()
   }
   
-  res <- list(k= k, EIupcross= EIupcross, EIFS= EIFS)
+  res <- list(k= k, p= p, EIupcross= EIupcross, EIFS= EIFS)
 }
