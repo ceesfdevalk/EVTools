@@ -17,7 +17,8 @@ Value <- r11((X, l, ngr, makeplot)
 }
 \value{
 A list, with members: 
-  \item{k}{no. of data points above level, for each of ngr levels}    
+  \item{k}{no. of data points above level, for each of ngr levels}
+  \item{p}{sample fraction above level, for each of ngr levels} 
   \item{r}{corresponding estimate of r(1,1)}
 }
 \description{

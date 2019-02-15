@@ -10,10 +10,11 @@
 #' @param ngr (optional, default= 10) number of levels (integer(1))
 #' @param makeplot (optional, default= FALSE) (logical(1))
 #' 
-#' @usage Value <- r11((X, l, ngr, makeplot) 
+#' @usage Value <- r11(X, l, ngr, makeplot) 
 #' 
 #' @return A list, with members: 
-#'   \item{k}{no. of data points above level, for each of ngr levels}    
+#'   \item{k}{no. of data points above level, for each of ngr levels}
+#'   \item{p}{sample fraction above level, for each of ngr levels} 
 #'   \item{r}{corresponding estimate of r(1,1)} 
 #'
 #' @references
@@ -28,7 +29,8 @@ r11 <- function(X, l= 50, ngr= 10, makeplot= FALSE) {
   n <- length(X)
   gr <- seq(log(l), log(n/5), length.out= ngr)
   pl <- matrix(NA, nrow= l, ncol= ngr)
-  k <- ceiling(exp(gr)) 
+  k <- ceiling(exp(gr))
+  p= k/n
   for (i in 1:ngr) {
     cat(i)
     s <- sX[k[i]] 
@@ -44,10 +46,10 @@ r11 <- function(X, l= 50, ngr= 10, makeplot= FALSE) {
   
   if (makeplot) {
     par(pty = "s")
-    plot(k, 1/r, log= 'x', ylim= c(0, 1), 
+    plot(p, 1/r, log= 'x', ylim= c(0, 1), 
          main= "Serial tail dependence", xlab= "rank no.", ylab= '1/r(1,1)')
     grid()
   }
   
-  res <- list(k= k, r= r)
+  res <- list(k= k, p= p, r= r)
 }
