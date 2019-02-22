@@ -265,10 +265,9 @@ FitGP_MLE <- function(X, p, N, r11, fixedpar, l0, XId) {
           # section 4.3.1
           # (the last term can normally be ignored but with given, precise,
           # gamma and logdisp estimates, it may not be negligible)
-          varfac <- (1+gamma)^2
-          id <- gamma<0
-          varfac[id] <- 1+4*gamma[id]+5*gamma[id]^2+2*gamma[id]^3+2*gamma[id]^4
-          var <- g^2*dha^2*varfac*r11value/l + X0lStd^2
+          var <- g^2*(ha^2*logdispStd^2 + dha^2*gammaStd^2) + X0lStd^2
+          depterm <- -2*g^2*ha*dha*(1+gamma)*r11value/l  
+          var <- var + depterm
           qStd[, i]= sqrt(var)
         }
       }
