@@ -83,8 +83,6 @@ FitGW_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
   if (missing(XId)) {XId <- ''}
   
   # fixed parameter 
-  sigma2 <- sigma^2
-  
   theta0 <- fixedpar$theta0
   theta0Std <- fixedpar$theta0Std
   logdisp0 <- fixedpar$logdisp0
@@ -116,11 +114,11 @@ FitGW_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
       l <- l0
     }
     nl <- length(l)
-    k <- l  # Newton iteration for k if sigma2> 0
+    k <- l  # Newton iteration for k 
     if (sigma2< Inf){
       for (jj in 1:10) {
         thk <- log(N/k)
-        k <- k-(k-l*thk^2/sigma2)/(1+2*l*thk/k/sigma2)
+        k <- k-(k-l*(thk/sigma+1)^2)/(1+2*l*(thk/sigma+1)/(k*sigma))
       }
     }
     k <- round(k)
@@ -287,7 +285,7 @@ FitGW_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
       }
       
       estimates <- list("k"= k, "l"= l, "y"= y, 
-                        "N"= N, "sigma"= sqrt(sigma2), "r11"= r11,
+                        "N"= N, "sigma"= sigma, "r11"= r11,
                         "tailindex"= theta, "tailindexStd"= thetaStd, 
                         "scale"= g, "logdisp"= logdisp, "logdispStd"= logdispStd,
                         "location"= X0[l], "locationStd"= X0lStd,

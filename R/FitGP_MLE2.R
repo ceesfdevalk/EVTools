@@ -76,8 +76,6 @@ FitGP_MLE2 <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
   if (missing(XId)) {XId <- ''}
   
   # fixed parameter 
-  sigma2 <- sigma^2
-  
   gamma0 <- fixedpar$gamma0
   gamma0Std <- fixedpar$gamma0Std
   logdisp0 <- fixedpar$logdisp0
@@ -109,11 +107,11 @@ FitGP_MLE2 <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
       l <- l0
     }
     nl <- length(l)
-    k <- l  # Newton iteration for k if sigma2> 0
-    if (sigma2< Inf){
+    k <- l  # Newton iteration for k 
+    if (sigma< Inf){
       for (jj in 1:10) {
         thk <- log(N/k)
-        k <- k-(k-l*thk^2/sigma2)/(1+2*l*thk/k/sigma2)
+        k <- k-(k-l*(thk/sigma+1)^2)/(1+2*l*(thk/sigma+1)/(k*sigma))
       }
     }
     k <- round(k)
@@ -124,7 +122,7 @@ FitGP_MLE2 <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
     X0 <- -sort(-X)
     
     # Adjust l and k based on requirements 
-    ind <- which(k> 2 & X0[k]> -Inf & l> 0 & k>= l & k<= (n-1))
+    ind <- which(k> 2 & X0[k]> -Inf & l> 0 & k>= l & k< n)
     if (length(ind)> 0) {
       k <- k[ind]
       l <- l[ind]
@@ -287,7 +285,7 @@ FitGP_MLE2 <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
       }
       
       estimates <- list("k"= k, "l"= l, "y"= y, 
-                        "N"= N, "sigma"= sqrt(sigma2), "r11"= r11,
+                        "N"= N, "sigma"= sigma, "r11"= r11,
                         "tailindex"= gamma, "tailindexStd"= gammaStd, 
                         "scale"= g, "logdisp"= logdisp, "logdispStd"= logdispStd,
                         "location"= X0[l], "locationStd"= X0lStd,

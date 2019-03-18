@@ -81,8 +81,6 @@ FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
   if (missing(XId)) {XId <- ''}
   
   # fixed parameters 
-  sigma2 <- sigma^2
-  
   theta0 <- fixedpar$theta0
   theta0Std <- fixedpar$theta0Std
   logdisp0 <- fixedpar$logdisp0
@@ -114,9 +112,9 @@ FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
     }
     nl <- length(l)
     k <- l  # start Newton iteration for k 
-    if (sigma2< Inf) {
+    if (sigma< Inf) {
       for (jj in 1:10) {
-        k <- k-(k-l*th[k]^2/sigma2)/(1+2*l*th[k]/k/sigma2)
+        k <- k-(k-l*(th[k]/sigma+1)^2)/(1+2*l*(th[k]/sigma+1)/(k*sigma))
         k <- pmin(pmax(1, round(k)), n)
       }
     }
@@ -127,7 +125,7 @@ FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
     
     # Adjust l and k based on requirements 
     # ind <- which(k> 2 & X0[k]> -Inf & l> 0 & k> l*2 & k< n)
-    ind <- which(k> 2 & X0[k]> -Inf & l> 0  & k<= n & k>= l)
+    ind <- which(k> 2 & X0[k]> -Inf & l> 0  & k< n & k>= l)
     if (length(ind)> 0) {
       k <- k[ind]
       l <- l[ind]
@@ -173,7 +171,6 @@ FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
         }
         thetaStd= th[k]*sqrt(r11value/k)
 
-        sigma2m <- sigma2 #for use in estimation of stand. dev. of quantile
       } else {
         theta <- rep(theta0[1], nl)
         if (length(theta0Std)> 0){
@@ -246,7 +243,7 @@ FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
     }
     
     estimates <- list("k"= k, "l"= l, "y"= th[l], 
-                      "N"= N, "sigma"= sqrt(sigma2), "r11"= r11,
+                      "N"= N, "sigma"= sigma, "r11"= r11,
                       "tailindex"= theta, "tailindexStd"= thetaStd, 
                       "scale"= g, "logdisp"= logdisp, "logdispStd"= logdispStd,
                       "location"= X0[l], "locationStd"= X0lStd,

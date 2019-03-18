@@ -88,8 +88,6 @@ library(gsl)
   if (missing(XId)) {XId <- ''}
   
   # fixed parameter 
-  sigma2 <- sigma^2
-  
   theta0 <- fixedpar$theta0
   theta0Std <- fixedpar$theta0Std
   logdisp0 <- fixedpar$logdisp0
@@ -121,11 +119,11 @@ library(gsl)
       l <- l0
     }
     nl <- length(l)
-    k <- l  # Newton iteration for k if sigma2> 0
-    if (sigma2< Inf){
+    k <- l  # Newton iteration for k 
+    if (sigma< Inf){
       for (jj in 1:10) {
         thk <- log(N/k)
-        k <- k-(k-l*thk^2/sigma2)/(1+2*l*thk/k/sigma2)
+        k <- k-(k-l*(thk/sigma+1)^2)/(1+2*l*(thk/sigma+1)/(k*sigma))
       }
     }
     k <- round(k)
@@ -137,7 +135,7 @@ library(gsl)
     X00 <- log(pmax(X0,0))
     
     # Adjust l and k based on requirements 
-    ind <- which(k> 2 & X00[k]> -Inf & l> 0 & k>= l & k<= (n-1))
+    ind <- which(k> 2 & X00[k]> -Inf & l> 0 & k>= l & k< n)
     if (length(ind)> 0) {
       k <- k[ind]
       l <- l[ind]
@@ -234,7 +232,6 @@ library(gsl)
         }
         thetaStd= th[k]*sqrt(r11value/k)
 
-        # sigma2m <- sigma2 #for use in estimation of stand. dev. of quantile
       } else {
         theta <- rep(theta0[1], nl)
         if (length(theta0Std)> 0){
@@ -296,7 +293,7 @@ library(gsl)
     }
     
     estimates <- list("k"= k, "l"= l, "y"= th[l], 
-                      "N"= N, "sigma"= sqrt(sigma2), "r11"= r11,
+                      "N"= N, "sigma"= sigma, "r11"= r11,
                       "tailindex"= theta, "tailindexStd"= thetaStd, 
                       "scale"= g, "logdisp"= logdisp, "logdispStd"= logdispStd,
                       "location"= X0[l], "locationStd"= X0lStd,
