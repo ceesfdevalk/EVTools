@@ -114,7 +114,7 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
     nl <- length(l)
     k <- l  # start Newton iteration for k 
     if (sigma< Inf) {
-      for (jj in 1:10) {
+      for (jj in 1:100) {
         k <- k-(k-l*(th[k]/sigma+1)^2)/(1+2*l*(th[k]/sigma+1)/(k*sigma))
         k <- pmin(round(k), n)
       }
