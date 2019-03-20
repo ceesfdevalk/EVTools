@@ -1,6 +1,6 @@
-#' @name  FitGW_Wbl
+#' @name  FitGW_Wb
 #' 
-#' @title FitGW_Wbl
+#' @title FitGW_Wb
 #' 
 #' @description Fit a Generalised Weibull (GW) upper tail with positive tail index (!!) to the sample X of positive values and estimate quantiles
 #' 
@@ -13,7 +13,7 @@
 #' @param sigma (optional) determines the ratio of k to l (double(1))
 #' @param XId (optional) data identifier to store with output for traceability (character)
 #' 
-#' @usage Value <- FitGW_Wbl(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= 1, XId= '')
+#' @usage Value <- FitGW_Wb(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= 1, XId= '')
 #' 
 #' @return A list, with members: 
 #'   \item{l}{no. of order statistics used for scale and quantile estimation}    
@@ -69,7 +69,7 @@
 #' @author Cees de Valk \email{ceesfdevalk@gmail.com}
 #' 
 #' @export
-FitGW_Wbl <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
+FitGW_Wb <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
 
   # Handle arguments
   if (missing(p)) {p <- NULL}
@@ -158,7 +158,7 @@ FitGW_Wbl <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
         hill1 <- cumsum(log(X0[1:(mk-1)]))/L[1:(mk-1)]-log(X0[2:mk])
         
         # u is defined as in proof of Theorem 2 of ref. 
-        u <- cumsum(log(th[1:(mk-1)]))/(1:(mk-2))-log(th[2:mk])
+        u <- cumsum(log(th[1:(mk-1)]))/(1:(mk-1))-log(th[2:mk])
         
         # Simple estimator of GW index (nondimensional curvature)
         theta <- hill1[k-1]/u[k-1]
