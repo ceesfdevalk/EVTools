@@ -34,7 +34,6 @@
 #'   \item{estimator}{= "iteratedHill": see "method" below}
 #' 
 #' @details
-#'  
 #'  This model is a refined version of the Weibull tail, in the form of a GW tail with positive 
 #'  GW tail index. This has the advantage that for a given tail index estimate, the quantile estimator 
 #'  is shift-invariant. The GW tail index estimator is not shift-invariant, but it has low variance in
@@ -74,7 +73,7 @@
 #' @author Cees de Valk \email{ceesfdevalk@gmail.com}
 #' 
 #' @export
-FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
+FitGW_Weibull <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
 
   # Handle arguments
   if (missing(p)) {p <- NULL}
