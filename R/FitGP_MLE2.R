@@ -104,7 +104,7 @@ FitGP_MLE2 <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
     if (length(l0)== 0) {
       l <- 10:(n-1)
     } else {
-      l <- l0[l0>9 & l0< n]
+      l <- l0[l0< n]
     }
     nl <- length(l)
     k <- l  # Newton iteration for k 

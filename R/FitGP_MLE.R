@@ -105,7 +105,7 @@ FitGP_MLE <- function(X, p, N, r11, fixedpar, l0, XId) {
     if (length(l0)== 0) {
       l <- 10:(n-1)
     } else {
-      l <- l0[l0>9 & l0< n]
+      l <- l0[l0< n]
     }
     nl <- length(l)
     k <- l  
