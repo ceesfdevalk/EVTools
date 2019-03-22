@@ -107,9 +107,9 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
     # k is found by iteration from l (see (30))
     #
     if (length(l0)== 0) {
-      l <- 10:n
+      l <- 10:(n-1)
     } else {
-      l <- l0
+      l <- l0[l0>9 & l0< n]
     }
     nl <- length(l)
     k <- l  # start Newton iteration for k 
