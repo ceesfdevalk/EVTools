@@ -165,7 +165,7 @@ FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
         
         # Asymptotic standard deviation of theta
         if (is.list(r11)) {
-          r11value <- approx(r11$k, r11$r, k, rule= 2)$y 
+          r11value <- approx(r11$p, r11$r, k/N, rule= 2)$y 
         } else {
           r11value <- r11
         }
@@ -181,7 +181,7 @@ FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
       }
       
       if (is.list(r11)) {
-        r11value <- approx(r11$k, r11$r, l, rule= 2)$y 
+        r11value <- approx(r11$p, r11$r, l/N, rule= 2)$y 
       } else {
         r11value <- r11
       }
