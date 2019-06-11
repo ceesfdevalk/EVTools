@@ -24,10 +24,10 @@
 #' @author Cees de Valk \email{ceesfdevalk@gmail.com}
 #' 
 #' @export
-r11 <- function(X, l= 50, ngr= 10, makeplot= FALSE) {
+r11 <- function(X, l= 50, ngr= 20, makeplot= FALSE) {
   sX <- -sort(-X)
   n <- length(X)
-  gr <- seq(log(l), log(n/5), length.out= ngr)
+  gr <- seq(log(l), log(n), length.out= ngr)
   pl <- matrix(NA, nrow= l, ncol= ngr)
   k <- ceiling(exp(gr))
   p= k/n
