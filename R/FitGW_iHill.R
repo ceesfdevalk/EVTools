@@ -166,7 +166,7 @@ FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
         
         # Simple estimator of GW index (nondimensional curvature)
         thetaall <- 1+hill1/u
-        kall <- (1:mk-2)+2
+        kall <- (1:(mk-2))+2
         theta <- thetaall[k-2]
         # theta <- 1+hill1[k-2]/u[k-2]
         
