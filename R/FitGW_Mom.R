@@ -156,6 +156,9 @@ library(gsl)
     bias <- NULL
     logdisp <- NULL
     logdispStd <- NULL
+    thetaraw <- NULL
+    thetarawStd <- NULL
+    kraw <- NULL    
     
     thetagrid <- seq(-0.99, 1.99, .02)  # not zero, for convenience; range can be extended to above .99
                                        # but not below -.99 (at least not without modifying the formula
@@ -220,17 +223,21 @@ library(gsl)
         # mu1_0 <- exp(th[2:mk])*gamma_inc(0, th[2:mk])
         mu1_0 <- expint_E1(th[2:mk])*exp(th[2:mk])
         thetapos <- mom1/mu1_0
-        theta <- thetaneg + thetapos
-        theta[mk] <- theta[mk-1]  # last one may be NA
-        theta <- theta[k]
+        thetaraw <- thetaneg + thetapos
+        kraw <- (1:(mk-1))+1
+        thetaraw[mk] <- thetaraw[mk-1]  # last one may be NA
+        theta <- thetaraw[k-1]
   
         # Asymptotic standard deviation of theta
         if (is.list(r11)) {
-          r11value <- approx(r11$p, r11$r, k/N, rule= 2)$y 
+          r11value <- approx(r11$p, r11$r, kraw/N, rule= 2)$y 
         } else {
           r11value <- r11
         }
-        thetaStd= th[k]*sqrt(r11value/k)
+        # thetaStd= th[k]*sqrt(r11value/k) replaced 
+        thetarawStd= th[kraw]*sqrt(r11value/kraw)
+        thetaStd= thetarawStd[k-2]
+        
 
       } else {
         theta <- rep(theta0[1], nl)
@@ -298,6 +305,7 @@ library(gsl)
                       "scale"= g, "logdisp"= logdisp, "logdispStd"= logdispStd,
                       "location"= X0[l], "locationStd"= X0lStd,
                       "p"= p, "quantile"= q, "quantileStd"= qStd, 
+                      "tailindexraw"= thetaraw, "tailindexrawStd"= thetarawStd, "kraw"= kraw,
                       "orderstats"= X0, "df"= "GW", 
                       "estimator"= "Moment Estimator (Albert et al.)", "XId"= XId)
                       # "estimatesBT"= estimatesBT,  # Boucheron-Thomas estimate
