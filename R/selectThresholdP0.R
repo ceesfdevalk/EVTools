@@ -7,15 +7,16 @@
 #' 
 #' @param tailindex    GW tail index estimates from FitGW_iHill.R (double(nl))
 #' @param tailindexStd Standard deviation of tail index from FitGW_iHill.R (double(nl))
-#' @param l            number of order statistics above the threshold for scale
-#'                     and location estimation from FitGW_iHill.R (double(nl))
+#' @param k            number of order statistics above the threshold for 
+#'                     estimation of tail index from FitGW_iHill.R (double(nl))
 #' @param rthresh      (optional) ratio of the probability of nonexceedance of fluctuation 
 #'                     size to its maximum, for threshold to be accepted. Default is 0.4.             
 #'  
-#' @usage Value <- selectThresholdP0(tailindex, tailindexStd, l, rthresh) 
+#' @usage Value <- selectThresholdP0(tailindex, tailindexStd, k, rthresh) 
 #' 
 #' @return list containing the elements
-#'   \item{i}{index in the vectors tailindex and l, representing the selected threshold}    
+#'   \item{i}{index in the vectors tailindex and l, representing the selected threshold}  
+#'   \item{k}{the elements of k for which P and bias are computed}      
 #'   \item{P}{p-values of observed fluctuation statistic}    
 #'   \item{bias}{estimate of bias in tail index based on fluctuation statistic}    
 #'
@@ -28,7 +29,7 @@
 #         Phi in this equation (see (22)) can be approximated by a rescaled Brownian
 #         motion in the large-sample limit; then we use the BM statistics as in
 #         Lemma 1 of de Valk & Cai (2018)
-#         Serial dependence is accounted for in a simplistic way using the EI.
+#         Serial dependence is accounted for in a simplistic way implicitly through tailindexStd
 #'           
 #' @references
 #' De Valk, C. and Cai, J.J. (2018), A high quantile estimator based on 
@@ -36,13 +37,13 @@
 #' \url{https://doi.org/10.1016/j.ecosta.2017.03.001}
 #' 
 #' @export
-selectThresholdP0 <- function(theta, thetaStd, l, rthresh) {
+selectThresholdP0 <- function(theta, thetaStd, k, rthresh) {
   if (missing(rthresh)) {rthresh <- 0.}
   # parameter: fluctuation probability threshold
   # l <- thetaStd^(-2) # overwrite
   ind <- thetaStd< 1
-  l <- l[ind]
-  l <- l/min(l)
+  k <- k[ind]
+  l <- k/min(k)
   theta <- theta[ind]
   thetaStd <- thetaStd[ind]
   
@@ -72,9 +73,9 @@ selectThresholdP0 <- function(theta, thetaStd, l, rthresh) {
   # # fluctuation statistics match asymptotic theory
   # Pj <- Pj*(Pc> 0.1)
   # 
-  # threshold choice a la Boucheron-Thomas (but more delicate)
+  # threshold choice a la Boucheron-Thomas, but more delicate
   i <- max(which(P> max(P)*rthresh))              # threshold selection based on max of P
   # i <- max(which(P> quantile(P, 0.99)*rthresh)) # threshold selection based on high quantile of P
-  res <- list("i"= i, "P"= P, "bias"= bias)
+  res <- list("i"= i, "k"= k, "P"= P, "bias"= bias)
 }
 
