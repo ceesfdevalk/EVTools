@@ -28,10 +28,10 @@
 #' @author Cees de Valk \email{ceesfdevalk@gmail.com}
 #' 
 #' @export
-EI <- function(X, l= 50, ngr= 10, makeplot= FALSE) {
+EI <- function(X, l= 50, ngr= 20, makeplot= FALSE) {
   sX <- -sort(-X)
   n <- length(X)
-  gr <- seq(log(l), log(n/5), length.out= ngr)
+  gr <- seq(log(l), log(n), length.out= ngr)
   k <- ceiling(exp(gr)) 
   p= k/n
 

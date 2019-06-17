@@ -37,9 +37,9 @@
 #' 
 #' @export
 selectThresholdP0 <- function(theta, thetaStd, l, rthresh) {
-  if (missing(rthresh)) {rthresh <- 0.4}
+  if (missing(rthresh)) {rthresh <- 0.}
   # parameter: fluctuation probability threshold
-  l <- thetaStd^(-2) # overwrite
+  # l <- thetaStd^(-2) # overwrite
   ind <- l>1
   l <- l[ind]
   theta <- theta[ind]

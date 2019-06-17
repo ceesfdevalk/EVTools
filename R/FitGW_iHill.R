@@ -146,6 +146,9 @@ FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
     bias <- NULL
     logdisp <- NULL
     logdispStd <- NULL
+    thetaall <- NULL
+    thetaallStd <- NULL
+    kall <- NULL    
     
     if (nl> 0) {
       # Hill estimator
@@ -158,18 +161,23 @@ FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
         hill1 <- cumsum(log(hill0[1:(mk-2)]))/L[1:(mk-2)]-log(hill0[2:(mk-1)])
         
         # u is defined as in proof of Theorem 2 of ref. 
-        u <- cumsum(log(th[2:(n-1)]))/(1:(n-2))-log(th[3:n])
+        # u <- cumsum(log(th[2:(n-1)]))/(1:(n-2))-log(th[3:n])
+        u <- cumsum(log(th[2:(mk-1)]))/(1:(mk-2))-log(th[3:mk])
         
         # Simple estimator of GW index (nondimensional curvature)
-        theta <- 1+hill1[k-2]/u[k-2]
+        thetaall <- 1+hill1/u
+        kall <- (1:mk-2)+2
+        theta <- thetaall[k-2]
+        # theta <- 1+hill1[k-2]/u[k-2]
         
         # Asymptotic standard deviation of theta
         if (is.list(r11)) {
-          r11value <- approx(r11$p, r11$r, k/N, rule= 2)$y 
+          r11value <- approx(r11$p, r11$r, kall/N, rule= 2)$y 
         } else {
           r11value <- r11
         }
-        thetaStd= th[k]*sqrt(r11value/k)
+        thetaallStd= th[kall]*sqrt(r11value/kall)
+        thetaStd= thetaallStd[k-2]
 
       } else {
         theta <- rep(theta0[1], nl)
@@ -248,6 +256,7 @@ FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
                       "scale"= g, "logdisp"= logdisp, "logdispStd"= logdispStd,
                       "location"= X0[l], "locationStd"= X0lStd,
                       "p"= p, "quantile"= q, "quantileStd"= qStd, 
+                      "tailindexall"= thetaall, "tailindexallStd"= thetaallStd, "kall"= kall,
                       "orderstats"= X0, "df"= "GW", 
                       "estimator"= "iterated Hill", "XId"= XId)
                       # "estimatesBT"= estimatesBT,  # Boucheron-Thomas estimate
