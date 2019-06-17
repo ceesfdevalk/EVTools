@@ -45,11 +45,16 @@ selectThresholdP0 <- function(theta, thetaStd, k, rthresh) {
   if (missing(rthresh)) {rthresh <- 0.}
   # parameter: fluctuation probability threshold
   # l <- thetaStd^(-2) # overwrite
+  
+  # the highly variable estimates of the index are excluded (not of interest, and noise spoils
+  # the statistics of the fluctuations)
   ind <- thetaStd< 1
   k <- k[ind]
-  l <- k/min(k)
   theta <- theta[ind]
   thetaStd <- thetaStd[ind]
+  # then k needs to be normalized in order to fit into the framework of Darling-Erdos 
+  # The normalization is based on the stationarity of the Ornstein-Uhlenbeck process
+  l <- k/min(k)
   
   nl <-  length(l)
   ll <- log(pmax(l,3))
