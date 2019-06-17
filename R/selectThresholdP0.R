@@ -22,19 +22,23 @@
 #'
 #' @author Cees de Valk \email{ceesfdevalk@gmail.com}
 #' 
-#' @details Works together with FitGW_iHill.M. 
+#' @details Works together with FitGW_iHill.R and similar methods.  
 #'        Based on ref. De Valk and Cai(2018), in particular on eq.(27).
-#         Idea of simple estimate is from Boucheron & Thomas (2015); see also  
-#         Drees and Kaufmann (1998).
-#         Phi in this equation (see (22)) can be approximated by a rescaled Brownian
-#         motion in the large-sample limit; then we use the BM statistics as in
-#         Lemma 1 of de Valk & Cai (2018)
-#         Serial dependence is accounted for in a simplistic way implicitly through tailindexStd
+#'        Idea of simple estimate is from Boucheron & Thomas (2015); see also  
+#'        Drees and Kaufmann (1998).
+#'        Phi in this equation (see (22)) can be approximated by a rescaled Brownian
+#'        motion in the large-sample limit; then we use the BM statistics as in
+#'        Lemma 1 of de Valk & Cai (2018).
+#'        Serial dependence is accounted for in a simplistic way implicitly through 
+#'        tailindexStd.
 #'           
 #' @references
 #' De Valk, C. and Cai, J.J. (2018), A high quantile estimator based on 
-#' the log-generalized Weibull tail limit. Econometrics and Statistics 6, 107-128, see
-#' \url{https://doi.org/10.1016/j.ecosta.2017.03.001}
+#' the log-generalized Weibull tail limit. Econometrics and Statistics 6, 107-128.
+#' Boucheron, S., Thomas, M. (2015), Tail index estimation, concentration and adaptivity. 
+#' Electron. J. Stat. 9, 2751–2792.
+#' Drees, H., Kaufmann, E. (1998), Selecting the optimal sample fraction in univariate 
+#' extreme value estimation. Stoch. Process. Appl. 75, 149–172.
 #' 
 #' @export
 selectThresholdP0 <- function(theta, thetaStd, k, rthresh) {
