@@ -10,7 +10,7 @@
 #' @param k            number of order statistics above the threshold for 
 #'                     estimation of tail index from FitGW_iHill.R (double(nl))
 #' @param rthresh      (optional) ratio of the probability of nonexceedance of fluctuation 
-#'                     size to its maximum, for threshold to be accepted. Default is 0.8.             
+#'                     size to its maximum, for threshold to be accepted. Default is 0.5.             
 #'  
 #' @usage Value <- selectThresholdP0(tailindex, tailindexStd, k, rthresh) 
 #' 
@@ -42,7 +42,7 @@
 #' 
 #' @export
 selectThresholdP0 <- function(theta, thetaStd, k, rthresh) {
-  if (missing(rthresh)) {rthresh <- 0.8}
+  if (missing(rthresh)) {rthresh <- 0.5}
   # parameter: fluctuation probability threshold
   # l <- thetaStd^(-2) # overwrite
   
