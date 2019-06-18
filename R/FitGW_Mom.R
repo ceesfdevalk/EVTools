@@ -225,7 +225,7 @@ library(gsl)
         thetapos <- mom1/mu1_0
         thetaraw <- thetaneg + thetapos
         kraw <- (1:(mk-1))+1
-        thetaraw[mk] <- thetaraw[mk-1]  # last one may be NA
+        # thetaraw[mk] <- thetaraw[mk-1]  # last one may be NA
         theta <- thetaraw[k-1]
   
         # Asymptotic standard deviation of theta
