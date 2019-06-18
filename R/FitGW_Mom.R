@@ -30,6 +30,9 @@
 #'   \item{p}{probabilities of exceedance of quantiles to be estimated} 
 #'   \item{quantile}{quantile estimates}
 #'   \item{quantileStd}{standard deviations of quantile estimates}
+#'   \item{tailindexraw}{estimates of GW tail index over all possible thresholds} 
+#'   \item{tailindexrawStd}{standard deviation of tailindexraw}
+#'   \item{kraw}{no. of order statistics used for estimation of tailindexraw} 
 #'   \item{orderstats}{data X sorted (decreasing)}
 #'   \item{df}{= "GW": fitted distribution function tail (Generalised Weibull}
 #'   \item{estimator}{= "iteratedHill": see "method" below}
