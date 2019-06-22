@@ -55,20 +55,20 @@ selectThresholdP1 <- function(theta, thetaStd, k, rthresh) {
   # then k needs to be normalized in order to fit into the framework of Darling-Erdos 
   # The normalization is based on the stationarity of the Ornstein-Uhlenbeck process
   l <- k/min(k)
-  
   nl <-  length(l)
-  ll <- log(pmax(l,3))
-  lf <- log(ll)
-  slf <- sqrt(2*lf)
   
   # alpha <- bias <- rep(0, nl) 
   id <- unique(round(exp((0:1.e4)*log(nl)*1.e-4)))
   id <- id[id< nl & id>1]
   kid <- k[id]
+  lid <- l[id]
+  ll <- log(pmax(lid,3))
+  lf <- log(ll)
+  slf <- sqrt(2*lf)
   nid <- length(id)
   alpha <- bias <- rep(0, nid) 
   
-  pb <- txtProgressBar(1, nl)
+  pb <- txtProgressBar(1, nid)
   # for (j in (1:(nl-1))) {
   for (jj in (1:nid)) {   
     j= id[jj]-1
