@@ -72,7 +72,7 @@ selectThresholdP1 <- function(theta, thetaStd, k, rthresh) {
   # for (j in (1:(nl-1))) {
   for (jj in (1:nid)) {   
     j= id[jj]-1
-    alpha[jj] <- max(abs(theta[1:j]-theta[j+1])/thetaStd[1:j])/slf[jj]
+    alpha[jj] <- max((abs(theta[1:j]-theta[j+1])+thetaStd[j+1])/thetaStd[1:j])/slf[jj]
     bias[jj] <- max(abs(theta[1:j]-theta[j+1])-thetaStd[1:j]*slf[jj])
     setTxtProgressBar(pb, j)
   }
