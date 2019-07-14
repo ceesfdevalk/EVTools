@@ -162,7 +162,7 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
       if (length(par)< 2) {
         f <- fglobal
       } else {
-        f <- max(.1, par[2])  # reasonable lower bound; not too crazy
+        f <- max(-.9, par[2])  # reasonable lower bound; not too crazy
       }
       z <- xglobal[1:k1]+xglobal[k]*f
       z0 <- xglobal[k]*(1+f)
