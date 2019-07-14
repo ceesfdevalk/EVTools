@@ -200,6 +200,7 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
         if ((lj< kj) | (length(f0)> 0)) {           # then estimate scale at a different threshold
           par2 <- theta[lj]
           fglobal <- f[j]
+          Nglobal <- N
           xglobal <- X0[1:lj]
           optimout <- optim(par2, negllWbl, method= "Brent", lower= 0.01, upper= 10)
           par3 <- optimout$par
