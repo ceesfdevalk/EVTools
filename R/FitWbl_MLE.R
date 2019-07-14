@@ -145,7 +145,7 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
     
     hill0 <- cumsum(X0[1:(mk-1)])/(1:(mk-1))-X0[2:mk]
     f <- rep(0, nl)    # needed as starting value
-    theta <- rep(NA, nl)
+    theta <- thetasimple <- rep(NA, nl)
     #
     # function to be minimized
     #
