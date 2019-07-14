@@ -144,9 +144,8 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
     ml <- max(l)
     
     hill0 <- cumsum(X0[1:(mk-1)])/(1:(mk-1))-X0[2:mk]
-    thetasimple <- hill0*log(N/(2:mk)) # simplest estimate as startng value
     f <- rep(0, nl)    # needed as starting value
-    theta <- thetasimple[k-1]
+    theta <- rep(NA, nl)
     #
     # function to be minimized
     #
@@ -187,6 +186,7 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
           par0 <- 1
           optimout <- optim(par0, negllWbl, method= "Brent", lower= 0.01, upper= 10)
           thetaglobal <- optimout$par
+          thetasimple[j] <- optimout$par
           par0 <- optimout$par
           # par0 <- c(thetasimple[kj], 0)
           # optimout <- try(optim(par0, negllWbl, method= "BFGS"), silent=TRUE)
@@ -284,6 +284,7 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
       estimates <- list("k"= k, "l"= l, "y"= y, 
                         "N"= N, "sigma"= sigma, "r11"= r11,
                         "tailindex"= theta, "tailindexStd"= thetaStd, 
+                        "tailindexsimple"= thetasimple, 
                         "f"= f, "fStd"= fStd,
                         "location"= X0[l], "locationStd"= X0lStd,
                         "p"= p, "quantile"= q, "quantileStd"= qStd, 
