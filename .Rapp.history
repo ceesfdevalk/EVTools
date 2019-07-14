@@ -1,0 +1,3 @@
+load("/Users/ceesdevalk/Documents/KNMI/Projects/MSO statistisch fundament/EVTools/s240-wind-1950-2017.RData")
+load("/Users/ceesdevalk/Documents/KNMI/Projects/MSO statistisch fundament/EVTools/s240-wind-1950-2017.RData")
+q()
