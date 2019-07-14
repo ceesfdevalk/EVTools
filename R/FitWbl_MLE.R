@@ -159,10 +159,10 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
       k <- length(xglobal)
       k1 <- k-1
       b <- 1/max(par[1], 0)  #b= 1/theta
-      if (length(par)< 2) {
+      if (!is.na(thetaglobal)) {
         f <- max(-0.9, thetaglobal*b-1)
       } else {
-        f <- max(-.9, par[2])  # reasonable lower bound; not too crazy
+        f <- 0  # reasonable lower bound; not too crazy
       }
       z <- xglobal[1:k1]+xglobal[k]*f
       z0 <- xglobal[k]*(1+f)
@@ -183,8 +183,11 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
         if (length(f0)== 0) {
           xglobal <- X0[1:kj]
           Nglobal <- N
-          thetaglobal <- thetasimple[kj]
-          par0 <- thetasimple[kj]
+          thetaglobal <- NA
+          par0 <- 1
+          optimout <- optim(par0, negllWbl, method= "Brent", lower= 0.01, upper= 10)
+          thetaglobal <- optimout$par
+          par0 <- optimout$par
           # par0 <- c(thetasimple[kj], 0)
           # optimout <- try(optim(par0, negllWbl, method= "BFGS"), silent=TRUE)
           # if (class(optimout)== 'try-error') {
