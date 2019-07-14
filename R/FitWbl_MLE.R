@@ -158,12 +158,11 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
       k <- length(xglobal)
       k1 <- k-1
       b <- 1/max(par[1], 0)  #b= 1/theta
-      f <- max(-1, par[2])
-      # if (!is.na(thetaglobal)) {
-      #   f <- max(-0.9, thetaglobal*b-1)
-      # } else {
-      #   f <- 0  # reasonable lower bound; not too crazy
-      # }
+      if (!is.na(thetaglobal)) {
+        f <- max(-0.9, thetaglobal*b-1) # reasonable lower bound; not too crazy
+      } else {
+        f <- 0  
+      }
       z <- xglobal[1:k1]+xglobal[k]*f
       z0 <- xglobal[k]*(1+f)
       y <- log(Nglobal/k)
@@ -189,18 +188,18 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
           thetaglobal <- optimout$par
           thetasimple[j] <- optimout$par
           par0 <- optimout$par
-          par0 <- c(par0, 0)
-          optimout <- try(optim(par0, negllWbl, method= "BFGS"), silent=TRUE)
-          if (class(optimout)== 'try-error') {
-            optimout <- try(optim(par0, negllWbl, method= "Nelder-Mead"), silent=TRUE)
-          }
-          # optimout <- optim(par0, negllWbl, method= "Brent", lower= 0.01, upper= 10)
-          # theta[j] <- optimout$par
-          if (class(optimout)!= 'try-error') {
-            par1 <- optimout$par
-            theta[j] <- par1[1]
-            f[j] <- par1[2]
-          }
+          # par0 <- c(par0, 0)
+          # optimout <- try(optim(par0, negllWbl, method= "BFGS"), silent=TRUE)
+          # if (class(optimout)== 'try-error') {
+          #   optimout <- try(optim(par0, negllWbl, method= "Nelder-Mead"), silent=TRUE)
+          # }
+          optimout <- optim(par0, negllWbl, method= "Brent", lower= 0.01, upper= 10)
+          theta[j] <- optimout$par
+          # if (class(optimout)!= 'try-error') {
+          #   par1 <- optimout$par
+          #   theta[j] <- par1[1]
+          #   f[j] <- par1[2]
+          # }
         } else {
           f[j] <- 0
           theta[j] <- thetasimple[j]
