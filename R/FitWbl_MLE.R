@@ -188,20 +188,21 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
           thetaglobal <- optimout$par
           thetasimple[j] <- optimout$par
           par0 <- optimout$par
-          # par0 <- c(thetasimple[kj], 0)
-          # optimout <- try(optim(par0, negllWbl, method= "BFGS"), silent=TRUE)
-          # if (class(optimout)== 'try-error') {
-          #   optimout <- try(optim(par0, negllWbl, method= "Nelder-Mead"), silent=TRUE)
-          # }
-          optimout <- optim(par0, negllWbl, method= "Brent", lower= 0.01, upper= 10)
-          theta[j] <- optimout$par
-          # if (class(optimout)!= 'try-error') {   
-          #   par1 <- optimout$par
-          #   theta[j] <- par1[1]
-          #   f[j] <- par1[2]
-          # }
+          par0 <- c(par0, 0)
+          optimout <- try(optim(par0, negllWbl, method= "BFGS"), silent=TRUE)
+          if (class(optimout)== 'try-error') {
+            optimout <- try(optim(par0, negllWbl, method= "Nelder-Mead"), silent=TRUE)
+          }
+          # optimout <- optim(par0, negllWbl, method= "Brent", lower= 0.01, upper= 10)
+          # theta[j] <- optimout$par
+          if (class(optimout)!= 'try-error') {
+            par1 <- optimout$par
+            theta[j] <- par1[1]
+            f[j] <- par1[2]
+          }
         } else {
-          f[j] <- f0[1]
+          f[j] <- 0
+          theta[j] <- thetasimple[j]
         }
         
         if ((lj< kj) | (length(f0)> 0)) {           # then estimate scale at a different threshold
