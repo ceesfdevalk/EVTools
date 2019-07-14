@@ -158,7 +158,7 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
       k <- length(xglobal)
       k1 <- k-1
       b <- 1/max(par[1], 0)  #b= 1/theta
-      f <- max(-0.9, par[2])
+      f <- max(-1, par[2])
       # if (!is.na(thetaglobal)) {
       #   f <- max(-0.9, thetaglobal*b-1)
       # } else {
