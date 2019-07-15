@@ -184,7 +184,7 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
           optimout <- optim(par= par0, fn= negllWbl, x= X0[1:kj], theta0= NA, N= N, 
                             method= "Brent", lower= 0.01, upper= 1)
           thetasimple[j] <- optimout$par
-          par0 <- optimout$par
+          par0 <- thetasimple[j]
           # par0 <- c(par0, 0)
           # optimout <- try(optim(par0, negllWbl, method= "BFGS"), silent=TRUE)
           # if (class(optimout)== 'try-error') {
