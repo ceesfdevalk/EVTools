@@ -169,6 +169,7 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
       nll <- sum(y*(z/z0)^b - log(b) - (b-1)*log(z) + b*log(z0))
     }
     
+    negllWbl
     #
     # main loop
     #
