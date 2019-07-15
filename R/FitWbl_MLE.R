@@ -149,23 +149,23 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
     #
     # function to be minimized
     #
-    negllWbl <- function(par) {
+    negllWbl <- function(par, x, theta0, N) {
       #
       # negative log-likelihood of conditional Weibull distribution given the exceedance
       # of min(x), minimised for y= -log(p0) (see header)
       # par[1] is the Weibull index, par[2] is the normalised offset 
       # 
-      k <- length(xglobal)
+      k <- length(x)
       k1 <- k-1
       b <- 1/max(par[1], 0)  #b= 1/theta
-      if (!is.na(thetaglobal)) {
-        f <- max(-0.9, thetaglobal*b-1) # reasonable lower bound; not too crazy
+      if (!is.na(theta0)) {
+        f <- max(-0.9, theta0*b-1) # reasonable lower bound; not too crazy
       } else {
         f <- 0  
       }
-      z <- xglobal[1:k1]+xglobal[k]*f
-      z0 <- xglobal[k]*(1+f)
-      y <- log(Nglobal/k)
+      z <- x[1:k1]+x[k]*f
+      z0 <- x[k]*(1+f)
+      y <- log(N/k)
       nll <- sum(y*(z/z0)^b - log(b) - (b-1)*log(z) + b*log(z0))
     }
     
@@ -180,20 +180,18 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
         kj <- k[j]
         
         if (length(f0)== 0) {
-          xglobal <- X0[1:kj]
-          Nglobal <- N
-          assign("thetaglobal", NA, envir = .GlobalEnv)
           par0 <- 1
-          optimout <- optim(par0, negllWbl, method= "Brent", lower= 0.01, upper= 1)
+          optimout <- optim(par0, negllWbl, x= X0[1:kj], theta0= NA, N= N, 
+                            method= "Brent", lower= 0.01, upper= 1)
           thetasimple[j] <- optimout$par
-          assign("thetaglobal", optimout$par, envir = .GlobalEnv)
           par0 <- optimout$par
           # par0 <- c(par0, 0)
           # optimout <- try(optim(par0, negllWbl, method= "BFGS"), silent=TRUE)
           # if (class(optimout)== 'try-error') {
           #   optimout <- try(optim(par0, negllWbl, method= "Nelder-Mead"), silent=TRUE)
           # }
-          optimout <- optim(par0, negllWbl, method= "Brent", lower= 0.01, upper= 1)
+          optimout <- optim(par0, negllWbl, x= X0[1:kj], theta0= thetasimple[j], N= N, 
+                            method= "Brent", lower= 0.01, upper= 1)
           theta[j] <- optimout$par
           # if (class(optimout)!= 'try-error') {
           #   par1 <- optimout$par
