@@ -182,18 +182,18 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
         if (length(f0)== 0) {
           xglobal <- X0[1:kj]
           Nglobal <- N
-          thetaglobal <- NA
+          assign("thetaglobal", NA, envir = .GlobalEnv)
           par0 <- 1
-          optimout <- optim(par0, negllWbl, method= "Brent", lower= 0.01, upper= 10)
-          thetaglobal <- optimout$par
+          optimout <- optim(par0, negllWbl, method= "Brent", lower= 0.01, upper= 1)
           thetasimple[j] <- optimout$par
+          assign("thetaglobal", optimout$par, envir = .GlobalEnv)
           par0 <- optimout$par
           # par0 <- c(par0, 0)
           # optimout <- try(optim(par0, negllWbl, method= "BFGS"), silent=TRUE)
           # if (class(optimout)== 'try-error') {
           #   optimout <- try(optim(par0, negllWbl, method= "Nelder-Mead"), silent=TRUE)
           # }
-          optimout <- optim(par0, negllWbl, method= "Brent", lower= 0.01, upper= 10)
+          optimout <- optim(par0, negllWbl, method= "Brent", lower= 0.01, upper= 1)
           theta[j] <- optimout$par
           # if (class(optimout)!= 'try-error') {
           #   par1 <- optimout$par
