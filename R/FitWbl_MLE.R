@@ -209,7 +209,8 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
           fglobal <- f[j]
           Nglobal <- N
           xglobal <- X0[1:lj]
-          optimout <- optim(par2, negllWbl, method= "Brent", lower= 0.01, upper= 10)
+          optimout <- optim(par= par2, fn= negllWbl, x= X0[1:kj], theta0= thetasimple[j], N= N, 
+                            method= "Brent", lower= 0.01, upper= 10)
           par3 <- optimout$par
           theta[j] <- par3
         }
