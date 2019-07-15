@@ -181,7 +181,7 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
         
         if (length(f0)== 0) {
           par0 <- 1
-          optimout <- optim(par0, negllWbl, x= X0[1:kj], theta0= NA, N= N, 
+          optimout <- optim(par= par0, fn= negllWbl, x= X0[1:kj], theta0= NA, N= N, 
                             method= "Brent", lower= 0.01, upper= 1)
           thetasimple[j] <- optimout$par
           par0 <- optimout$par
@@ -190,7 +190,7 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
           # if (class(optimout)== 'try-error') {
           #   optimout <- try(optim(par0, negllWbl, method= "Nelder-Mead"), silent=TRUE)
           # }
-          optimout <- optim(par0, negllWbl, x= X0[1:kj], theta0= thetasimple[j], N= N, 
+          optimout <- optim(par= par0, fn= negllWbl, x= X0[1:kj], theta0= thetasimple[j], N= N, 
                             method= "Brent", lower= 0.01, upper= 1)
           theta[j] <- optimout$par
           # if (class(optimout)!= 'try-error') {
