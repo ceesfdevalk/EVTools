@@ -145,7 +145,7 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
     
     hill0 <- cumsum(X0[1:(mk-1)])/(1:(mk-1))-X0[2:mk]
     f <- rep(0, nl)    # needed as starting value
-    theta <- thetasimple <- rep(NA, nl)
+    theta <- thetasimple <- f <- rep(NA, nl)
     #
     # function to be minimized
     #
@@ -169,7 +169,6 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
       nll <- sum(y*(z/z0)^b - log(b) - (b-1)*log(z) + b*log(z0))
     }
     
-    negllWbl
     #
     # main loop
     #
@@ -194,6 +193,7 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
           optimout <- optim(par= par0, fn= negllWbl, x= X0[1:kj], theta0= thetasimple[j], N= N, 
                             method= "Brent", lower= 0.01, upper= 1)
           theta[j] <- optimout$par
+          f[j] <- thetasimple[j]/theta[j]-1
           # if (class(optimout)!= 'try-error') {
           #   par1 <- optimout$par
           #   theta[j] <- par1[1]
@@ -206,13 +206,11 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
         
         if ((lj< kj) | (length(f0)> 0)) {           # then estimate scale at a different threshold
           par2 <- theta[lj]
-          fglobal <- f[j]
-          Nglobal <- N
-          xglobal <- X0[1:lj]
-          optimout <- optim(par= par2, fn= negllWbl, x= X0[1:kj], theta0= thetasimple[j], N= N, 
+          optimout <- optim(par= par2, fn= negllWbl, x= X0[1:kj], theta0= NA, N= N, 
                             method= "Brent", lower= 0.01, upper= 10)
           par3 <- optimout$par
           theta[j] <- par3
+          f[j] <- 0
         }
         setTxtProgressBar(pb, j)
       }   # for j in ....
@@ -230,6 +228,7 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
       fStd= (1+f)*th[k]*sqrt(r11value/k) # ??????
       
       if (length(f0)> 0){
+        f <- rep(f0[1], nl)
         if (length(f0Std)> 0){
           fStd <- rep(f0Std[1], nl)
         } else {
