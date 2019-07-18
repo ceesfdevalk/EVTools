@@ -49,7 +49,7 @@ selectThresholdP1 <- function(theta, thetaStd, k, rthresh) {
   
   # the highly variable estimates of the index are excluded (not of interest, and noise spoils
   # the statistics of the fluctuations)
-  ind <- k> 20
+  ind <- k> 10
   k <- k[ind]
   theta <- theta[ind]
   thetaStd <- thetaStd[ind]
