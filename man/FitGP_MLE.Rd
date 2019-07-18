@@ -63,10 +63,8 @@ Pre-determined model parameters are to be supplied in the list fixedpar (see abo
         Note that f and d are defined with reference to the same unit of time!! In this case,
         r11 needs to be estimated.
             }
-  \item{if X contains only the (approximately Poisson) peak values above some threshold 
-        (i.e., you want to do a PoT analysis), then set p = f*d/EI, N = (T/d)*EI, r11= 1 
-        (note that d/EI is the mean duration of an "event" and EI/d is the 
-        mean number of "events" per unit of time estimated by EI.R).
+  \item{if X contains only N (approximately Poisson) peak values above some threshold 
+        (i.e., you want to do a PoT analysis), then set p = f*T/N, r11= 1.
              }
 }
 }

@@ -26,7 +26,8 @@ list containing the elements
 }
 \description{
 Automatic threshold selection for GW (Generalised Weibull) tail 
-             estimation, based on fluctuation statistics of the GW tail index
+             estimation, based on fluctuation statistics of the GW tail index. More efficient 
+             than selectThresholdP0
 }
 \details{
 Works together with FitGW_iHill.R and similar methods.  
