@@ -65,7 +65,7 @@ selectThresholdP1 <- function(theta, thetaStd, k, rthresh) {
   lid <- l[id]
   ll <- log(pmax(lid,3))
   lf <- log(ll)
-  slf <- sqrt(2*lf)
+  b <- sqrt(2*lf)
   nid <- length(id)
   alpha <- bias <- rep(0, nid) 
   
@@ -75,14 +75,15 @@ selectThresholdP1 <- function(theta, thetaStd, k, rthresh) {
     j= id[jj]-1
     # alpha[jj] <- max((abs(theta[1:j]-theta[j+1]))/thetaStd[1:j])/slf[jj]
     # following is a bit conservative (not quite till the end; difference does not matter in the limit)
-    alpha[jj] <- max((abs(theta[1:j]-theta[j+1])+thetaStd[j+1])/thetaStd[1:j])/slf[jj]
+    alpha[jj] <- max((abs(theta[1:j]-theta[j+1])+thetaStd[j+1])/thetaStd[1:j])
     bias[jj] <- max(abs(theta[1:j]-theta[j+1])-thetaStd[1:j]*slf[jj])
     setTxtProgressBar(pb, j)
   }
   bias <- pmax(bias,0)                # this is unbiased if nonzero! not soft-clipping
   # a <- ll^(2*(alpha-1))*sqrt(4*pi/lf)
-  a <- ll^(2*(alpha-1))*sqrt(pi/lf)   # this is for abs. value; see Darling & Erdos
-  P <- 1-exp(-1/a)                    # probability of being outside alpha
+  # a <- ll^(2*(alpha-1))*sqrt(pi/lf)   # this is for abs. value; see Darling & Erdos
+  a <- 2*exp(b*alpha)*sqrt(2*pi)/ll^2/b
+  P <- 1-exp(-2/a)                    # probability of being outside alpha
   # P[nl] <- 0                        # otherwise threshold chouce may not be defined
   
   # Pc <- rev(cummax(rev(P)))           # cumul. maximum of P from the right
