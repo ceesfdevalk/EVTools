@@ -76,7 +76,7 @@ selectThresholdP1 <- function(theta, thetaStd, k, rthresh) {
     # alpha[jj] <- max((abs(theta[1:j]-theta[j+1]))/thetaStd[1:j])/slf[jj]
     # following is a bit conservative (not quite till the end; difference does not matter in the limit)
     alpha[jj] <- max((abs(theta[1:j]-theta[j+1])+thetaStd[j+1])/thetaStd[1:j])
-    bias[jj] <- max(abs(theta[1:j]-theta[j+1])-thetaStd[1:j]*slf[jj])
+    bias[jj] <- max(abs(theta[1:j]-theta[j+1])-thetaStd[1:j]*b[jj])
     setTxtProgressBar(pb, j)
   }
   bias <- pmax(bias,0)                # this is unbiased if nonzero! not soft-clipping
