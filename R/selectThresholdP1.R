@@ -3,7 +3,8 @@
 #' @title selectThresholdP1
 #' 
 #' @description Automatic threshold selection for GW (Generalised Weibull) tail 
-#'              estimation, based on fluctuation statistics of the GW tail index
+#'              estimation, based on fluctuation statistics of the GW tail index. More efficient 
+#'              than selectThresholdP0
 #' 
 #' @param tailindex    GW tail index estimates from FitGW_iHill.R (double(nl))
 #' @param tailindexStd Standard deviation of tail index from FitGW_iHill.R (double(nl))
@@ -72,7 +73,8 @@ selectThresholdP1 <- function(theta, thetaStd, k, rthresh) {
   # for (j in (1:(nl-1))) {
   for (jj in (1:nid)) {   
     j= id[jj]-1
-    alpha[jj] <- max((abs(theta[1:j]-theta[j+1])+thetaStd[j+1])/thetaStd[1:j])/slf[jj]
+    alpha[jj] <- max((abs(theta[1:j]-theta[j+1]))/thetaStd[1:j])/slf[jj]
+    # alpha[jj] <- max((abs(theta[1:j]-theta[j+1])+thetaStd[j+1])/thetaStd[1:j])/slf[jj]
     bias[jj] <- max(abs(theta[1:j]-theta[j+1])-thetaStd[1:j]*slf[jj])
     setTxtProgressBar(pb, j)
   }
