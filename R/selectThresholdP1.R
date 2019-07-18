@@ -49,7 +49,7 @@ selectThresholdP1 <- function(theta, thetaStd, k, rthresh) {
   
   # the highly variable estimates of the index are excluded (not of interest, and noise spoils
   # the statistics of the fluctuations)
-  ind <- thetaStd< 1
+  ind <- k> 20
   k <- k[ind]
   theta <- theta[ind]
   thetaStd <- thetaStd[ind]
@@ -60,7 +60,7 @@ selectThresholdP1 <- function(theta, thetaStd, k, rthresh) {
   
   # alpha <- bias <- rep(0, nl) 
   id <- unique(round(exp((0:1.e4)*log(nl)*1.e-4)))
-  id <- id[id< nl & id>1]
+  id <- id[id< nl & id>1 & l[id]>3]   # make sure l[id]>3
   kid <- k[id]
   lid <- l[id]
   ll <- log(pmax(lid,3))
@@ -73,8 +73,9 @@ selectThresholdP1 <- function(theta, thetaStd, k, rthresh) {
   # for (j in (1:(nl-1))) {
   for (jj in (1:nid)) {   
     j= id[jj]-1
-    alpha[jj] <- max((abs(theta[1:j]-theta[j+1]))/thetaStd[1:j])/slf[jj]
-    # alpha[jj] <- max((abs(theta[1:j]-theta[j+1])+thetaStd[j+1])/thetaStd[1:j])/slf[jj]
+    # alpha[jj] <- max((abs(theta[1:j]-theta[j+1]))/thetaStd[1:j])/slf[jj]
+    # following is a bit conservative (not quite till the end; difference does not matter in the limit)
+    alpha[jj] <- max((abs(theta[1:j]-theta[j+1])+thetaStd[j+1])/thetaStd[1:j])/slf[jj]
     bias[jj] <- max(abs(theta[1:j]-theta[j+1])-thetaStd[1:j]*slf[jj])
     setTxtProgressBar(pb, j)
   }
