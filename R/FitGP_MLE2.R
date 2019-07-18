@@ -251,7 +251,7 @@ FitGP_MLE2 <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
       }
       
       # Standard deviation of X0[l] as estimator of location q(th[l])
-      X0lStd <- g*sqrt(r11value/l)/th[l]
+      X0lStd <- g*sqrt(r11value/l)
       
       # Quantile estimation
       lp= length(p)
