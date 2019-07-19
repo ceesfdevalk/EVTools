@@ -159,7 +159,7 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
       k1 <- k-1
       b <- 1/max(par[1], 0)  #b= 1/theta
       if (!is.na(theta0)) {
-        f <- 0.5*max(-0.9, theta0*b-1) # reasonable lower bound; not too crazy
+        f <- 2*max(-0.9, theta0*b-1) # reasonable lower bound; not too crazy
       } else {
         f <- 0  
       }
