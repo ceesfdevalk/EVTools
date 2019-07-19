@@ -173,34 +173,23 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
     # main loop
     #
     if (nl> 0) {
-      
       pb <- txtProgressBar(1, nl)
       for (j in (1:nl)) {
         lj <- l[j]
         
+        par0 <- 1
+        optimout <- optim(par= par0, fn= negllWbl, x= X0[1:lj], theta0= NA, N= N, 
+                          method= "Brent", lower= 0.01, upper= 1)
+        thetasimple[j] <- optimout$par
+        par0 <- thetasimple[j]
+        theta[j] <- thetasimple[j]
+        f[j] <- 0
+        
         if (length(f0)== 0) {
-          par0 <- 1
-          optimout <- optim(par= par0, fn= negllWbl, x= X0[1:lj], theta0= NA, N= N, 
-                            method= "Brent", lower= 0.01, upper= 1)
-          thetasimple[j] <- optimout$par
-          par0 <- thetasimple[j]
-          # par0 <- c(par0, 0)
-          # optimout <- try(optim(par0, negllWbl, method= "BFGS"), silent=TRUE)
-          # if (class(optimout)== 'try-error') {
-          #   optimout <- try(optim(par0, negllWbl, method= "Nelder-Mead"), silent=TRUE)
-          # }
           optimout <- optim(par= par0, fn= negllWbl, x= X0[1:lj], theta0= thetasimple[j], N= N, 
                             method= "Brent", lower= 0.01, upper= 1)
           theta[j] <- optimout$par
           f[j] <- thetasimple[j]/theta[j]-1
-          # if (class(optimout)!= 'try-error') {
-          #   par1 <- optimout$par
-          #   theta[j] <- par1[1]
-          #   f[j] <- par1[2]
-          # }
-        } else {
-          f[j] <- 0
-          theta[j] <- thetasimple[j]
         }
         setTxtProgressBar(pb, j)
       }   # for j in ....
