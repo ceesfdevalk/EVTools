@@ -177,11 +177,10 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
       pb <- txtProgressBar(1, nl)
       for (j in (1:nl)) {
         lj <- l[j]
-        kj <- k[j]
         
         if (length(f0)== 0) {
           par0 <- 1
-          optimout <- optim(par= par0, fn= negllWbl, x= X0[1:kj], theta0= NA, N= N, 
+          optimout <- optim(par= par0, fn= negllWbl, x= X0[1:lj], theta0= NA, N= N, 
                             method= "Brent", lower= 0.01, upper= 1)
           thetasimple[j] <- optimout$par
           par0 <- thetasimple[j]
@@ -190,7 +189,7 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
           # if (class(optimout)== 'try-error') {
           #   optimout <- try(optim(par0, negllWbl, method= "Nelder-Mead"), silent=TRUE)
           # }
-          optimout <- optim(par= par0, fn= negllWbl, x= X0[1:kj], theta0= thetasimple[j], N= N, 
+          optimout <- optim(par= par0, fn= negllWbl, x= X0[1:lj], theta0= thetasimple[j], N= N, 
                             method= "Brent", lower= 0.01, upper= 1)
           theta[j] <- optimout$par
           f[j] <- thetasimple[j]/theta[j]-1
@@ -203,15 +202,6 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
           f[j] <- 0
           theta[j] <- thetasimple[j]
         }
-        
-        if ((lj< kj) | (length(f0)> 0)) {           # then estimate scale at a different threshold
-          par2 <- theta[lj]
-          optimout <- optim(par= par2, fn= negllWbl, x= X0[1:kj], theta0= NA, N= N, 
-                            method= "Brent", lower= 0.01, upper= 10)
-          par3 <- optimout$par
-          theta[j] <- par3
-          f[j] <- 0
-        }
         setTxtProgressBar(pb, j)
       }   # for j in ....
       
@@ -221,12 +211,12 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
       
       # Asymptotic standard deviation of f:
       if (is.list(r11)) {
-        r11value <- approx(r11$p, r11$r, k/N, rule= 2)$y 
+        r11value <- approx(r11$p, r11$r, l/N, rule= 2)$y 
       } else {
         r11value <- r11
       }
-      fStd= (1+f)*th[k]*sqrt(r11value/k) # ??????
-      
+
+      fStd= (1+f)*th[l]*sqrt(r11value/l) # ??????      
       if (length(f0)> 0){
         f <- rep(f0[1], nl)
         if (length(f0Std)> 0){
@@ -236,13 +226,7 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
         }      
       }
       
-      if (is.list(r11)) {
-        r11value <- approx(r11$p, r11$r, l/N, rule= 2)$y 
-      } else {
-        r11value <- r11
-      }
-      
-      # Scale estimator
+      # Shape
       if (length(theta0)== 0) {
         thetaStd <- theta*th[l]*sqrt(r11value/l)  # ??????
       } else {
