@@ -209,6 +209,11 @@ FitGW_iHillpos <- function(X, p, N, r11, fixedpar, l0, sigma, indexsign, XId) {
         # # }
         # g <- hill0[l-1]/normg
         # Remember: thetas is scale of log-GW tail
+        if (is.list(r11)) {
+          r11value <- approx(r11$p, r11$r, l/N, rule= 2)$y 
+        } else {
+          r11value <- r11
+        }
         g <- thetas[l-1]*X0[l]
         logdisp <- log(g/pmax(X0[l], .0001))  # Log of dispersion coefficient
         logdispStd <- sqrt(r11value/l)  # CdV: probably good
