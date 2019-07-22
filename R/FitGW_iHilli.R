@@ -73,7 +73,7 @@
 #' @author Cees de Valk \email{ceesfdevalk@gmail.com}
 #' 
 #' @export
-FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
+FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, signindex, XId) {
   
   # Handle arguments
   if (missing(p)) {p <- NULL}
@@ -83,6 +83,7 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
   if (missing(l0)) {l0 <- NULL}
   if (missing(sigma)) {sigma <- 1}
   if (missing(XId)) {XId <- ''}
+  if (missing(signindex)) {signindex <- 0}
   
   # fixed parameters 
   theta0 <- fixedpar$theta0
@@ -158,19 +159,27 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
     
     if (nl> 0) {
       # Hill estimator
-      hill0 <- cumsum(X0[1:(mk-1)])/L[1:(mk-1)]-X0[2:mk]
+      hill0 <- cumsum(X0[1:(mk-1)])/(1:(mk-1))-X0[2:mk]
       id <- (hill0<= 0)
       if (any(id)) {hill0[id] <- min(hill0[!id])}
       
       if (length(theta0)== 0) {
-        # The mean excess and the mean excesss of its logarithm
-        hill1 <- cumsum(log(hill0[1:(mk-2)]))/L[1:(mk-2)]-log(hill0[2:(mk-1)])
         
         # u is defined as in proof of Theorem 2 of ref. 
         u <- cumsum(log(th[2:(mk-1)]))/(1:(mk-2))-log(th[3:mk])
         
-        # Simple estimator of GW index (nondimensional curvature)
-        thetaraw <- 1+hill1/u
+        # # The mean excess and the mean excesss of its logarithm
+        # hill1 <- cumsum(log(hill0[1:(mk-2)]))/(1:(mk-2))-log(hill0[2:(mk-1)])
+        # 
+        # # Simple estimator of GW index (nondimensional curvature)
+        # thetaraw <- 1+hill1/u
+        
+        # Experiment
+        g0 <- hill0[1:(mk-1)]*th[2:mk]
+        if (indexsign> 0) {g0 <- -sort(-g0)}
+        if (indexsign< 0) {g0 <- sort(g0)}
+        thetaraw <- (cumsum(log(g0[1:(mk-2)]))/(1:(mk-2))-log(g0[2:(mk-1)]))/u
+  
         kraw <- (1:(mk-2))+2
         theta <- thetaraw[k-2]
         
@@ -202,9 +211,9 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
         thetaref <- rep(NA, nl)
         for (i in 1:lg) {
           ti <- thetagrid[i]
-          temp <- cumsum(h(ti, th[1:(mk-1)]))/L[1:(mk-1)]
+          temp <- cumsum(h(ti, th[1:(mk-1)]))/(1:(mk-1))
           w <- th[2:mk]^(-ti)*temp + h(ti, 1/th[2:mk])
-          w1 <- cumsum(log(w[1:(mk-2)]))/L[1:(mk-2)]-log(w[2:(mk-1)])
+          w1 <- cumsum(log(w[1:(mk-2)]))/(1:(mk-2))-log(w[2:(mk-1)])
           
           err1 <- abs(ti + 1 - theta + w1[k-2]/u[k-2])
           id <- (err1< err)
@@ -218,7 +227,7 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
         theta <- thetaref   # the refined estimator is the output
       } else {
         ti <- theta0[1]
-        temp <- cumsum(h(ti, th[1:(mk-1)]))/L[1:(mk-1)]
+        temp <- cumsum(h(ti, th[1:(mk-1)]))/(1:(mk-1))
         w <- th[2:mk]^(-ti)*temp + h(ti, 1/th[2:mk])
         g <- hill0[l-1]/w[l-1]
       }
