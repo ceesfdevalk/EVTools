@@ -14,7 +14,7 @@
 #' @param sigma (optional) determines the ratio of k to l (double(1))
 #' @param XId (optional) data identifier to store with output for traceability (character)
 #' 
-#' @usage Value <- FitGW_iHillpos(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= 1, XId= '')
+#' @usage Value <- FitGW_iHillpos(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= 1, indexsign= 0, XId= '')
 #' 
 #' @return A list, with members: 
 #'   \item{l}{no. of order statistics used for scale and quantile estimation}    
@@ -73,7 +73,7 @@
 #' @author Cees de Valk \email{ceesfdevalk@gmail.com}
 #' 
 #' @export
-FitGW_iHillpos <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
+FitGW_iHillpos <- function(X, p, N, r11, fixedpar, l0, sigma, indexsign, XId) {
 
   # Handle arguments
   if (missing(p)) {p <- NULL}
@@ -83,6 +83,7 @@ FitGW_iHillpos <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
   if (missing(l0)) {l0 <- NULL}
   if (missing(sigma)) {sigma <- 1}
   if (missing(XId)) {XId <- ''}
+  if (missing(indexsign)) {indexsign <- 0}
   
   # fixed parameters 
   theta0 <- fixedpar$theta0
@@ -164,6 +165,8 @@ FitGW_iHillpos <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
       # Weibull index 
       normg <- cumsum(log(th[1:(mk-1)]))/(1:(mk-1))-log(th[2:mk])
       thetas <- hill0/normg
+      if (indexsign> 0) {thetas <- -sort(-thetas)}
+      if (indexsign< 0) {thetas <- sort(thetas)}
       
       if (length(theta0)== 0) {
         hill1 <- cumsum(log(thetas[1:(mk-2)]))/L[1:(mk-2)]-log(thetas[2:(mk-1)])
