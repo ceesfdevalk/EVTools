@@ -165,9 +165,9 @@ FitGW_iHillpos <- function(X, p, N, r11, fixedpar, l0, sigma, indexsign, XId) {
       # Weibull index 
       normg <- cumsum(log(th[1:(mk-1)]))/(1:(mk-1))-log(th[2:mk])
       thetas <- hill0/normg
-      if (indexsign> 0) {thetas <- -sort(-thetas)}
-      if (indexsign< 0) {thetas <- sort(thetas)}
-      
+      # if (indexsign> 0) {thetas <- -sort(-thetas)}
+      # if (indexsign< 0) {thetas <- sort(thetas)}
+      # 
       if (length(theta0)== 0) {
         hill1 <- cumsum(log(thetas[1:(mk-2)]))/L[1:(mk-2)]-log(thetas[2:(mk-1)])
         thetaraw <- thetas[2:(mk-1)] + hill1/normg[2:(mk-1)]
