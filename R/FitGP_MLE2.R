@@ -219,7 +219,7 @@ FitGP_MLE2 <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
       } else {
         r11value <- r11
       }
-      gammaStd= sqrt(r11value/k)*(1+gamma)  
+      gammaStd= sqrt(r11value/k)*abs(1+gamma)  
       
       if (length(gamma0)> 0){
         if (length(gamma0Std)> 0){
