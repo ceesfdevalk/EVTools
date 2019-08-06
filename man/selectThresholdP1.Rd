@@ -4,22 +4,24 @@
 \alias{selectThresholdP1}
 \title{selectThresholdP1}
 \usage{
-Value <- selectThresholdP1(tailindex, tailindexStd, k, rthresh)
+Value <- selectThresholdP1(tailindex, tailindexStd, k, rthresh, kmin)
 }
 \arguments{
 \item{k}{number of order statistics above the threshold for 
-estimation of tail index from FitGW_iHill.R (double(nl))}
+estimation of tail index from FitGW_iHill.R (double(n))}
 
 \item{rthresh}{(optional) ratio of the probability of nonexceedance of fluctuation 
-size to its maximum, for threshold to be accepted. Default is 0.5.}
+size to its maximum, for threshold to be accepted. Default is 0.5 (double(1))}
 
-\item{tailindex}{GW tail index estimates from FitGW_iHill.R (double(nl))}
+\item{kmin}{tailindex at k< kmin will be skipped from the analysis (double(1))}
 
-\item{tailindexStd}{Standard deviation of tail index from FitGW_iHill.R (double(nl))}
+\item{tailindex}{GW tail index estimates from FitGW_iHill.R (double(n))}
+
+\item{tailindexStd}{Standard deviation of tail index from FitGW_iHill.R (double(n))}
 }
 \value{
 list containing the elements
-  \item{i}{index in the vectors tailindex and l, representing the selected threshold}  
+  \item{i}{index in the array P (see below), representing the selected threshold}  
   \item{k}{the elements of k for which P and bias are computed}      
   \item{P}{p-values of observed fluctuation statistic}    
   \item{bias}{estimate of bias in tail index based on fluctuation statistic}

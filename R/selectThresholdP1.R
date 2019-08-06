@@ -6,17 +6,17 @@
 #'              estimation, based on fluctuation statistics of the GW tail index. More efficient 
 #'              than selectThresholdP0
 #' 
-#' @param tailindex    GW tail index estimates from FitGW_iHill.R (double(nl))
-#' @param tailindexStd Standard deviation of tail index from FitGW_iHill.R (double(nl))
+#' @param tailindex    GW tail index estimates from FitGW_iHill.R (double(n))
+#' @param tailindexStd Standard deviation of tail index from FitGW_iHill.R (double(n))
 #' @param k            number of order statistics above the threshold for 
-#'                     estimation of tail index from FitGW_iHill.R (double(nl))
+#'                     estimation of tail index from FitGW_iHill.R (double(n))
 #' @param rthresh      (optional) ratio of the probability of nonexceedance of fluctuation 
-#'                     size to its maximum, for threshold to be accepted. Default is 0.5.             
-#'  
-#' @usage Value <- selectThresholdP1(tailindex, tailindexStd, k, rthresh) 
+#'                     size to its maximum, for threshold to be accepted. Default is 0.5 (double(1))            
+#' @param kmin         tailindex at k< kmin will be skipped from the analysis (double(1))
+#' @usage Value <- selectThresholdP1(tailindex, tailindexStd, k, rthresh, kmin) 
 #' 
 #' @return list containing the elements
-#'   \item{i}{index in the vectors tailindex and l, representing the selected threshold}  
+#'   \item{i}{index in the array P (see below), representing the selected threshold}  
 #'   \item{k}{the elements of k for which P and bias are computed}      
 #'   \item{P}{p-values of observed fluctuation statistic}    
 #'   \item{bias}{estimate of bias in tail index based on fluctuation statistic}    
@@ -42,14 +42,15 @@
 #' extreme value estimation. Stoch. Process. Appl. 75, 149–172.
 #' 
 #' @export
-selectThresholdP1 <- function(theta, thetaStd, k, rthresh) {
+selectThresholdP1 <- function(theta, thetaStd, k, rthresh, kmin) {
   if (missing(rthresh)) {rthresh <- 0.5}
+  if (missing(kmin)) {kmin <- min(k)}  
   # parameter: fluctuation probability threshold
   # l <- thetaStd^(-2) # overwrite
   
   # the highly variable estimates of the index are excluded (not of interest, and noise spoils
   # the statistics of the fluctuations)
-  ind <- k> 20  # differenced estimates above this will be taken into account
+  ind <- k>= kmin  # differenced estimates above this will be taken into account
   k <- k[ind]
   theta <- theta[ind]
   thetaStd <- thetaStd[ind]
@@ -58,7 +59,8 @@ selectThresholdP1 <- function(theta, thetaStd, k, rthresh) {
   l <- k/min(k)
   nl <-  length(l)
   
-  # alpha <- bias <- rep(0, nl) 
+  # This is where we compute the fluctuation statistic (to save
+  # time, it is not done everywhere)
   id <- unique(round(exp((0:1.e4)*log(nl)*1.e-4)))
   id <- id[id< nl & id>1 & l[id]>3]   # make sure l[id]>3
   kid <- k[id]

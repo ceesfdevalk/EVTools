@@ -4,7 +4,7 @@
 \alias{FitGW_iHillpos}
 \title{FitGW_iHillpos}
 \usage{
-Value <- FitGW_iHillpos(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= 1, XId= '')
+Value <- FitGW_iHillpos(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= 1, indexsign= 0, XId= '')
 }
 \arguments{
 \item{X}{data sample (double(n))}
