@@ -214,7 +214,20 @@ FitGW_iHillpos <- function(X, p, N, r11, fixedpar, l0, sigma, indexsign, XId) {
         } else {
           r11value <- r11
         }
-        g <- thetas[l-1]*X0[l]
+        # simple(replaced)
+        # g <- thetas[l-1]*X0[l]
+        normg <- rep(0,nl)
+        # approximation (theta is rounded to a resolution of 0.01 for scale)
+        thetar <- round(theta*100)*.01
+        thetau <- unique(thetar)
+        for (i in 1:length(thetau)) {
+          ti <- thetau[i]
+          id <- thetar %in% ti
+          temp <- cumsum(h(ti, th[1:ml]))/L[1:ml]
+          normg[id] <- th[l[id]]^(-ti)*temp[l[id]-1] + h(ti, 1/th[l[id]])
+        }
+        g <- hill0[l-1]/normg    
+ 
         logdisp <- log(g/pmax(X0[l], .0001))  # Log of dispersion coefficient
         logdispStd <- sqrt(r11value/l)  # CdV: probably good
       } else {
