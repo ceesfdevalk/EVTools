@@ -58,10 +58,9 @@
 #'         r11 needs to be estimated.
 #'             }
 #'   \item{if X contains only the (approximately Poisson) peak values above some threshold 
-#'         (i.e., you want to do a PoT analysis), then set p = f*d/EI, N = (T/d)*EI, r11= 1 
-#'         (note that d/EI is the mean duration of an "event" and EI/d is the 
-#'         mean number of "events" per unit of time estimated by EI.R).
-#'              }
+#'         (i.e., you want to do a PoT analysis), then set r11= 1 and take p = f*Tpot/Npot  
+#'         with Tpot the total time spent above the threshold, and Npot the number of peaks.
+#'            }
 #' }   
 #'           
 #' @references
