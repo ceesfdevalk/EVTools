@@ -226,7 +226,7 @@ FitGW_iHillpos <- function(X, p, N, r11, fixedpar, l0, sigma, indexsign, XId) {
           temp <- cumsum(h(ti, th[1:ml]))/L[1:ml]
           normg[id] <- th[l[id]]^(-ti)*temp[l[id]-1] + h(ti, 1/th[l[id]])
         }
-        g <- hill0[l-1]/normg    
+        g <- hill0[l-1]/normg*X0[l]    
  
         logdisp <- log(g/pmax(X0[l], .0001))  # Log of dispersion coefficient
         logdispStd <- sqrt(r11value/l)  # CdV: probably good
