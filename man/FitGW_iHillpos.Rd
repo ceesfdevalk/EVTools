@@ -49,33 +49,6 @@ A list, with members:
 Fit a Generalised Weibull (GW) upper tail to the sample X and estimate quantiles; X 
 must be positive with nonzero probability.
 }
-\details{
-Pre-determined model parameters are to be supplied in the list fixedpar (see above):
- \itemize{
-  \item{$theta0: (optional) value of tailindex in case it is imposed (double(1))}
-  \item{$theta0Std: (optional) its standard deviation (double(1))}
-  \item{$logdisp0: (optional) value of log of dispersion coeff. in case it is imposed (dispersion coeff. is the raio of scale par. to location par.) (double(1))}
-  \item{$logdisp0Std: (optional) its standard deviation (double(1))}        
-  }
-   
-  The serial dependence coefficient r11 can be a positive number, or a list 
-  produced by R11.R. 
-  
-  In case a quantile is to be estimated for a \emph{frequency}, say f, and 
-  \enumerate{
-  \item{if X contains all values (possibly above some threshold), then with
-  EI an estimate of the Extremal Index from EI.R, set
-  p = f*d/EI and N = T/d, with T the length of the observation period and d the time step. 
-        Note that f and d are defined with reference to the same unit of time!! In this case,
-        r11 needs to be estimated.
-            }
-  \item{if X contains only the (approximately Poisson) peak values above some threshold 
-        (i.e., you want to do a PoT analysis), then set p = f*d/EI, N = (T/d)*EI, r11= 1 
-        (note that d/EI is the mean duration of an "event" and EI/d is the 
-        mean number of "events" per unit of time estimated by EI.R).
-             }
-}
-}
 \references{
 De Valk, C. and Cai, J.J. (2018), A high quantile estimator based on 
 the log-generalized Weibull tail limit. Econometrics and Statistics 6, 107-128, see

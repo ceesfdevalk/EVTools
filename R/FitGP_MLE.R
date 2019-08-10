@@ -53,10 +53,10 @@
 #'         Note that f and d are defined with reference to the same unit of time!! In this case,
 #'         r11 needs to be estimated.
 #'             }
-#'   \item{if X contains only the (approximately Poisson) peak values above some threshold 
-#'         (i.e., you want to do a PoT analysis), then set r11= 1 and take p = f*Tpot/Npot  
-#'         with Tpot the total time spent above the threshold, and Npot the number of peaks.
-#'            }
+#'   \item{if X contains only the n (approximately Poisson) peak values above some threshold 
+#'         (in a PoT analysis),  it is recommended to set r11= 1 and take p = f*d/EI and 
+#'         N = T/d*EI; in this case (for GP), EI can be any value; e.g. take p= fT/n and N= n.
+#'        } 
 #' }   
 #'           
 #' @references
