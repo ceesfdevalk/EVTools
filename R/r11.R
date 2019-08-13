@@ -28,18 +28,19 @@ r11 <- function(X, l= 50, ngr= 20, makeplot= FALSE) {
   sX <- -sort(-X)
   n <- length(X)
   gr <- seq(log(l), log(n), length.out= ngr)
-  pl <- matrix(NA, nrow= l, ncol= ngr)
+  pl <- matrix(0, nrow= l, ncol= ngr)
   k <- ceiling(exp(gr))
   p= k/n
+  ll <- min(l, n/k) # l must never be too large (actually o(n/k))
   for (i in 1:ngr) {
     cat(i)
     s <- sX[k[i]] 
-    for (j in 1:l) {
+    for (j in 1:ll[i]) {
       id2 <- X[1:(n-l)]> s & X[(j+1):(n-l+j)]> s
       id1 <- X[1:(n-l)]> s
-      pl[j, i] <- sum(id2)/sum(id1)
+      pl[j, i] <- sum(id2)/sum(id1) - sum(id1)/(n-l) # last term is mean; small in tail
     }
-    pl[, i] <- pl[, i]*(1-(1:l)/l)
+    pl[, i] <- pl[, i]*(1-(1:ll[i])/ll[i])
   }
   # plot((1:l),cumsum((1-(1:l)/l)*pl))
   r <- 1+2*colSums(pl)
