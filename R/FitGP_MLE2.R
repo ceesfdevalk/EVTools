@@ -175,7 +175,7 @@ FitGP_MLE2 <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
     #
     if (nl> 0) {
       
-      pb <- txtProgressBar(1, nl)
+      pb <- txtProgressBar(0, nl)
       for (j in (1:nl)) {
         lj <- l[j]
         kj <- k[j]
