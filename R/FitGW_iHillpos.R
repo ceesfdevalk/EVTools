@@ -142,6 +142,7 @@ FitGW_iHillpos <- function(X, p, N, r11, fixedpar, l0, sigma, indexsign, XId) {
     nl <- length(k)
     mk <- max(k)
     ml <- max(l)
+    m <- sum(X1> -Inf)
     
     theta <- NULL
     thetaStd <- NULL
@@ -158,12 +159,12 @@ FitGW_iHillpos <- function(X, p, N, r11, fixedpar, l0, sigma, indexsign, XId) {
     
     if (nl> 0) {
       # Hill estimator
-      hill0 <- cumsum(X1[1:(mk-1)])/(1:(mk-1))-X1[2:mk]
+      hill0 <- cumsum(X1[1:(m-1)])/(1:(m-1))-X1[2:m]
       id <- (hill0<= 0)
       if (any(id)) {hill0[id] <- min(hill0[!id])}
       
       # Weibull index 
-      normg <- cumsum(log(th[1:(mk-1)]))/(1:(mk-1))-log(th[2:mk])
+      normg <- cumsum(log(th[1:(m-1)]))/(1:(m-1))-log(th[2:m])
       thetas <- hill0/normg
       if (indexsign> 0) {thetas <- -sort(-thetas)}
       if (indexsign< 0) {thetas <- sort(thetas)}
