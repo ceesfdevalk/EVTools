@@ -149,8 +149,8 @@ FitGP_Mom <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
     #
     if (nl> 0) {
       # Empirical moments 
-      mom1 <- cumsum(X00[1:(mk-1)])/L[1:(mk-1)]-X00[2:mk]
-      mom2 <- cumsum(X00[1:(mk-1)]^2)/L[1:(mk-1)] - X00[2:mk]^2 - 2*mom1*X00[2:mk]
+      mom1 <- cumsum(X00[1:(mk-1)])/(1:(mk-1))-X00[2:mk]
+      mom2 <- cumsum(X00[1:(mk-1)]^2)/(1:(mk-1)) - X00[2:mk]^2 - 2*mom1*X00[2:mk]
       id <- pmin(mom1, mom2)<= 0
       if (any(id)) {
         mom1[id] <- min(mom1[!id])
