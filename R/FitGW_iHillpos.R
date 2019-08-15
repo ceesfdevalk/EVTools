@@ -174,6 +174,7 @@ FitGW_iHillpos <- function(X, p, N, r11, fixedpar, l0, sigma, indexsign, XId) {
         thetaraw <- thetas[2:(mk-1)] + hill1/normg[2:(mk-1)]
         kraw <- (1:(mk-2))+2
         theta <- thetaraw[k-2]
+        if (indexsign== 0) {theta <- thetas[k-1]}
         
         # Asymptotic standard deviation of theta
         if (is.list(r11)) {
