@@ -21,6 +21,8 @@ Value <- FitGW_iHillpos(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= 1, 
 
 \item{sigma}{(optional) determines the ratio of k to l (double(1))}
 
+\item{indexsign}{(optional) direction of sorting of dispersion coefficient. If 0, Weibull fit returned}
+
 \item{XId}{(optional) data identifier to store with output for traceability (character)}
 }
 \value{

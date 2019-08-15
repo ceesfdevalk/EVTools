@@ -12,6 +12,7 @@
 #' @param fixedpar (optional): fixed model parameters not to be estimated, and their standard errors (list; see Details)
 #' @param l0 (optional) value of l (no. of order stats used) in case it is imposed (integer(0))
 #' @param sigma (optional) determines the ratio of k to l (double(1))
+#' @param indexsign (optional) direction of sorting of dispersion coefficient. If 0, Weibull fit returned
 #' @param XId (optional) data identifier to store with output for traceability (character)
 #' 
 #' @usage Value <- FitGW_iHillpos(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= 1, indexsign= 0, XId= '')
