@@ -182,7 +182,8 @@ FitGW_iHillpos <- function(X, p, N, r11, fixedpar, l0, sigma, indexsign, XId) {
         } else {
           r11value <- r11
         }
-        thetarawStd= th[kraw]*sqrt(r11value/kraw)  # CdV: to be adjusted
+        # thetarawStd= th[kraw]*sqrt(r11value/kraw)  # CdV: to be adjusted
+        thetarawStd= sqrt(r11value/kraw)  # CdV: to be checked
         thetaStd= thetarawStd[k-2]
         
       } else {
