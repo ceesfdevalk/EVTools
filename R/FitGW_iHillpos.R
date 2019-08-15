@@ -216,7 +216,10 @@ FitGW_iHillpos <- function(X, p, N, r11, fixedpar, l0, sigma, indexsign, XId) {
           r11value <- r11
         }
         # scale simple
-        g <- thetas[l-1]*X0[l]
+        # sorted scale (must be biased)
+        # g <- thetas[l-1]*X0[l]
+        # unsorted scale 
+        g <- hill0[l-1]/normg[l-1]*X0[l]
         
         # scale alternative: asin FitGW_iHill.R
         # hill00 <- cumsum(X0[1:(ml-1)])/(1:(ml-1))-X0[2:ml]
