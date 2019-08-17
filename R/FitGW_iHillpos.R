@@ -13,7 +13,7 @@
 #' @param l0 (optional) value of l (no. of order stats used) in case it is imposed (integer(0))
 #' @param sigma (optional) determines the ratio of k to l (double(1))
 #' @param indexsign (optional) direction of sorting of dispersion coefficient. If 0, Weibull fit returned
-#' @param XId (optional) data identifier to store with output for traceability (character)
+#' @param metadata (optional) information about the variable and, if applicable, the time-series (list; see Details)
 #' 
 #' @usage Value <- FitGW_iHillpos(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= 1, indexsign= 0, XId= '')
 #' 
@@ -167,10 +167,10 @@ FitGW_iHillpos <- function(X, p, N, r11, fixedpar, l0, sigma, indexsign, XId) {
       # Weibull index 
       normg <- cumsum(log(th[1:(m-1)]))/(1:(m-1))-log(th[2:m])
       thetas <- hill0/normg
-      # if (indexsign> 0) {thetas <- -sort(-thetas)}
-      # if (indexsign< 0) {thetas <- sort(thetas)}
-      if (indexsign> 0) {thetas <- rev(cummax(rev(thetas)))}
-      if (indexsign< 0) {thetas <- rev(cummin(rev(thetas)))}
+      if (indexsign> 0) {thetas <- -sort(-thetas)}
+      if (indexsign< 0) {thetas <- sort(thetas)}
+      # if (indexsign> 0) {thetas <- rev(cummax(rev(thetas)))}
+      # if (indexsign< 0) {thetas <- rev(cummin(rev(thetas)))}
       
       if (length(theta0)== 0) {
         hill1 <- cumsum(log(thetas[1:(mk-2)]))/L[1:(mk-2)]-log(thetas[2:(mk-1)])
