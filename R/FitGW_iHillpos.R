@@ -62,10 +62,22 @@
 #'   \item{if X contains only the n (approximately Poisson) peak values above some threshold 
 #'         (in a PoT analysis),  it is recommended to set r11= 1 and take p = f*d/EI and 
 #'         N = T/d*EI. EI need to be estimated (see above). In this case, EI can also be 
-#'         estimated also as EI= n*d/Tt= n/nt with Tt the time spent above the threshold and 
+#'         estimatedas EI= n*d/Tt= n/nt with Tt the time spent above the threshold and 
 #'         nt the number of time-series values above the threshold. 
 #'        }   
-#'           
+#'  }
+#'  
+#'  metadata may contain the following fields (in addition to your own meta data):
+#'  \itemize{
+#'   \item{$varname: variable name}
+#'   \item{$varunit: physical unit of variable}
+#'   \item{$timeunit: time unit (e.g. year)}
+#'   \item{$timestep: time step in units of timeunit}
+#'   \item{$timelength: length of time covered by time-series, in units of timeunit} 
+#'   \item{$EI: extremal index (see above)}
+#'   \item{$nexcess (for PoT only): no. of data values (as opposed to peak values) exceeding the threshold}
+#'  }                         
+#'                           
 #' @references
 #' De Valk, C. and Cai, J.J. (2018), A high quantile estimator based on 
 #' the log-generalized Weibull tail limit. Econometrics and Statistics 6, 107-128, see

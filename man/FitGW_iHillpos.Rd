@@ -23,7 +23,7 @@ Value <- FitGW_iHillpos(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= 1, 
 
 \item{indexsign}{(optional) direction of sorting of dispersion coefficient. If 0, Weibull fit returned}
 
-\item{XId}{(optional) data identifier to store with output for traceability (character)}
+\item{metadata}{(optional) information about the variable and, if applicable, the time-series (list; see Details)}
 }
 \value{
 A list, with members: 
@@ -50,6 +50,45 @@ A list, with members:
 \description{
 Fit a Generalised Weibull (GW) upper tail to the sample X and estimate quantiles; X 
 must be positive with nonzero probability.
+}
+\details{
+Pre-determined model parameters are to be supplied in the list fixedpar (see above):
+ \itemize{
+  \item{$theta0: (optional) value of tailindex in case it is imposed (double(1))}
+  \item{$theta0Std: (optional) its standard deviation (double(1))}
+  \item{$logdisp0: (optional) value of log of dispersion coeff. in case it is imposed (dispersion coeff. is the raio of scale par. to location par.) (double(1))}
+  \item{$logdisp0Std: (optional) its standard deviation (double(1))}        
+  }
+   
+  The serial dependence coefficient r11 can be a positive number, or a list 
+  produced by R11.R. 
+  
+  In case a quantile is to be estimated for a \emph{frequency}, say f, and 
+  \enumerate{
+  \item{if X contains all values (possibly above some threshold), then with
+  EI an estimate of the Extremal Index from EI.R, set
+  p = f*d/EI and N = T/d, with T the length of the the time-series and d the time step. 
+        Note that f and d are defined with reference to the same unit of time!! In this case,
+        r11 and EI need to be estimated (e.g. using EI.R).
+       }
+  \item{if X contains only the n (approximately Poisson) peak values above some threshold 
+        (in a PoT analysis),  it is recommended to set r11= 1 and take p = f*d/EI and 
+        N = T/d*EI. EI need to be estimated (see above). In this case, EI can also be 
+        estimatedas EI= n*d/Tt= n/nt with Tt the time spent above the threshold and 
+        nt the number of time-series values above the threshold. 
+       }   
+ }
+ 
+ metadata may contain the following fields (in addition to your own meta data):
+ \itemize{
+  \item{$varname: variable name}
+  \item{$varunit: physical unit of variable}
+  \item{$timeunit: time unit (e.g. year)}
+  \item{$timestep: time step in units of timeunit}
+  \item{$timelength: length of time covered by time-series, in units of timeunit} 
+  \item{$EI: extremal index (see above)}
+  \item{$nexcess (for PoT only): no. of data values (as opposed to peak values) exceeding the threshold}
+ }
 }
 \references{
 De Valk, C. and Cai, J.J. (2018), A high quantile estimator based on 
