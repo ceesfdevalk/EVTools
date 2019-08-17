@@ -38,13 +38,16 @@ r11 <- function(X, l= 25, ngr= 20, makeplot= FALSE) {
     cat(i)
     s <- sX[k[i]] 
     for (j in 1:l) {
-      id2 <- X[1:(n-l)]> s & X[(j+1):(n-l+j)]> s
       id1 <- X[1:(n-l)]> s
-      pl[j, i] <- sum(id2)/sum(id1) - sum(id1)/(n-l) # last term is mean; small in tail
+      id2 <- X[(j+1):(n-l+j)]> s
+      # below: last term is mean value (corrects bias); small in tail. 
+      pl[j, i] <- sum(id2 & id1)/sum(id1) - sum(id2)/(n-l) 
     }
     pl[1:l, i] <- pl[1:l, i]*(1-(1:l)/l)
+    id <- which(pl[1:l, i]< 0)
+    if (!is.null(id)) {pl[id:l, i] <- 0} #reduces dependence on l and contaminating effect of seasonality
   }
-  r <- 1 + pmax(0, 2*colSums(pl))
+  r <- 1 + pmax(0, 2*colSums(pl)) 
   
   if (makeplot) {
     par(pty = "s")
