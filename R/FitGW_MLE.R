@@ -12,9 +12,9 @@
 #' @param fixedpar (optional): fixed model parameters not to be estimated, and their standard errors (list; see Details)
 #' @param l0 (optional) value of l (no. of order stats used) in case it is imposed (integer(0))
 #' @param sigma (optional) fixed algorithm parameter (see de Valk & Cai (2018) eq. (30)) (double(1)) 
-#' @param XId (optional) data identifier to store with output for traceability (character)
+#' @param metadata (optional) information about the variable and, if applicable, the time-series (list; see Details)
 #' 
-#' @usage Value <- FitGW_MLE(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= 1, XId= '')
+#' @usage Value <- FitGW_MLE(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= 1, metadata= NULL)
 #' 
 #' @return A list, with members: 
 #'   \item{l}{no. of order statistics used for scale and quantile estimation}    
@@ -62,6 +62,16 @@
 #'         nt the number of time-series values above the threshold. 
 #'        } 
 #' }   
+#'  metadata may contain the following fields (in addition to your own meta data):
+#'  \itemize{
+#'   \item{$varname: variable name}
+#'   \item{$varunit: physical unit of variable}
+#'   \item{$timeunit: time unit (e.g. year)}
+#'   \item{$timestep: time step in units of timeunit}
+#'   \item{$timelength: length of time covered by time-series, in units of timeunit} 
+#'   \item{$EI: extremal index (see above)}
+#'   \item{$nexcess (for PoT only): no. of data values (as opposed to peak values) exceeding the threshold}
+#'  }        
 #'           
 #' @references
 #' De Valk, C. and Cai, J.J. (2018), A high quantile estimator based on 
@@ -72,7 +82,7 @@
 #' @author Cees de Valk \email{ceesfdevalk@gmail.com}
 #' 
 #' @export
-FitGW_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
+FitGW_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
   
   # Handle arguments
   if (missing(p)) {p <- NULL}
@@ -81,7 +91,7 @@ FitGW_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
   if (missing(fixedpar)) {fixedpar <- NULL}
   if (missing(l0)) {l0 <- NULL}
   if (missing(sigma)) {sigma <- 1}
-  if (missing(XId)) {XId <- ''}
+  if (missing(metadata)) {metadata <-NULL}
   
   # fixed parameter 
   theta0 <- fixedpar$theta0
@@ -292,7 +302,7 @@ FitGW_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
                         "location"= X0[l], "locationStd"= X0lStd,
                         "p"= p, "quantile"= q, "quantileStd"= qStd, 
                         "orderstats"= X0, "df"= "GW", 
-                        "estimator"= "Maximum likelihood", "XId"= XId)
+                        "estimator"= "Maximum likelihood", "metadata"= metadata)
       # "estimatesBT"= estimatesBT,  # Boucheron-Thomas estimate
       # "Pfluctuation"= Pfluctuation,# fluctuation size p-value
       # "bias"= bias,                # order of magnitude of bias

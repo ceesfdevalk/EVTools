@@ -15,7 +15,7 @@
 #' @param indexsign (optional) direction of sorting of dispersion coefficient. If 0, Weibull fit returned
 #' @param metadata (optional) information about the variable and, if applicable, the time-series (list; see Details)
 #' 
-#' @usage Value <- FitGW_iHillpos(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= 1, indexsign= 0, XId= '')
+#' @usage Value <- FitGW_iHillpos(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= 1, indexsign= 0, metadata= NULL)
 #' 
 #' @return A list, with members: 
 #'   \item{l}{no. of order statistics used for scale and quantile estimation}    
@@ -66,7 +66,6 @@
 #'         nt the number of time-series values above the threshold. 
 #'        }   
 #'  }
-#'  
 #'  metadata may contain the following fields (in addition to your own meta data):
 #'  \itemize{
 #'   \item{$varname: variable name}
@@ -86,7 +85,7 @@
 #' @author Cees de Valk \email{ceesfdevalk@gmail.com}
 #' 
 #' @export
-FitGW_iHillpos <- function(X, p, N, r11, fixedpar, l0, sigma, indexsign, XId) {
+FitGW_iHillpos <- function(X, p, N, r11, fixedpar, l0, sigma, indexsign, metadata) {
 
   # Handle arguments
   if (missing(p)) {p <- NULL}
@@ -95,7 +94,7 @@ FitGW_iHillpos <- function(X, p, N, r11, fixedpar, l0, sigma, indexsign, XId) {
   if (missing(fixedpar)) {fixedpar <- NULL}
   if (missing(l0)) {l0 <- NULL}
   if (missing(sigma)) {sigma <- 1}
-  if (missing(XId)) {XId <- ''}
+  if (missing(metadata)) {metadata <-NULL}
   if (missing(indexsign)) {indexsign <- 0}
   
   # fixed parameters 
@@ -299,7 +298,7 @@ FitGW_iHillpos <- function(X, p, N, r11, fixedpar, l0, sigma, indexsign, XId) {
                       "p"= p, "quantile"= q, "quantileStd"= qStd, 
                       "tailindexraw"= thetaraw, "tailindexrawStd"= thetarawStd, "kraw"= kraw,
                       "orderstats"= X0, "df"= "GW", 
-                      "estimator"= "iterated Hill", "XId"= XId)
+                      "estimator"= "iterated Hill", "metadata"= metadata)
                       # "estimatesBT"= estimatesBT,  # Boucheron-Thomas estimate
                       # "Pfluctuation"= Pfluctuation,# fluctuation size p-value
                       # "bias"= bias,                # order of magnitude of bias

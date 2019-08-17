@@ -4,7 +4,7 @@
 \alias{FitGW_iHillpos}
 \title{FitGW_iHillpos}
 \usage{
-Value <- FitGW_iHillpos(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= 1, indexsign= 0, XId= '')
+Value <- FitGW_iHillpos(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= 1, indexsign= 0, metadata= NULL)
 }
 \arguments{
 \item{X}{data sample (double(n))}
@@ -78,7 +78,6 @@ Pre-determined model parameters are to be supplied in the list fixedpar (see abo
         nt the number of time-series values above the threshold. 
        }   
  }
- 
  metadata may contain the following fields (in addition to your own meta data):
  \itemize{
   \item{$varname: variable name}

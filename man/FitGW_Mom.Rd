@@ -4,7 +4,7 @@
 \alias{FitGW_Mom}
 \title{FitGW_Mom}
 \usage{
-Value <- FitGW_Mom(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= 1, XId= '')
+Value <- FitGW_Mom(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= 1, metadata= NULL)
 }
 \arguments{
 \item{X}{data sample (double(n))}
@@ -21,7 +21,7 @@ Value <- FitGW_Mom(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= 1, XId= 
 
 \item{sigma}{(optional) fixed algorithm parameter (see de Valk & Cai (2018) eq. (30)) (double(1))}
 
-\item{XId}{(optional) data identifier to store with output for traceability (character)}
+\item{metadata}{(optional) information about the variable and, if applicable, the time-series (list; see Details)}
 }
 \value{
 A list, with members: 
@@ -78,7 +78,17 @@ This version differs from FitGW_iHill: for small values of the index, it is less
         estimated also as EI= n*d/Tt= n/nt with Tt the time spent above the threshold and 
         nt the number of time-series values above the threshold. 
        } 
-}
+}   
+ metadata may contain the following fields (in addition to your own meta data):
+ \itemize{
+  \item{$varname: variable name}
+  \item{$varunit: physical unit of variable}
+  \item{$timeunit: time unit (e.g. year)}
+  \item{$timestep: time step in units of timeunit}
+  \item{$timelength: length of time covered by time-series, in units of timeunit} 
+  \item{$EI: extremal index (see above)}
+  \item{$nexcess (for PoT only): no. of data values (as opposed to peak values) exceeding the threshold}
+ }
 }
 \references{
 Albert, C., Dutfoy,A., Gardes, L., Girard, S. (2018), An extreme quantile estimator 

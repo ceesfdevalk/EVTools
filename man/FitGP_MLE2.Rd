@@ -4,7 +4,7 @@
 \alias{FitGP_MLE2}
 \title{FitGP_MLE2}
 \usage{
-Value <- FitGP_MLE2(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= Inf, XId= '')
+Value <- FitGP_MLE2(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= Inf, metadata= NULL)
 }
 \arguments{
 \item{X}{data sample (double(n))}
@@ -21,7 +21,7 @@ Value <- FitGP_MLE2(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= Inf, XI
 
 \item{sigma}{(optional) determines the ratio of k to l, see below (double(1))}
 
-\item{XId}{(optional) data identifier to store with output for traceability (character)}
+\item{metadata}{(optional) data identifier to store with output for traceability (character)}
 }
 \value{
 A list, with members: 
@@ -68,7 +68,17 @@ Pre-determined model parameters are to be supplied in the list fixedpar (see abo
         (in a PoT analysis),  it is recommended to set r11= 1 and take p = f*d/EI and 
         N = T/d*EI; in this case (for GP), EI can be any value; e.g. take p= fT/n and N= n.
        } 
-}
+}   
+ metadata may contain the following fields (in addition to your own meta data):
+ \itemize{
+  \item{$varname: variable name}
+  \item{$varunit: physical unit of variable}
+  \item{$timeunit: time unit (e.g. year)}
+  \item{$timestep: time step in units of timeunit}
+  \item{$timelength: length of time covered by time-series, in units of timeunit} 
+  \item{$EI: extremal index (see above)}
+  \item{$nexcess (for PoT only): no. of data values (as opposed to peak values) exceeding the threshold}
+ }
 }
 \references{
 De Haan, L. and A. Ferreira (2006), Extreme Value Theory - An Introduction. Springer.

@@ -9,9 +9,9 @@
 #' @param fixedpar (optional): fixed model parameters not to be estimated, and their standard errors (double(1) or list, see Details)
 #' @param l0 (optional) value of l (no. of order stats used) in case it is imposed (integer(0))
 #' @param sigma (optional) determines the ratio of k to l, see below (double(1))
-#' @param XId (optional) data identifier to store with output for traceability (character)
+#' @param metadata (optional) data identifier to store with output for traceability (character)
 #' 
-#' @usage Value <- FitGP_MLE2(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= Inf, XId= '')
+#' @usage Value <- FitGP_MLE2(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= Inf, metadata= NULL)
 #' 
 #' @return A list, with members: 
 #'   \item{l}{no. of order statistics used for scale and quantile estimation}    
@@ -56,14 +56,24 @@
 #'         N = T/d*EI; in this case (for GP), EI can be any value; e.g. take p= fT/n and N= n.
 #'        } 
 #' }   
-#'           
+#'  metadata may contain the following fields (in addition to your own meta data):
+#'  \itemize{
+#'   \item{$varname: variable name}
+#'   \item{$varunit: physical unit of variable}
+#'   \item{$timeunit: time unit (e.g. year)}
+#'   \item{$timestep: time step in units of timeunit}
+#'   \item{$timelength: length of time covered by time-series, in units of timeunit} 
+#'   \item{$EI: extremal index (see above)}
+#'   \item{$nexcess (for PoT only): no. of data values (as opposed to peak values) exceeding the threshold}
+#'  }        
+#'                   
 #' @references
 #' De Haan, L. and A. Ferreira (2006), Extreme Value Theory - An Introduction. Springer. 
 #
 #' @author Cees de Valk \email{ceesfdevalk@gmail.com}
 #' 
 #' @export
-FitGP_MLE2 <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
+FitGP_MLE2 <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
   
   # Handle arguments
   if (missing(p)) {p <- NULL}
@@ -72,7 +82,7 @@ FitGP_MLE2 <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
   if (missing(fixedpar)) {fixedpar <- NULL}
   if (missing(l0)) {l0 <- NULL}
   if (missing(sigma)) {sigma <- 1}
-  if (missing(XId)) {XId <- ''}
+  if (missing(metadata)) {metadata= NULL}
   
   # fixed parameter 
   gamma0 <- fixedpar$gamma0
@@ -290,7 +300,7 @@ FitGP_MLE2 <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
                         "location"= X0[l], "locationStd"= X0lStd,
                         "p"= p, "quantile"= q, "quantileStd"= qStd, 
                         "orderstats"= X0, "df"= "GP", 
-                        "estimator"= "Maximum likelihood", "XId"= XId)
+                        "estimator"= "Maximum likelihood", "metadata"= metadata)
       # "estimatesBT"= estimatesBT,  # Boucheron-Thomas estimate
       # "Pfluctuation"= Pfluctuation,# fluctuation size p-value
       # "bias"= bias,                # order of magnitude of bias
