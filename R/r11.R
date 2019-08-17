@@ -45,7 +45,7 @@ r11 <- function(X, l= 25, ngr= 20, makeplot= FALSE) {
     }
     pl[1:l, i] <- pl[1:l, i]*(1-(1:l)/l)
     id <- which(pl[1:l, i]< 0)
-    if (!is.null(id)) {pl[min(id):l, i] <- 0} #reduces dependence on l and contaminating effect of seasonality
+    if (length(id)> 0) {pl[min(id):l, i] <- 0} #reduces dependence on l and contaminating effect of seasonality
   }
   r <- 1 + pmax(0, 2*colSums(pl)) 
   
