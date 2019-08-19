@@ -10,8 +10,8 @@ Value <- selectThresholdP1(tailindex, tailindexStd, k, rthresh, kmin)
 \item{k}{number of order statistics above the threshold for 
 estimation of tail index from FitGW_iHill.R (double(n))}
 
-\item{rthresh}{(optional) ratio of the probability of nonexceedance of fluctuation 
-size to its maximum, for threshold to be accepted. Default is 0.5 (double(1))}
+\item{rthresh}{(optional) ratio(s) of the probability of nonexceedance of fluctuation 
+size to its maximum, for threshold(s) to be accepted. Default is 0.5 (double(lr))}
 
 \item{kmin}{tailindex at k< kmin will be skipped from the analysis (double(1))}
 
@@ -21,7 +21,7 @@ size to its maximum, for threshold to be accepted. Default is 0.5 (double(1))}
 }
 \value{
 list containing the elements
-  \item{i}{index in the array P (see below), representing the selected threshold}  
+  \item{i}{index(indices) in the array P (see below), representing the selected threshold(s)}  
   \item{k}{the elements of k for which P and bias are computed}      
   \item{P}{p-values of observed fluctuation statistic}    
   \item{bias}{estimate of bias in tail index based on fluctuation statistic}

@@ -10,13 +10,13 @@
 #' @param tailindexStd Standard deviation of tail index from FitGW_iHill.R (double(n))
 #' @param k            number of order statistics above the threshold for 
 #'                     estimation of tail index from FitGW_iHill.R (double(n))
-#' @param rthresh      (optional) ratio of the probability of nonexceedance of fluctuation 
-#'                     size to its maximum, for threshold to be accepted. Default is 0.5 (double(1))            
+#' @param rthresh      (optional) ratio(s) of the probability of nonexceedance of fluctuation 
+#'                     size to its maximum, for threshold(s) to be accepted. Default is 0.5 (double(lr))            
 #' @param kmin         tailindex at k< kmin will be skipped from the analysis (double(1))
 #' @usage Value <- selectThresholdP1(tailindex, tailindexStd, k, rthresh, kmin) 
 #' 
 #' @return list containing the elements
-#'   \item{i}{index in the array P (see below), representing the selected threshold}  
+#'   \item{i}{index(indices) in the array P (see below), representing the selected threshold(s)}  
 #'   \item{k}{the elements of k for which P and bias are computed}      
 #'   \item{P}{p-values of observed fluctuation statistic}    
 #'   \item{bias}{estimate of bias in tail index based on fluctuation statistic}    
@@ -96,7 +96,12 @@ selectThresholdP1 <- function(theta, thetaStd, k, rthresh, kmin) {
   # Pj <- Pj*(Pc> 0.1)
   # 
   # threshold choice a la Boucheron-Thomas, but more delicate
-  i <- max(which(P> max(P)*rthresh))              # threshold selection based on max of P
+  lr <- length(rthresh)
+  i <- rep(NA, lr)
+  for (j in 1:lr) {
+    i[j] <- max(which(P> max(P)*rthresh[j]))
+  }
+  # threshold selection based on max of P
   # i <- max(which(P> quantile(P, 0.99)*rthresh)) # threshold selection based on high quantile of P
   res <- list("i"= i, "k"= kid, "P"= P, "bias"= bias)
 }
