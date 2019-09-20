@@ -222,6 +222,7 @@ FitGP_MLE <- function(X, p, N, r11, fixedpar, l0, metadata) {
         r11value <- r11
       }
       gammaStd= sqrt(r11value/k)*abs(1+gamma)   # ??????
+      gammaStd <- rev(cummax(rev(gammaStd)))  # to avoid unrealistic small values
       
       if (length(gamma0)> 0){
         if (length(gamma0Std)> 0){
@@ -278,6 +279,7 @@ FitGP_MLE <- function(X, p, N, r11, fixedpar, l0, metadata) {
           depterm <- -2*g^2*ha*dha*(1+gamma)*r11value/l  
           var <- var + depterm
           qStd[, i]= sqrt(var)
+          qStd[, i] <- rev(cummax(rev(qStd[, i])))  # to avoid unrealistic small values     
         }
       }
       

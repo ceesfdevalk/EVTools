@@ -229,6 +229,7 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
       # Shape
       if (length(theta0)== 0) {
         thetaStd <- theta*th[l]*sqrt(r11value/l)  # ??????
+        thetaStd <- rev(cummax(rev(thetaStd)))  # to avoid unrealistic small values
       } else {
         theta <- rep(theta0[1], nl)
         if (length(theta0Std)> 0){
@@ -262,6 +263,7 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
           # theta and logdisp estimates, it may not be negligible)
           var <- X0[l]^2*(dha^2*theta^2*(1+f)^2) + (q[, i]/X0[l])^2*X0lStd^2
           qStd[, i]= sqrt(var)
+          qStd[, i] <- rev(cummax(rev(qStd[, i])))  # to avoid unrealistic small values     
         }
       }
       

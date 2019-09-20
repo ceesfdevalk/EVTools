@@ -174,6 +174,7 @@ FitGP_Mom <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
       id <- gamma<0
       gd <- gamma[id]
       gammaStd[id] <- (1-gd)*sqrt(r11value/k*(1-2*gd)*(1-gd+6*gd^2)/(1-3*gd)/(1-4*gd))
+      gammaStd <- rev(cummax(rev(gammaStd)))  # to avoid unrealistic small values
       
       if (length(gamma0)> 0){
         if (length(gamma0Std)> 0){
@@ -248,6 +249,7 @@ FitGP_Mom <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
             var[ind] <- var[ind] + depterm[ind]
           }
           qStd[, i]= sqrt(var)
+          qStd[, i] <- rev(cummax(rev(qStd[, i])))  # to avoid unrealistic small values     
         }
       }
       

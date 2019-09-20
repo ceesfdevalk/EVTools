@@ -198,6 +198,7 @@ FitGW_iHillpos <- function(X, p, N, r11, fixedpar, l0, sigma, indexsign, metadat
         thetarawStd= th[kraw]*sqrt(r11value/kraw)  # CdV: to be adjusted
         # thetarawStd= sqrt(r11value/kraw)  # CdV: to be checked
         thetaStd= thetarawStd[k-2]
+        thetaStd <- rev(cummax(rev(thetaStd)))  # to avoid unrealistic small values
         
       } else {
         theta <- rep(theta0[1], nl)
@@ -286,6 +287,7 @@ FitGW_iHillpos <- function(X, p, N, r11, fixedpar, l0, sigma, indexsign, metadat
           # theta and logdisp estimates, it may not be negligible)
           var <- g^2*(ha^2*logdispStd^2+dha^2*thetaStd^2) + X0lStd^2
           qStd[, i]= sqrt(var)
+          qStd[, i] <- rev(cummax(rev(qStd[, i])))  # to avoid unrealistic small values      
         }
       }
     }

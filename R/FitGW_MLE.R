@@ -238,7 +238,8 @@ FitGW_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
       } else {
         r11value <- r11
       }
-      thetaStd= th[k]*sqrt(r11value/k) # ??????
+      thetaStd= th[k]*sqrt(r11value/k) # ?????? must be true: very similar to FitGW_iHilli.R
+      thetaStd <- rev(cummax(rev(thetaStd)))  # to avoid unrealistic small values
       
       if (length(theta0)> 0){
         if (length(theta0Std)> 0){
@@ -292,6 +293,7 @@ FitGW_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
           # theta and logdisp estimates, it may not be negligible)
           var <- g^2*(ha^2*logdispStd^2 + dha^2*thetaStd^2) + X0lStd^2
           qStd[, i]= sqrt(var)
+          qStd[, i] <- rev(cummax(rev(qStd[, i])))  # to avoid unrealistic small values     
         }
       }
       

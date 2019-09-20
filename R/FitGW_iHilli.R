@@ -252,7 +252,6 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
       if (length(logdisp0)== 0) {
         logdisp <- log(g/pmax(X0[l], .0001))  # Log of dispersion coefficient
         logdispStd <- sqrt(r11value/l)
-        logdispStd <- rev(cummax(rev(logdispStd)))  # to avoid unrealistic small values
       } else {
         g <- X0[l]*exp(logdisp0[1])
         logdisp <- rep(logdisp0[1], nl)
@@ -265,7 +264,6 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
       
       # Standard deviation of X0[l] as estimator of location q(th[l])
       X0lStd <- hill0[l-1]*sqrt(r11value/l)
-      X0lStd <- rev(cummax(rev(X0lStd)))  # to avoid unrealistic small values
       # Quantile estimation
       lp= length(p)
       if (lp> 0) {
