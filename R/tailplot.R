@@ -163,6 +163,8 @@ tailplot <- function(params, ...) {
   points(b, mu[1]*one, col= col[i], type="o", cex= 1)
   lines(c(b-es$quantileStd[1]*qn, b+es$quantileStd[1]*qn), rep(mu[1]*one, 2), 
         col=col[i], type="o", pch="|", cex= 2, lwd= lwd)
+  lines(es$quantile-es$quantileStd*qn, mu, col= col[i], lwd= 0.5)
+  lines(es$quantile+es$quantileStd*qn, mu, col= col[i], lwd= 0.5)
   
   # plot sample curve 
   X <- -sort(-es$orderstats)
