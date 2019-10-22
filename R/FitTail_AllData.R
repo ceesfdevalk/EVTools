@@ -162,7 +162,7 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   if (max(dX%%deltaX)/deltaX< 0.1) {
     X <- X + (runif(n)-0.5)*deltaX
   }
-  X <- max(X, Xmin) # to prevent a change of range due to dithering
+  X <- pmax(X, Xmin) # to prevent a change of range due to dithering
   
   # Estimate extremal index EI and dependence coefficient r11
   EIes <- EI(X, makeplot= TRUE)
