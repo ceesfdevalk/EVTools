@@ -26,7 +26,9 @@ tailindexplot <- function(params= NULL, es= NULL) {
   qStd <- es$quantileStd[, 1]
   id <- es$l< 0.1*es$N
   ylim <- c(quantile(q[id]-qStd[id]*qn, 0.1), quantile(q[id]+qStd[id]*qn, 0.9))
-  ylim <- signif(ylim, digits= 2)          
+  ylim <- signif(ylim, digits= 2)       
+  
+  print(ylim)
   xlim <- c(10^floor(log10(min(es$l)/es$N)), 1)
   
   # plot
