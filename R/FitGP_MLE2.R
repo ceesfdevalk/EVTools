@@ -81,7 +81,7 @@ FitGP_MLE2 <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
   if (missing(r11)) {r11 <- 1}
   if (missing(fixedpar)) {fixedpar <- NULL}
   if (missing(l0)) {l0 <- NULL}
-  if (missing(sigma)) {sigma <- 1}
+  if (missing(sigma)) {sigma <- Inf}
   if (missing(metadata)) {metadata= NULL}
   
   # fixed parameter 
@@ -301,7 +301,7 @@ FitGP_MLE2 <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
                         "location"= X0[l], "locationStd"= X0lStd,
                         "p"= p, "quantile"= q, "quantileStd"= qStd, 
                         "orderstats"= X0, "df"= "GP", 
-                        "estimator"= "Maximum likelihood", "metadata"= metadata)
+                        "method"= "FitGP_MLE2", "metadata"= metadata)
       # "estimatesBT"= estimatesBT,  # Boucheron-Thomas estimate
       # "Pfluctuation"= Pfluctuation,# fluctuation size p-value
       # "bias"= bias,                # order of magnitude of bias

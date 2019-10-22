@@ -3,7 +3,8 @@
 #' @title FitGW_iHillpos
 #' 
 #' @description Fit a Generalised Weibull (GW) upper tail to the sample X and estimate quantiles; X 
-#' must be positive with nonzero probability.
+#' must be positive with nonzero probability. Optionally, index estimates are regularized by a sorting procedure
+#' (see the Details for "fixedpar")
 #' 
 #' @param X data sample (double(n))
 #' @param p probabilities of exceedance of the quantiles to be estimated (double(np))  
@@ -12,10 +13,9 @@
 #' @param fixedpar (optional): fixed model parameters not to be estimated, and their standard errors (list; see Details)
 #' @param l0 (optional) value of l (no. of order stats used) in case it is imposed (integer(0))
 #' @param sigma (optional) determines the ratio of k to l (double(1))
-#' @param indexsign (optional) direction of sorting of dispersion coefficient. If 0, Weibull fit returned
 #' @param metadata (optional) information about the variable and, if applicable, the time-series (list; see Details)
 #' 
-#' @usage Value <- FitGW_iHillpos(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= 1, indexsign= 0, metadata= NULL)
+#' @usage Value <- FitGW_iHillpos(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= Inf, metadata= NULL)
 #' 
 #' @return A list, with members: 
 #'   \item{l}{no. of order statistics used for scale and quantile estimation}    
@@ -47,6 +47,8 @@
 #'   \item{$logdisp0: (optional) value of log of dispersion coeff. in case it is imposed (dispersion coeff. is the raio of scale par. to location par.) (double(1))}
 #'   \item{$logdisp0Std: (optional) its standard deviation (double(1))}        
 #'   }
+#'   If theta0= Inf or theta0= -Inf, it is assumed that theta>0 or theta<0, respectively, triggering
+#'   regularization of the tail index estimates by a sorting procedure.  
 #'    
 #'   The serial dependence coefficient r11 can be a positive number, or a list 
 #'   produced by R11.R. 
@@ -85,7 +87,7 @@
 #' @author Cees de Valk \email{ceesfdevalk@gmail.com}
 #' 
 #' @export
-FitGW_iHillpos <- function(X, p, N, r11, fixedpar, l0, sigma, indexsign, metadata) {
+FitGW_iHillpos <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
 
   # Handle arguments
   if (missing(p)) {p <- NULL}
@@ -93,15 +95,24 @@ FitGW_iHillpos <- function(X, p, N, r11, fixedpar, l0, sigma, indexsign, metadat
   if (missing(r11)) {r11 <- 1}
   if (missing(fixedpar)) {fixedpar <- NULL}
   if (missing(l0)) {l0 <- NULL}
-  if (missing(sigma)) {sigma <- 1}
+  if (missing(sigma)) {sigma <- Inf}
   if (missing(metadata)) {metadata <-NULL}
-  if (missing(indexsign)) {indexsign <- 0}
   
-  # fixed parameters 
+  # fixed parameters and assumed sign of the tail index
   theta0 <- fixedpar$theta0
   theta0Std <- fixedpar$theta0Std
   logdisp0 <- fixedpar$logdisp0
   logdisp0Std <- fixedpar$logdisp0Std
+  indexsign <- 0
+  if (theta0== Inf) {
+    theta0 <- NULL
+    theta0Std <- NULL
+    indexsign <- 1
+  } else if (theta0== -Inf) {
+    theta0 <- NULL
+    theta0Std <- NULL
+    indexsign <- -1
+  }
   
   X <- c(X)
   n <- length(X)  
@@ -300,7 +311,7 @@ FitGW_iHillpos <- function(X, p, N, r11, fixedpar, l0, sigma, indexsign, metadat
                       "p"= p, "quantile"= q, "quantileStd"= qStd, 
                       "tailindexraw"= thetaraw, "tailindexrawStd"= thetarawStd, "kraw"= kraw,
                       "orderstats"= X0, "df"= "GW", 
-                      "estimator"= "iterated Hill", "metadata"= metadata)
+                      "method"= "FitGW_iHillpos", "metadata"= metadata)
                       # "estimatesBT"= estimatesBT,  # Boucheron-Thomas estimate
                       # "Pfluctuation"= Pfluctuation,# fluctuation size p-value
                       # "bias"= bias,                # order of magnitude of bias

@@ -290,7 +290,7 @@ FitGP_MLE <- function(X, p, N, r11, fixedpar, l0, metadata) {
                         "location"= X0[l], "locationStd"= X0lStd,
                         "p"= p, "quantile"= q, "quantileStd"= qStd, 
                         "orderstats"= X0, "df"= "GP", 
-                        "estimator"= "Maximum likelihood", "metadata"= metadata)
+                        "method"= "FitGP_MLE", "metadata"= metadata)
       # "estimatesBT"= estimatesBT,  # Boucheron-Thomas estimate
       # "Pfluctuation"= Pfluctuation,# fluctuation size p-value
       # "bias"= bias,                # order of magnitude of bias

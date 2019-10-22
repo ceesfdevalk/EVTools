@@ -71,7 +71,7 @@ FitGP_Mom <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
   if (missing(r11)) {r11 <- 1}
   if (missing(fixedpar)) {fixedpar <- NULL}
   if (missing(l0)) {l0 <- NULL}
-  if (missing(sigma)) {sigma <- 1}
+  if (missing(sigma)) {sigma <- Inf}
   if (missing(XId)) {XId <- ''}
   
   # fixed parameter 
@@ -260,7 +260,7 @@ FitGP_Mom <- function(X, p, N, r11, fixedpar, l0, sigma, XId) {
                         "location"= X0[l], "locationStd"= X0lStd,
                         "p"= p, "quantile"= q, "quantileStd"= qStd, 
                         "orderstats"= X0, "df"= "GP", 
-                        "estimator"= "Moment method", "XId"= XId)
+                        "method"= "FitGP_Mom", "XId"= XId)
       # "estimatesBT"= estimatesBT,  # Boucheron-Thomas estimate
       # "Pfluctuation"= Pfluctuation,# fluctuation size p-value
       # "bias"= bias,                # order of magnitude of bias

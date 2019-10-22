@@ -14,7 +14,7 @@
 #' @param sigma (optional) fixed algorithm parameter (see de Valk & Cai (2018) eq. (30)) (double(1)) 
 #' @param metadata (optional) information about the variable and, if applicable, the time-series (list; see Details)
 #' 
-#' @usage Value <- FitWbl_MLE(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= 1, metadata= NULL)
+#' @usage Value <- FitWbl_MLE(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= Inf, metadata= NULL)
 #' 
 #' @return A list, with members: 
 #'   \item{l}{no. of order statistics used for scale and quantile estimation}    
@@ -39,7 +39,7 @@
 #'  \itemize{
 #'   \item{$theta0: (optional) value of tailindex in case it is imposed (double(1))}
 #'   \item{$theta0Std: (optional) its standard deviation (double(1))}
-#'   \item{$fp0: (optional) value of of offset/location in case it is imposed (dispersion coeff. is the raio of scale par. to location par.) (double(1))}
+#'   \item{$f0: (optional) value of of offset/location in case it is imposed (dispersion coeff. is the raio of scale par. to location par.) (double(1))}
 #'   \item{$f0Std: (optional) its standard deviation (double(1))}        
 #'   }
 #'   
@@ -86,7 +86,7 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
   if (missing(r11)) {r11 <- 1}
   if (missing(fixedpar)) {fixedpar <- NULL}
   if (missing(l0)) {l0 <- NULL}
-  if (missing(sigma)) {sigma <- 1}
+  if (missing(sigma)) {sigma <- Inf}
   if (missing(metadata)) {metadata <-NULL}
   
   # fixed parameter 
@@ -275,7 +275,7 @@ FitWbl_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
                         "location"= X0[l], "locationStd"= X0lStd,
                         "p"= p, "quantile"= q, "quantileStd"= qStd, 
                         "orderstats"= X0, "df"= "Weibull", 
-                        "estimator"= "Maximum likelihood", "metadata"= metadata)
+                        "method"= "FitWbl_MLE", "metadata"= metadata)
       # "estimatesBT"= estimatesBT,  # Boucheron-Thomas estimate
       # "Pfluctuation"= Pfluctuation,# fluctuation size p-value
       # "bias"= bias,                # order of magnitude of bias

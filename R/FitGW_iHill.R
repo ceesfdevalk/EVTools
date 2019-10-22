@@ -13,7 +13,7 @@
 #' @param sigma (optional) determines the ratio of k to l (double(1))
 #' @param metadata (optional) information about the variable and, if applicable, the time-series (list; see Details)
 #' 
-#' @usage Value <- FitGW_iHill(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= 1, metadata= NULL)
+#' @usage Value <- FitGW_iHill(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= Inf, metadata= NULL)
 #' 
 #' @return A list, with members: 
 #'   \item{l}{no. of order statistics used for scale and quantile estimation}    
@@ -91,7 +91,7 @@ FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
   if (missing(r11)) {r11 <- 1}
   if (missing(fixedpar)) {fixedpar <- NULL}
   if (missing(l0)) {l0 <- NULL}
-  if (missing(sigma)) {sigma <- 1}
+  if (missing(sigma)) {sigma <- Inf}
   if (missing(metadata)) {metadata <-NULL}
   
   # fixed parameters 
@@ -274,7 +274,7 @@ FitGW_iHill <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
                       "p"= p, "quantile"= q, "quantileStd"= qStd, 
                       "tailindexraw"= thetaraw, "tailindexrawStd"= thetarawStd, "kraw"= kraw,
                       "orderstats"= X0, "df"= "GW", 
-                      "estimator"= "iterated Hill", "metadata"= metadata)
+                      "method"= "FitGW_iHill", "metadata"= metadata)
                       # "estimatesBT"= estimatesBT,  # Boucheron-Thomas estimate
                       # "Pfluctuation"= Pfluctuation,# fluctuation size p-value
                       # "bias"= bias,                # order of magnitude of bias
