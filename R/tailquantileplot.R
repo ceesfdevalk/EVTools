@@ -9,7 +9,7 @@ tailindexplot <- function(params= NULL, es= NULL) {
   timeunit <- metadata$timeunit
   if (is.null(timeunit)) {timeunit= "-"}
   caseId <- metadata$caseId
-  if (isnull(caseId)) {caseId <- Sys.time()}
+  if (is.null(caseId)) {caseId <- Sys.time()}
   
   pconf <- params$pconf
   if (is.null(pconf)) {pconf <- 0.9}
