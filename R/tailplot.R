@@ -55,9 +55,11 @@ tailplot <- function(params, ...) {
     
     params$order <- 1
     tailplot(params, es[[1]])
-    for (i in 2:les) {
-      params$order <- i
-      tailplot(params, es[[i]])
+    if (les> 1) {
+      for (i in 2:les) {
+        params$order <- i
+        tailplot(params, es[[i]])
+      }
     }
     return()
   }
