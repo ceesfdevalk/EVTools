@@ -50,6 +50,9 @@ tailplot <- function(params, ...) {
     
     #
     # plot the successive estimates
+    print(les)
+    print(es)
+    
     params$order <- 1
     tailplot(params, es[[1]])
     for (i in 2:les) {
