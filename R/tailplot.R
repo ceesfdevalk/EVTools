@@ -9,6 +9,8 @@ tailplot <- function(params, ...) {
   es <- list(...)
   les <- length(es)
   
+  print(les)
+  
   if (is.null(params)) {
     params <- list()
     params$order <- 0
