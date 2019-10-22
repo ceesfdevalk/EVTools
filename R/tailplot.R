@@ -71,7 +71,7 @@ tailplot <- function(params, ...) {
     timelength <- metadata$timelength
     nexcess <- metadata$nexcess    
     caseId <- metadata$caseId
-    if (isnull(caseId)) {caseId <- Sys.time()}
+    if (is.null(caseId)) {caseId <- Sys.time()}
     
     if (!is.null(timestep)) {
       timeseries <- TRUE
