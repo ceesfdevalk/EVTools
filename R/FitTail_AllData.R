@@ -81,6 +81,7 @@
 #'   \item{$pthreshold: fraction of time that value exceeds threshold (double(1))}
 #'   \item{$pthresholdmax: upper bound on pthreshold (in case pthreshold is estimated)}
 #'   \item{$indexselect: if TRUE, threshold is selected based on tail index estimates (logical, default= FALSE)} 
+#'   \item{$kmin: no. of order statistics skipped in determining threshold (integer(1)), default= 20)} 
 #'   \item{$sigma: determines the ratio of k to l ( (no. of order stats used for estimation of tail index and quantile) (double(1)}
 #'   \item{$fixedpar: fixed model parameters not to be estimated, and their standard errors (list; see below)}
 #'   \item{$plotparams: plotparameters (list) with members: $pconf (coverage probability of confidence interval), $xlim (plot limits for quantile estimates), $freqlim (plot limits for frequencies), $plim (plot limits for fractions of time)}
@@ -134,11 +135,14 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   # Estimator options
   pthreshold <- options$pthreshold
   pthresholdmax <- options$pthresholdmax
+  if (length(pthresholdmax)< 1) {pthresholdmax <- 0.5} 
   sigma <- options$sigma
   if (length(sigma)< 1) {sigma <- Inf} # to keep behaviour simple to non-expert
   fixedpar <- options$fixedpar
   indexselect <- options$indexselect
   if (length(indexselect)< 1) {indexselect <- FALSE}
+  kmin <- options$kmin
+  if (length(kmin)< 1) {kmin <- 20}
   
   # Sample size and correction for positive probability of X equal to its lower bound,
   # to prevent fitting of distribution containing an atom at its lowest value, 
