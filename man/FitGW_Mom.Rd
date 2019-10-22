@@ -4,7 +4,7 @@
 \alias{FitGW_Mom}
 \title{FitGW_Mom}
 \usage{
-Value <- FitGW_Mom(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= 1, metadata= NULL)
+Value <- FitGW_Mom(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= Inf, metadata= NULL)
 }
 \arguments{
 \item{X}{data sample (double(n))}

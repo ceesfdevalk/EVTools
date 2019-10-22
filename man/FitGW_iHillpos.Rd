@@ -4,7 +4,7 @@
 \alias{FitGW_iHillpos}
 \title{FitGW_iHillpos}
 \usage{
-Value <- FitGW_iHillpos(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= 1, indexsign= 0, metadata= NULL)
+Value <- FitGW_iHillpos(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= Inf, metadata= NULL)
 }
 \arguments{
 \item{X}{data sample (double(n))}
@@ -20,8 +20,6 @@ Value <- FitGW_iHillpos(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= 1, 
 \item{l0}{(optional) value of l (no. of order stats used) in case it is imposed (integer(0))}
 
 \item{sigma}{(optional) determines the ratio of k to l (double(1))}
-
-\item{indexsign}{(optional) direction of sorting of dispersion coefficient. If 0, Weibull fit returned}
 
 \item{metadata}{(optional) information about the variable and, if applicable, the time-series (list; see Details)}
 }
@@ -49,7 +47,8 @@ A list, with members:
 }
 \description{
 Fit a Generalised Weibull (GW) upper tail to the sample X and estimate quantiles; X 
-must be positive with nonzero probability.
+must be positive with nonzero probability. Optionally, index estimates are regularized by a sorting procedure
+(see the Details for "fixedpar")
 }
 \details{
 Pre-determined model parameters are to be supplied in the list fixedpar (see above):
@@ -59,6 +58,8 @@ Pre-determined model parameters are to be supplied in the list fixedpar (see abo
   \item{$logdisp0: (optional) value of log of dispersion coeff. in case it is imposed (dispersion coeff. is the raio of scale par. to location par.) (double(1))}
   \item{$logdisp0Std: (optional) its standard deviation (double(1))}        
   }
+  If theta0= Inf or theta0= -Inf, it is assumed that theta>0 or theta<0, respectively, triggering
+  regularization of the tail index estimates by a sorting procedure.  
    
   The serial dependence coefficient r11 can be a positive number, or a list 
   produced by R11.R. 

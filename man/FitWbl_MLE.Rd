@@ -4,7 +4,7 @@
 \alias{FitWbl_MLE}
 \title{FitWbl_MLE}
 \usage{
-Value <- FitWbl_MLE(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= 1, metadata= NULL)
+Value <- FitWbl_MLE(X, p, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= Inf, metadata= NULL)
 }
 \arguments{
 \item{X}{data sample (double(n))}
@@ -50,7 +50,7 @@ Pre-determined model parameters are to be supplied in the list fixedpar (see abo
  \itemize{
   \item{$theta0: (optional) value of tailindex in case it is imposed (double(1))}
   \item{$theta0Std: (optional) its standard deviation (double(1))}
-  \item{$fp0: (optional) value of of offset/location in case it is imposed (dispersion coeff. is the raio of scale par. to location par.) (double(1))}
+  \item{$f0: (optional) value of of offset/location in case it is imposed (dispersion coeff. is the raio of scale par. to location par.) (double(1))}
   \item{$f0Std: (optional) its standard deviation (double(1))}        
   }
   
