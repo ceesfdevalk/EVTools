@@ -1,0 +1,117 @@
+#' @name  FitlogGW
+#' 
+#' @title FitlogGW
+#' 
+#' @description Fit a log-Generalised Weibull (GW) upper tail to the sample X and estimate quantiles
+#' 
+#' @param X data sample (double(n))
+#' @param method (optional): "FitGW_iHilli","FitGW_MLE", "FitGW_Mom", "FitGW_iHill" or "FitGW_iHillpos"
+#' @param p (optional) probabilities of exceedance of the quantiles to be estimated (double(np))  
+#' @param N (optional) (effective) sample size, in case X is not complete but contains only (peak) values above some threshold (integer(1))
+#' @param r11 (optional) factor to increase estimator variance by, to account for serial dependence (default: 1) (double(1) or list, see Details)
+#' @param fixedpar (optional): fixed model parameters not to be estimated, and their standard errors (list; see Details)
+#' @param l0 (optional) value of l (no. of order stats used) in case it is imposed (integer(0))
+#' @param sigma (optional) determines the ratio of k to l (double(1))
+#' @param metadata (optional) information about the variable and, if applicable, the time-series (list; see Details)
+#' 
+#' @usage Value <- FitlogGW(X, method= "FitGW_iHilli", p= NULL, N= 0, r11= 1, fixedpar= NULL, l0= NULL, sigma= Inf, metadata= NULL)
+#' 
+#' @return A list, with members: 
+#'   \item{l}{no. of order statistics used for scale and quantile estimation}    
+#'   \item{k}{no. of order statistics used for tail index estimation} 
+#'   \item{sigma}{algorithm parameter (see ref. eq. (30))}
+#'   \item{tailindex}{estimates or imposed value of GW tail index} 
+#'   \item{tailindexStd}{standard deviations of tail index estimates}
+#'   \item{logdisp}{estimates or imposed value of log of dispersion coeff.}  
+#'   \item{logdispStd}{standard deviations of log of dispersion coeff. estimates}
+#'   \item{scale}{estimates of GW scale parameter}
+#'   \item{locationStd}{standard deviation of order statistic}
+#'   \item{lambda}{ratio of logarithms of probabilities of exceedance of quantile and threshold}  
+#'   \item{p}{probabilities of exceedance of quantiles to be estimated} 
+#'   \item{quantile}{quantile estimates}
+#'   \item{quantileStd}{standard deviations of quantile estimates}
+#'   \item{tailindexraw}{raw estimates of GW tail index over all possible thresholds (method: FitGW_iHill.R)} 
+#'   \item{tailindexrawStd}{standard deviation of tailindexraw}
+#'   \item{kraw}{no. of order statistics used for estimation of tailindexraw} 
+#'   \item{orderstats}{data X sorted (decreasing)}
+#'   \item{df}{= "GW": fitted distribution function tail (Generalised Weibull}
+#'   \item{estimator}{= "iteratedHill": see "method" below}
+#' 
+#' @details
+#'  
+#'  Pre-determined model parameters are to be supplied in the list fixedpar (see above):
+#'  \itemize{
+#'   \item{$theta0: (optional) value of tailindex in case it is imposed (double(1))}
+#'   \item{$theta0Std: (optional) its standard deviation (double(1))}
+#'   \item{$logdisp0: (optional) value of log of dispersion coeff. in case it is imposed (dispersion coeff. is the raio of scale par. to location par.) (double(1))}
+#'   \item{$logdisp0Std: (optional) its standard deviation (double(1))}        
+#'   }
+#'   
+#'   The serial dependence coefficient r11 can be a positive number, or a list 
+#'   produced by R11.R. 
+#'   
+#'   In case a quantile is to be estimated for a \emph{frequency}, say f, and 
+#'   \enumerate{
+#'   \item{if X contains all values (possibly above some threshold), then with
+#'   EI an estimate of the Extremal Index from EI.R, set
+#'   p = f*d/EI and N = T/d, with T the length of the observation period and d the time step. 
+#'         Note that f and d are defined with reference to the same unit of time!! In this case,
+#'         r11 needs to be estimated.
+#'       }
+#'   \item{if X contains only the n (approximately Poisson) peak values above some threshold 
+#'         (in a PoT analysis),  it is recommended to set r11= 1 and take p = f*d/EI and 
+#'         N = T/d*EI. EI need to be estimated (see above). In this case, EI can also be 
+#'         estimated also as EI= n*d/Tt= n/nt with Tt the time spent above the threshold and 
+#'         nt the number of time-series values above the threshold. 
+#'        } 
+#' } 
+#'  metadata may contain the following fields (in addition to your own meta data):
+#'  \itemize{
+#'   \item{$varname: variable name}
+#'   \item{$varunit: physical unit of variable}
+#'   \item{$timeunit: time unit (e.g. year)}
+#'   \item{$timestep: time step in units of timeunit}
+#'   \item{$timelength: length of time covered by time-series, in units of timeunit} 
+#'   \item{$EI: extremal index (see above)}
+#'   \item{$nexcess (for PoT only): no. of data values (as opposed to peak values) exceeding the threshold}
+#'  }                           
+#'           
+#' @references
+#' De Valk, C. and Cai, J.J. (2018), A high quantile estimator based on 
+#' the log-generalized Weibull tail limit. Econometrics and Statistics 6, 107-128, see
+#' \url{https://doi.org/10.1016/j.ecosta.2017.03.001}
+#
+#' @author Cees de Valk \email{ceesfdevalk@gmail.com}
+#' 
+#' @export
+FitlogGW <- function(X, method, p, N, r11, fixedpar, l0, sigma, metadata) {
+  
+  # Handle arguments
+  if (missing(method)) {method <- "FitGW_iHilli"}
+  if (missing(p)) {p <- NULL}
+  if (missing(N)) {N <- 0} 
+  if (missing(r11)) {r11 <- 1}
+  if (missing(fixedpar)) {fixedpar <- NULL}
+  if (missing(l0)) {l0 <- NULL}
+  if (missing(sigma)) {sigma <- Inf}
+  if (missing(metadata)) {metadata <-NULL}
+  
+  known <- grep(method, c("FitGW_iHilli","FitGW_MLE", "FitGW_Mom", 
+                          "FitGW_iHill", "FitGW_iHillpos"))
+  if (length(known)< 1) {
+    stop("Specified method is unknown to FitlogGW.R")
+  }
+  
+  logX <- log(pmax(0, X))
+  estimates <- FitGW(logX, method, p, N, r11, fixedpar, l0, sigma, metadata)
+  
+  estimates$orderstats <- -sort(-X)
+  estimates$quantile <- exp(estimates$quantile)
+  estimates$quantileStd <- estimates$quantile*estimates$quantileStd
+  
+  # "location" of log-GW is interpreted as a value of X (not of log(X))
+  estimates$location <- exp(estimates$location)
+  estimates$locationStd <-  estimates$locationStd*estimates$location
+  return(estimates)
+}
+
