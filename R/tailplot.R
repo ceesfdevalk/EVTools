@@ -10,6 +10,7 @@ tailplot <- function(params, ...) {
   les <- length(es)
   
   print(les)
+  es
   
   if (is.null(params)) {
     params <- list()
