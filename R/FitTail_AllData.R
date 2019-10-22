@@ -211,7 +211,7 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   freqs <- 10^(min(lf) + (max(lf)-min(lf))*seq(0, 1, 0.01))
   ps <- freqs*timestep/EIvalue/p0
   ps <- unique(sort(c(ps, p)))
-  ps <- max(0, min(1, ps))
+  ps <- pmax(0, pmin(1, ps))
   
   es <- get(tailfit)(X=sX[1:n], method, p=ps, N=N, r11=r11es, fixedpar= fixedpar, 
                      l0= ls, sigma= sigma, metadata= metadata)
