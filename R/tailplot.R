@@ -9,9 +9,6 @@ tailplot <- function(params, ...) {
   es <- list(...)
   les <- length(es)
   
-  print(les)
-  es
-  
   if (is.null(params)) {
     params <- list()
     params$order <- 0
@@ -50,9 +47,6 @@ tailplot <- function(params, ...) {
     
     #
     # plot the successive estimates
-    print(les)
-    print(es)
-    
     params$order <- 1
     tailplot(params, es[[1]])
     if (les> 1) {
