@@ -231,7 +231,7 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   tailplot(plotparams, es)
   
   # Plot of tail index estimates vs. l
-  tailindexplot(estimates)  
+  tailindexplot(es= estimates)  
   
   # Plot of quantile estimates vs. l for the lowest freqency
   tailquantileplot(plotparams, estimates)   
