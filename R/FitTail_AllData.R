@@ -191,12 +191,12 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   if (length(pthreshold) <1) {
     if (!indexselect) {
       Pthresh <- selectThresholdP1(estimates$quantile[, 1], estimates$quantileStd[, 1], estimates$l, 
-                                   rthresh, kmin= kmin) 
+                                   0.9, kmin= kmin) 
       li <- Pthresh$k[Pthresh$i]
       iselect <- which(estimates$l== li)
     } else {
       Pthresh <- selectThresholdP1(estimates$tailindex, estimates$tailindexStd, estimates$k, 
-                                   rthresh, kmin= kmin)
+                                   0.5, kmin= kmin)
       ki <- Pthresh$k[Pthresh$i]
       iselect <- which(estimates$k== ki)
     }  
