@@ -237,5 +237,5 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   # Plot of quantile estimates vs. l for the lowest freqency
  #  tailquantileplot(plotparams, estimates)   
 
-  return(es)
+  return(estimates)
 }
