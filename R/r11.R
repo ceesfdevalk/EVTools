@@ -35,7 +35,7 @@ r11 <- function(X, l= 25, ngr= 20, makeplot= FALSE) {
   p= k/n
   
   for (i in 1:ngr) {
-    cat(i)
+    # cat(i)
     s <- sX[k[i]] 
     for (j in 1:l) {
       id1 <- X[1:(n-l)]> s

@@ -39,7 +39,7 @@ EI <- function(X, l= 50, ngr= 20, makeplot= FALSE) {
   EIFS <- rep(NA, ngr)
   
   for (i in 1:ngr) {
-    cat(i)
+    # cat(i)
     s <- sX[k[i]] 
 
     # simple upcrossing count    
@@ -62,7 +62,7 @@ EI <- function(X, l= 50, ngr= 20, makeplot= FALSE) {
   
   if (makeplot) {
     par(pty = "s")
-    title <- "Naive: circle; Ferro-Segers: triangle"
+    title <- "Extremal Index naive: circle; Ferro-Segers: triangle"
     plot(p, EIupcross, log= 'x', ylim= c(0, 1), 
          main= title, xlab= "sample fraction", ylab= "Extremal Index")
     points(p, EIFS, pch= 2)
