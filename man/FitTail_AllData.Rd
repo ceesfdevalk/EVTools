@@ -48,54 +48,6 @@ In addition, several plots are produced:
 \description{
 Fit a parametric tail to the values of a time-series and estimate quantiles
 }
-\details{
-Pre-determined model parameters are to be supplied in the list fixedpar (see above):
- \itemize{
-  \item{$theta0: (optional) value of tailindex in case it is imposed (double(1))}
-  \item{$theta0Std: (optional) its standard deviation (double(1))}
-  \item{$logdisp0: (optional) value of log of dispersion coeff. in case it is imposed (dispersion coeff. is the raio of scale par. to location par.) (double(1))}
-  \item{$logdisp0Std: (optional) its standard deviation (double(1))}        
-  }
-  
-  The serial dependence coefficient r11 can be a positive number, or a list 
-  produced by R11.R. 
-  
-  In case a quantile is to be estimated for a \emph{frequency}, say f, and 
-  \enumerate{
-  \item{if X contains all values (possibly above some threshold), then with
-  EI an estimate of the Extremal Index from EI.R, set
-  p = f*d/EI and N = T/d, with T the length of the observation period and d the time step. 
-        Note that f and d are defined with reference to the same unit of time!! In this case,
-        r11 needs to be estimated.
-      }
-  \item{if X contains only the n (approximately Poisson) peak values above some threshold 
-        (in a PoT analysis),  it is recommended to set r11= 1 and take p = f*d/EI and 
-        N = T/d*EI. EI need to be estimated (see above). In this case, EI can also be 
-        estimated also as EI= n*d/Tt= n/nt with Tt the time spent above the threshold and 
-        nt the number of time-series values above the threshold. 
-       } 
-} 
- metadata may contain the following fields (in addition to your own meta data):
- \itemize{
-  \item{$varname: variable name}
-  \item{$varunit: physical unit of variable}
-  \item{$timeunit: time unit (e.g. year)}
-  \item{$timestep: time step in units of timeunit}
-  \item{$timelength: length of time covered by time-series, in units of timeunit} 
-  \item{$nexcess (for PoT only): no. of data values (as opposed to peak values) exceeding the threshold}
- }  
- 
- options may contain the following fields:
- \itemize{
-  \item{$pthreshold: fraction of time that value exceeds threshold (double(1))}
-  \item{$pthresholdmax: upper bound on pthreshold (in case pthreshold is estimated)}
-  \item{$indexselect: if TRUE, threshold is selected based on tail index estimates (logical, default= FALSE)} 
-  \item{$kmin: no. of order statistics skipped in determining threshold (integer(1)), default= 20)} 
-  \item{$sigma: determines the ratio of k to l ( (no. of order stats used for estimation of tail index and quantile) (double(1)}
-  \item{$fixedpar: fixed model parameters not to be estimated, and their standard errors (list; see below)}
-  \item{$plotparams: plotparameters (list) with members: $pconf (coverage probability of confidence interval), $xlim (plot limits for quantile estimates), $freqlim (plot limits for frequencies), $plim (plot limits for fractions of time)}
- }
-}
 \references{
 De Valk, C. and Cai, J.J. (2018), A high quantile estimator based on 
 the log-generalized Weibull tail limit. Econometrics and Statistics 6, 107-128, see
