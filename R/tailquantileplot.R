@@ -60,7 +60,7 @@ tailquantileplot <- function(params= NULL, es= NULL) {
   lines(es$l/es$N, q - qStd*qn, lwd= 1) 
   if (length(es$selected)> 0) {
     lines(es$selected$l/es$selected$N*c(1,1), ylim, lty= 2) 
-    points(es$selected$l/es$selected$N, es$selected$quantile[1], lty= 2)
+    # points(es$selected$l/es$selected$N, es$selected$quantile[1], lty= 2)
   }
   
   grid()

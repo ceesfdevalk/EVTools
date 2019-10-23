@@ -53,7 +53,7 @@ tailindexplot <- function(params= NULL, es= NULL) {
   lines(es$l/es$N, es$tailindex - es$tailindexStd*qn, lwd= 1) 
   if (length(es$selected)> 0) {
     lines(es$selected$l/es$selected$N*c(1,1), ylim, lty= 2) 
-    points(es$selected$l/es$selected$N, es$selected$tailindex, lty= 2)
+    # points(es$selected$l/es$selected$N, es$selected$tailindex, lty= 2)
   }
   grid()
 } # klaar
