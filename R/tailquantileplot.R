@@ -1,6 +1,6 @@
 # Plot of tail index estimates 
 # with confidence interval
-tailindexplot <- function(params= NULL, es= NULL) {
+tailquantileplot <- function(params= NULL, es= NULL) {
   if (length(es)< 1) {stop("Need data to plot.")}
   lwd <- 2
   metadata <- es$metadata
@@ -16,7 +16,7 @@ tailindexplot <- function(params= NULL, es= NULL) {
   qn <- abs(qnorm((1-params$pconf)/2)) # half width of normal confidence interval
   
   # axis labels 
-  ylab <- paste(es$df, "tail index")
+  ylab <- paste(es$df, "tail quantile")
   xlab <- paste("sample fraction for quantile estimate")
   title <- paste(es$df, " quantile of ", varname, " at freq. ", freq[1], "/", timeunit,  
                  ", case: ", caseId, sep= "")
