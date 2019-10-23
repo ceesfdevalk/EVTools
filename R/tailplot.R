@@ -179,9 +179,9 @@ tailplot <- function(params, ...) {
     plot(es$quantile, mu, type= "l", log= "y", 
          xlim= xlim, ylim= ylim, col= col[i], lwd= lwd, 
          xlab= xlab, ylab= ylab, main= title,
-         xaxp= c(xlim, diff(xlim)), yaxp= c(ylim, 3), tck = 1)
+         xaxp= c(xlim, diff(xlim)), yaxp= c(ylim, 3)) #, tck = 1)
     # grid(ny= diff(ylim))
-    # grid()
+    grid()
   } else {
     lines(es$quantile, mu, col= col[i], lwd= lwd)
   }

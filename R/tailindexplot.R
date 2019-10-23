@@ -5,9 +5,9 @@
 #' @description # Plot of tail index estimates with confidence interval  
 #' 
 #' @param params (optional) list (see below)
-#' @param estimates list containing tail estimates from a single sample 
+#' @param es list containing tail estimates from a single sample 
 #' 
-#' @usage tailindexplot(params, estimates)
+#' @usage tailindexplot(params, es)
 #' 
 #' @return A plot file (.png)
 #' 
@@ -19,9 +19,9 @@
 #' @author Cees de Valk \email{ceesfdevalk@gmail.com}
 #' 
 #' @export  
-tailindexplot <- function(params= NULL, estimates= NULL) {
+tailindexplot <- function(params= NULL, es= NULL) {
   lwd <- 2
-  metadata <- estimates$metadata
+  metadata <- es$metadata
   caseId <- metadata$caseId
   if (is.null(caseId)) {caseId <- Sys.time()}
   varname <- as.character(metadata$varname)
@@ -31,25 +31,29 @@ tailindexplot <- function(params= NULL, estimates= NULL) {
   qn <- abs(qnorm((1-pconf)/2)) # half width of normal confidence interval
   
   # axis labels 
-  ylab <- paste(estimates$df, "tail index")
+  ylab <- paste(es$df, "tail index")
   xlab <- paste("sample fraction for quantile estimate")
-  title <- paste(estimates$df, " tail index", ", case: ", caseId, sep= "")
+  title <- paste(es$df, " tail index", ", case: ", caseId, sep= "")
   
-  med <- median(estimates$tailindex[estimates$l< 0.1*estimates$N])
+  med <- median(es$tailindex[es$l< 0.1*es$N])
   ylim <- 0.5*round(med/0.5)+c(-1, 1)
   
   print("ylim:")
   print(ylim)
   
-  xlim <- c(10^floor(log10(min(estimates$l)/estimates$N)), 1)
+  xlim <- c(10^floor(log10(min(es$l)/es$N)), 1)
   
   # plot
   par(pty= 's')
-  plot(estimates$l/estimates$N, estimates$tailindex, type= "l", log= "x", 
+  plot(es$l/es$N, es$tailindex, type= "l", log= "x", 
        xlim= xlim, ylim= ylim,  lwd= lwd, 
        xlab= xlab, ylab= ylab, main= title,
-       yaxp= c(ylim, diff(ylim)*10), tck = 1)
-  lines(estimates$l/estimates$N, estimates$tailindex + estimates$tailindexStd*qn, lwd= 1) 
-  lines(estimates$l/estimates$N, estimates$tailindex - estimates$tailindexStd*qn, lwd= 1) 
-  # grid()
+       yaxp= c(ylim, diff(ylim)*10)) #, tck = 1)
+  lines(es$l/es$N, es$tailindex + es$tailindexStd*qn, lwd= 1) 
+  lines(es$l/es$N, es$tailindex - es$tailindexStd*qn, lwd= 1) 
+  if (length(es$selected)> 0) {
+    lines(es$selected$l/es$selected$N*c(1,1), ylim, lty= 2) 
+    points(es$selected$l/es$selected$N, es$selected$tailindex, lty= 2)
+  }
+  grid()
 } # klaar
