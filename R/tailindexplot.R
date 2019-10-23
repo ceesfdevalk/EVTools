@@ -1,6 +1,24 @@
-# Plot of tail estimates for the two datasets, 
-# with confidence interval at return period of 10 years 
-# params: order, pconf,  
+#' @name  tailindexplot
+#' 
+#' @title tailindexplot
+#' 
+#' @description # Plot of tail index estimates with confidence interval  
+#' 
+#' @param params (optional) list (see below)
+#' @param estimates list containing tail estimates from a single sample 
+#' 
+#' @usage tailindexplot(params, es1, es2, ...)
+#' 
+#' @return A plot file (.png)
+#' 
+#' @details The parameter list params may contain:
+#'  \itemize{
+#'   \item{$pconf: coverage probability of confidence interval (0.9 by default) (double(1))}
+#'   }
+#
+#' @author Cees de Valk \email{ceesfdevalk@gmail.com}
+#' 
+#' @export  
 tailindexplot <- function(params= NULL, estimates= NULL) {
   lwd <- 2
   metadata <- estimates$metadata

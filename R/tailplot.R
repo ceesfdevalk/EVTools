@@ -7,13 +7,13 @@
 #' @param params (optional) list (see below)
 #' @param ... one or several lists es1, es2, ..., each containing a tail estimate to be plotted 
 #' 
-#' @usage tailplot <- function(params, es1, es2, ...)
+#' @usage  tailplot(params, es1, es2, ...)
 #' 
 #' @return A plot file (.png)
 #' 
 #' @details The parameter list params may contain:
 #'  \itemize{
-#'   \item{$pconf: coverage probability of confidence interval (double(1))}
+#'   \item{$pconf: coverage probability of confidence interval (0.9 by default) (double(1))}
 #'   \item{$xlim: plot limits for quantile estimates (double(2))}
 #'   \item{$freqlim: plot limits for frequency (double(2))}
 #'   \item{$plim: plot limits for fraction of time as alterantive to $freqlim (double(2))}        
