@@ -16,9 +16,9 @@ tailquantileplot <- function(params= NULL, es= NULL) {
   qn <- abs(qnorm((1-params$pconf)/2)) # half width of normal confidence interval
   
   # axis labels 
-  ylab <- paste(es$df, "tail quantile")
+  ylab <- paste(varname, " [", varunit, "]", sep= "")
   xlab <- paste("sample fraction for quantile estimate")
-  title <- paste(es$df, " quantile of ", varname, " at freq. ", freq[1], "/", timeunit,  
+  title <- paste(es$df, " quantile", " at freq. ", freq[1], "/", timeunit,  
                  ", case: ", caseId, sep= "")
   
   freq <- es$freq[1]
