@@ -235,7 +235,7 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
     # Plot P-value
     fname <- paste("ThresholdP-", genname, ".png", sep= "")
     png(filename= fname,units="in", width=5*fac, height=5*fac, res=72)
-    thresholdplot(es)
+    thresholdplot(estimates)
     dev.off()
   }
   
