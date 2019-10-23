@@ -28,7 +28,7 @@ thresholdplot <- function(params= NULL, es= NULL) {
   
   ylim <- c(0, 1)
   xlim <- c(10^floor(log10(min(es$l)/es$N)), 1)
-  lP <- approx(es$l, es$k, es$threshold$k, rule= 2)$y
+  lP <- approx(es$k, es$l, es$threshold$k, rule= 2)$y
 
   # plot
   par(pty= 's')
