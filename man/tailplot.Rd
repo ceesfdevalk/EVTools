@@ -4,12 +4,12 @@
 \alias{tailplot}
 \title{tailplot}
 \usage{
-tailplot <- function(params, es1, es2, ...)
+tailplot(params, es1, es2, ...)
 }
 \arguments{
 \item{params}{(optional) list (see below)}
 
-\item{...}{one or several lists es1, es2, ... containing tail estimates to be plotted}
+\item{...}{one or several lists es1, es2, ..., each containing a tail estimate to be plotted}
 }
 \value{
 A plot file (.png)
@@ -20,7 +20,7 @@ A plot file (.png)
 \details{
 The parameter list params may contain:
  \itemize{
-  \item{$pconf: coverage probability of confidence interval (double(1))}
+  \item{$pconf: coverage probability of confidence interval (0.9 by default) (double(1))}
   \item{$xlim: plot limits for quantile estimates (double(2))}
   \item{$freqlim: plot limits for frequency (double(2))}
   \item{$plim: plot limits for fraction of time as alterantive to $freqlim (double(2))}        
