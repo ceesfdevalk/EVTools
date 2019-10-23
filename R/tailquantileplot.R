@@ -32,7 +32,7 @@ tailquantileplot <- function(params= NULL, es= NULL) {
   
   pconf <- params$pconf
   if (is.null(pconf)) {pconf <- 0.9}
-  qn <- abs(qnorm((1-params$pconf)/2)) # half width of normal confidence interval
+  qn <- abs(qnorm((1-pconf)/2)) # half width of normal confidence interval
   
   # axis labels 
   ylab <- paste(varname, " [", varunit, "]", sep= "")
@@ -44,7 +44,7 @@ tailquantileplot <- function(params= NULL, es= NULL) {
   q <- es$quantile[, 1]
   qStd <- es$quantileStd[, 1]
   id <- es$l< 0.1*es$N
-  ylim <- c(quantile(q[id]-qStd[id]*qn, 0.1), quantile(q[id]+qStd[id]*qn, 0.9))
+  ylim <- c(quantile(q[id]-qStd[id]*qn, 0.05), quantile(q[id]+qStd[id]*qn, 0.95))
   ylim <- signif(ylim, digits= 2)       
   
   print(ylim)
@@ -54,8 +54,9 @@ tailquantileplot <- function(params= NULL, es= NULL) {
   par(pty= 's')
   plot(es$l/es$N, q, type= "l", log= "x", 
        xlim= xlim, ylim= ylim,  lwd= lwd, 
-       xlab= xlab, ylab= ylab, main= title)
+       xlab= xlab, ylab= ylab, main= title,
+       yaxp= c(ylim, diff(ylim)),  tck = 1)
   lines(es$l/es$N, q + qStd*qn, lwd= 1) 
   lines(es$l/es$N, q - qStd*qn, lwd= 1) 
-  grid()
+  # grid()
 } # klaar
