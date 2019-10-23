@@ -48,23 +48,7 @@
 #'   \item{$logdisp0Std: (optional) its standard deviation (double(1))}        
 #'   }
 #'   
-#'   The serial dependence coefficient r11 can be a positive number, or a list 
-#'   produced by R11.R. 
-#'   
-#'   In case a quantile is to be estimated for a \emph{frequency}, say f, and 
-#'   \enumerate{
-#'   \item{if X contains all values (possibly above some threshold), then with
-#'   EI an estimate of the Extremal Index from EI.R, set
-#'   p = f*d/EI and N = T/d, with T the length of the observation period and d the time step. 
-#'         Note that f and d are defined with reference to the same unit of time!! In this case,
-#'         r11 needs to be estimated.
-#'       }
-#'   \item{if X contains only the n (approximately Poisson) peak values above some threshold 
-#'         (in a PoT analysis),  it is recommended to set r11= 1 and take p = f*d/EI and 
-#'         N = T/d*EI. EI need to be estimated (see above). In this case, EI can also be 
-#'         estimated also as EI= n*d/Tt= n/nt with Tt the time spent above the threshold and 
-#'         nt the number of time-series values above the threshold. 
-#'        } 
+
 #' } 
 #'  metadata may contain the following fields (in addition to your own meta data):
 #'  \itemize{
@@ -84,7 +68,7 @@
 #'   \item{$kmin: no. of order statistics skipped in determining threshold (integer(1)), default= 20)} 
 #'   \item{$sigma: determines the ratio of k to l ( (no. of order stats used for estimation of tail index and quantile) (double(1)}
 #'   \item{$fixedpar: fixed model parameters not to be estimated, and their standard errors (list; see below)}
-#'   \item{$plotparams: plotparameters (list) with members: $pconf (coverage probability of confidence interval), $xlim (plot limits for quantile estimates), $freqlim (plot limits for frequencies), $plim (plot limits for fractions of time)}
+#'   \item{$plotparams: plotparameters (list) with members: $plot (default= TRUE), $pconf (coverage probability of confidence interval), $xlim (plot limits for quantile estimates), $freqlim (plot limits for frequencies), $plim (plot limits for fractions of time)}
 #'  }                                
 #'                                        
 #' @references
@@ -228,14 +212,17 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   # Plotting
   plotparams <- options$plotparams
   
-  # Plot of tail fit
-  tailplot(plotparams, es)
+  if (is.null(plotparams$plot)) {plotparams$plot <- TRUE}
+  if (plotparams$plot) {
+    # Plot of tail fit
+    tailplot(plotparams, es)
+    
+    # Plot of tail index estimates vs. l
+    tailindexplot(es= estimates)  
+    
+    # Plot of quantile estimates vs. l for the lowest freqency
+    tailquantileplot(plotparams, estimates) 
+  }
   
-  # Plot of tail index estimates vs. l
-  tailindexplot(es= estimates)  
-  
-  # Plot of quantile estimates vs. l for the lowest freqency
- #  tailquantileplot(plotparams, estimates)   
-
   return(estimates)
 }
