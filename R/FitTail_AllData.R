@@ -99,7 +99,10 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   
   # Ensure that metadata exists and contains a unique identifier
   if (missing(metadata)) {
-    metadata <- list(caseId= Sys.time())
+    metadata <- NULL
+  }
+  if (is.null(metadata$caseId)) {
+    metadata$caseId <- Sys.time()
   }
   
   # Specify estimator with corresponding options
@@ -149,8 +152,8 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   X <- pmax(X, Xmin) # to prevent a change of range due to dithering
   
   # Estimate extremal index EI and dependence coefficient r11
-  EIes <- EI(X, makeplot= TRUE)
-  r11es <- r11(X, makeplot= TRUE)
+  EIes <- EI(X, makeplot= FALSE)
+  r11es <- r11(X, makeplot= FALSE)
   
   # Convert frequency to fraction of time p
   EIvalue <- max(EIes$EIFS[1:3]) 
@@ -210,18 +213,36 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   estimates$selected <- es
   
   # Plotting
+  fac <- 1.2
   plotparams <- options$plotparams
   
   if (is.null(plotparams$plot)) {plotparams$plot <- TRUE}
   if (plotparams$plot) {
     # Plot of tail fit
+    genname <- paste(estimates$df, "-", metadata$varname, "-", metadata$caseId, sep= "")
+    
+    fname <- paste("Tail-", genname, ".png", sep= "")
+    png(filename= fname,units="in", width=5*fac, height=5*fac, res=72)
     tailplot(plotparams, es)
+    dev.off()
     
     # Plot of tail index estimates vs. l
+    name <- paste("Tailindex-", genname, ".png", sep= "")
+    png(filename= fname,units="in", width=5*fac, height=5*fac, res=72)
     tailindexplot(es= estimates)  
+    dev.off()
     
     # Plot of quantile estimates vs. l for the lowest freqency
+    name <- paste("Quantile-", genname, ".png", sep= "")
+    png(filename= fname,units="in", width=5*fac, height=5*fac, res=72)
     tailquantileplot(plotparams, estimates) 
+    dev.off()
+    
+    # Plot P-value  
+    # name <- paste("ThresholdP-", genname, ".png", sep= "")
+    # png(filename= fname,units="in", width=5*fac, height=5*fac, res=72)
+    # thresholdplot(es)
+    # dev.off()
   }
   
   return(estimates)
