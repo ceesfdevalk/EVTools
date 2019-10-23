@@ -47,8 +47,9 @@ tailindexplot <- function(params= NULL, estimates= NULL) {
   par(pty= 's')
   plot(estimates$l/estimates$N, estimates$tailindex, type= "l", log= "x", 
        xlim= xlim, ylim= ylim,  lwd= lwd, 
-       xlab= xlab, ylab= ylab, main= title)
+       xlab= xlab, ylab= ylab, main= title,
+       yaxp= c(ylim, diff(ylim)*10), tck = 1)
   lines(estimates$l/estimates$N, estimates$tailindex + estimates$tailindexStd*qn, lwd= 1) 
   lines(estimates$l/estimates$N, estimates$tailindex - estimates$tailindexStd*qn, lwd= 1) 
-  grid()
+  # grid()
 } # klaar
