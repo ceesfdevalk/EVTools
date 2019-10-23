@@ -221,7 +221,7 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
     genname <- paste(estimates$df, "-", metadata$varname, "-", metadata$caseId, sep= "")
     
     fname <- paste("Tail-", genname, ".png", sep= "")
-    png(filename= fname,units="in", width=10*fac, height=10*fac, res=72)
+    png(filename= fname,units="in", width=7.5*fac, height=7.5*fac, res=72)
     tailplot(plotparams, es)
     dev.off()
     
