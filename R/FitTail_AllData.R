@@ -48,7 +48,6 @@
 #'   \item{$logdisp0Std: (optional) its standard deviation (double(1))}        
 #'   }
 #'   
-
 #' } 
 #'  metadata may contain the following fields (in addition to your own meta data):
 #'  \itemize{
@@ -227,19 +226,19 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
     dev.off()
     
     # Plot of tail index estimates vs. l
-    name <- paste("Tailindex-", genname, ".png", sep= "")
+    fname <- paste("Tailindex-", genname, ".png", sep= "")
     png(filename= fname,units="in", width=5*fac, height=5*fac, res=72)
     tailindexplot(es= estimates)  
     dev.off()
     
     # Plot of quantile estimates vs. l for the lowest freqency
-    name <- paste("Quantile-", genname, ".png", sep= "")
+    fname <- paste("Quantile-", genname, ".png", sep= "")
     png(filename= fname,units="in", width=5*fac, height=5*fac, res=72)
     tailquantileplot(plotparams, estimates) 
     dev.off()
     
     # Plot P-value  
-    # name <- paste("ThresholdP-", genname, ".png", sep= "")
+    # fname <- paste("ThresholdP-", genname, ".png", sep= "")
     # png(filename= fname,units="in", width=5*fac, height=5*fac, res=72)
     # thresholdplot(es)
     # dev.off()
