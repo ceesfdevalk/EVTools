@@ -46,8 +46,6 @@ tailquantileplot <- function(params= NULL, es= NULL) {
   id <- es$l< 0.1*es$N
   ylim <- c(quantile(q[id]-qStd[id]*qn, 0.05), quantile(q[id]+qStd[id]*qn, 0.95))
   ylim <- signif(ylim, digits= 2)       
-  
-  print(ylim)
   xlim <- c(10^floor(log10(min(es$l)/es$N)), 1)
   
   # plot
