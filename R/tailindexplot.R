@@ -37,6 +37,10 @@ tailindexplot <- function(params= NULL, estimates= NULL) {
   
   med <- median(estimates$tailindex[estimates$l< 0.1*estimates$N])
   ylim <- 0.5*round(med/0.5)+c(-1, 1)
+  
+  print("ylim:")
+  print(ylim)
+  
   xlim <- c(10^floor(log10(min(estimates$l)/estimates$N)), 1)
   
   # plot
