@@ -5,7 +5,7 @@
 #' @description # Plot of tail estimates for one or several samples, with confidence interval  
 #' 
 #' @param params (optional) list (see below)
-#' @param ... one or several lists es1, es2, ... containing tail estimates to be plotted 
+#' @param ... one or several lists es1, es2, ..., each containing a tail estimate to be plotted 
 #' 
 #' @usage tailplot <- function(params, es1, es2, ...)
 #' 
@@ -29,6 +29,12 @@ tailplot <- function(params, ...) {
   # data of estimates to be plotted 
   es <- list(...)
   les <- length(es)
+  
+  for (j in 1:les) {
+    if (!is.null(es[[j]]$selected)) {
+      es[[j]] <- es[[j]]$selected
+    }
+  }
   
   if (is.null(params)) {
     params <- list()
