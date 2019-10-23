@@ -69,13 +69,8 @@
 #'   \item{$fixedpar: fixed model parameters not to be estimated, and their standard errors (list; see below)}
 #'   \item{$plotparams: plotparameters (list) with members: $plot (default= TRUE), $pconf (coverage probability of confidence interval), $xlim (plot limits for quantile estimates), $freqlim (plot limits for frequencies), $plim (plot limits for fractions of time)}
 #'  }                                
-#'                                        
-#' @references
-#' De Valk, C. and Cai, J.J. (2018), A high quantile estimator based on 
-#' the log-generalized Weibull tail limit. Econometrics and Statistics 6, 107-128, see
-#' \url{https://doi.org/10.1016/j.ecosta.2017.03.001}
 #
-#' @author Cees de Valk \email{ceesfdevalk@gmail.com}
+#' @author Cees de Valk \email{cees.de.valk@knmi.nl}
 #' 
 #' @export
 FitTail_AllData <- function(X, freq, df, method, options, metadata) {

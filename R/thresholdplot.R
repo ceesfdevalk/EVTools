@@ -22,9 +22,9 @@ thresholdplot <- function(params= NULL, es= NULL) {
   varname <- as.character(metadata$varname)
   
   # axis labels 
-  ylab <- paste(es$df, "p-value")
+  ylab <- paste("p-value")
   xlab <- paste("sample fraction for quantile estimation")
-  title <- paste(es$df, " threshold p-value", ", case: ", caseId, sep= "")
+  title <- paste(es$df, " threshold diagnostic", ", case: ", caseId, sep= "")
   
   ylim <- c(0, 1)
   xlim <- c(10^floor(log10(min(es$l)/es$N)), 1)
