@@ -213,6 +213,7 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   if (is.null(plotparams$plot)) {plotparams$plot <- TRUE}
   if (plotparams$plot) {
     # Plot of tail fit
+    print("kiekeboe!")
     genname <- paste(estimates$df, "-", metadata$varname, "-", metadata$caseId, sep= "")
     
     fname <- paste("Tail-", genname, ".png", sep= "")
