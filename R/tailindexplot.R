@@ -32,7 +32,7 @@ tailindexplot <- function(params= NULL, es= NULL) {
   
   # axis labels 
   ylab <- paste(es$df, "tail index")
-  xlab <- paste("sample fraction for quantile estimate")
+  xlab <- paste("sample fraction for quantile estimation")
   title <- paste(es$df, " tail index", ", case: ", caseId, sep= "")
   
   med <- median(es$tailindex[es$l< 0.1*es$N])
