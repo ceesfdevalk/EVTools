@@ -7,7 +7,7 @@
 #' @param params (optional) list (see below)
 #' @param estimates list containing tail estimates from a single sample 
 #' 
-#' @usage tailindexplot(params, es1, es2, ...)
+#' @usage tailindexplot(params, estimates)
 #' 
 #' @return A plot file (.png)
 #' 

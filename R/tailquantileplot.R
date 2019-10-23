@@ -1,5 +1,24 @@
-# Plot of tail index estimates 
-# with confidence interval
+#' @name  tailquantileplot
+#' 
+#' @title tailquantileplot
+#' 
+#' @description # Plot of tail quantile estimates for a single frequency with confidence interval  
+#' 
+#' @param params (optional) list (see below)
+#' @param estimates list containing tail estimates from a single sample 
+#' 
+#' @usage tailquantileplot(params, estimates)
+#' 
+#' @return A plot file (.png)
+#' 
+#' @details The parameter list params may contain:
+#'  \itemize{
+#'   \item{$pconf: coverage probability of confidence interval (0.9 by default) (double(1))}
+#'   }
+#
+#' @author Cees de Valk \email{ceesfdevalk@gmail.com}
+#' 
+#' @export  
 tailquantileplot <- function(params= NULL, es= NULL) {
   if (length(es)< 1) {stop("Need data to plot.")}
   lwd <- 2
