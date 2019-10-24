@@ -289,7 +289,7 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
           # third-order in variance: 
           hthetavar <- ha1^2*thetaStd^2 + (ha2^2*.5+ha1*ha3*2)*thetaStd^4 +
                        ha1^2*thetaStd^2 + (ha3^2*(5/12)+ha2*ha4*2*0.5)*thetaStd^6
-          hthetavar <- pmin((h(theta+thetaStd, lambda)-ha)^2+(h(theta-thetaStd, lambda)-ha)^2)
+          hthetavar <- pmin((h(theta+thetaStd, lambda)-ha)^2, (h(theta-thetaStd, lambda)-ha)^2)
           # var <- g^2*(ha^2*logdispStd^2+ha1^2*thetaStd^2) + X0lStd^2
           var <- g^2*(ha^2*logdispStd^2+hthetavar) + X0lStd^2
           var <- g^2*hthetavar
