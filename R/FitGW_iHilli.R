@@ -277,14 +277,19 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
           
           # Asymptotic standard deviations of quantiles
           ha <- h(theta, lambda)
-          dha <- (1/theta)*(lambda^theta*log(lambda)-ha)
+          ha1 <- (1/theta)*(lambda^theta*log(lambda)-ha)
+          ha2 <- (1/theta)*(lambda^theta*log(lambda)^2-2*ha1)
+          ha3 <- (1/theta)*(lambda^theta*log(lambda)^3-3*ha2)
+          ha4 <- (1/theta)*(lambda^theta*log(lambda)^4-4*ha3)
           id <- abs(theta)< 1.e-10
           if (any(id)) {dha[id] <- 0.5*(log(lambda))^2}
           # the following asymptotic expression is pretty accurate
           # (the last term can normally be ignored but with given, precise,
           # theta and logdisp estimates, it may not be negligible)
-          var <- g^2*(ha^2*logdispStd^2+dha^2*thetaStd^2) + X0lStd^2
-          var <- g^2*(dha^2*thetaStd^2) 
+          # second-order in variance: 
+          hthetavar <- ha1^2*thetaStd^2 + (ha2^2*.5+ha1*ha3*2)*thetaStd^4
+          # var <- g^2*(ha^2*logdispStd^2+ha1^2*thetaStd^2) + X0lStd^2
+          var <- g^2*(ha^2*logdispStd^2+hthetavar) + X0lStd^2
           qStd[, i]= sqrt(var)
           qStd[, i] <- rev(cummax(rev(qStd[, i])))  # to avoid unrealistic small values          
         }
