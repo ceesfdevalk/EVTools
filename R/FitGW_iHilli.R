@@ -304,7 +304,7 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
           deriv <- g*ha1 - g^2*ha*dw/hill0[l-1]
           var <- thetaStd^2*deriv^2
           qStd[, i]= sqrt(var)
-          qStd[, i] <- rev(cummax(rev(qStd[, i])))  # to avoid unrealistic small values          
+          # qStd[, i] <- rev(cummax(rev(qStd[, i])))  # to avoid unrealistic small values          
         }
       }
     }
