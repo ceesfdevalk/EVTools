@@ -290,7 +290,7 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
           
           # Asymptotic standard deviations of quantiles
           ha <- h(theta, lambda)
-          # ha1 <- (1/theta)*(lambda^theta*log(lambda)-ha)
+          ha1 <- (1/theta)*(lambda^theta*log(lambda)-ha)
           # ha2 <- (1/theta)*(lambda^theta*log(lambda)^2-2*ha1)
           # ha3 <- (1/theta)*(lambda^theta*log(lambda)^3-3*ha2)
           # ha4 <- (1/theta)*(lambda^theta*log(lambda)^4-4*ha3)
