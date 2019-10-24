@@ -292,6 +292,7 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
           hthetavar <- 0.5*((h(theta+thetaStd, lambda)-ha)^2+(h(theta-thetaStd, lambda)-ha)^2)
           # var <- g^2*(ha^2*logdispStd^2+ha1^2*thetaStd^2) + X0lStd^2
           var <- g^2*(ha^2*logdispStd^2+hthetavar) + X0lStd^2
+          var <- g^2*hthetavar
           qStd[, i]= sqrt(var)
           qStd[, i] <- rev(cummax(rev(qStd[, i])))  # to avoid unrealistic small values          
         }
