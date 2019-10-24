@@ -225,7 +225,7 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
           temp1 <- cumsum(log(th[1:(mk-1)])*th[1:(mk-1)]^ti)/(1:(mk-1))
           temp2 <- cumsum(th[1:(mk-1)]^ti)/(1:(mk-1))
           temp3 <- (th[2:mk]^(-ti)*(temp1 - log(th[2:mk])*temp2) - w)/ti #derivative of w to ti
-          temp4 <- cumsum(temp3[1:(mk-2)]/w[1:(mk-2)])/(1:(mk-2)) - temp3[2:(mk-1)]/w[2:(mk-1)]
+          # temp4 <- cumsum(temp3[1:(mk-2)]/w[1:(mk-2)])/(1:(mk-2)) - temp3[2:(mk-1)]/w[2:(mk-1)]
           
           err1 <- abs(ti + 1 - theta + w1[k-2]/u[k-2])
           id <- (err1< err)
@@ -235,12 +235,12 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
             # g <- hill0[l-1]/normg
             g[id] <- hill0[l[id]-1]/w[l[id]-1]
             dw[id] <- temp3[l[id]-1]
-            dd[id] <- 1+temp4[l[id]-1]/w[l[id]-1] # derivative of thetas to thetaref
+            # dd[id] <- 1+temp4[l[id]-1]/w[l[id]-1] # derivative of thetas to thetaref
           }
         }
         dd[is.na(dd)] <- 1
         theta <- thetaref   # the refined estimator is the output
-        thetaStd <- thetaStd/dd
+        # thetaStd <- thetaStd/dd
         
       } else {
         ti <- theta0[1]
@@ -290,12 +290,12 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
           
           # Asymptotic standard deviations of quantiles
           ha <- h(theta, lambda)
-          ha1 <- (1/theta)*(lambda^theta*log(lambda)-ha)
-          ha2 <- (1/theta)*(lambda^theta*log(lambda)^2-2*ha1)
-          ha3 <- (1/theta)*(lambda^theta*log(lambda)^3-3*ha2)
-          ha4 <- (1/theta)*(lambda^theta*log(lambda)^4-4*ha3)
+          # ha1 <- (1/theta)*(lambda^theta*log(lambda)-ha)
+          # ha2 <- (1/theta)*(lambda^theta*log(lambda)^2-2*ha1)
+          # ha3 <- (1/theta)*(lambda^theta*log(lambda)^3-3*ha2)
+          # ha4 <- (1/theta)*(lambda^theta*log(lambda)^4-4*ha3)
           id <- abs(theta)< 1.e-10
-          if (any(id)) {dha[id] <- 0.5*(log(lambda))^2}
+          if (any(id)) {ha1[id] <- 0.5*(log(lambda))^2}
           # the following asymptotic expression is pretty accurate
           # (the last term can normally be ignored but with given, precise,
           # theta and logdisp estimates, it may not be negligible)
@@ -306,8 +306,8 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
           # hthetavar <- pmin((h(theta+thetaStd, lambda)-ha)^2, (h(theta-thetaStd, lambda)-ha)^2)
           # var <- g^2*hthetavar
           deriv <- ha1 - g*ha*dw/hill0[l-1]
-          var <- g^2*(ha^2*logdispStd^2+deriv^2/2*thetaStd^2) + X0lStd^2
-          var <- g^2*(deriv^2/2*thetaStd^2) 
+          var <- g^2*(ha^2*logdispStd^2+deriv^2*thetaStd^2) + X0lStd^2
+          # var <- g^2*(deriv^2/2*thetaStd^2) 
           qStd[, i]= sqrt(var)
           # qStd[, i] <- rev(cummax(rev(qStd[, i])))  # to avoid unrealistic small values          
         }
