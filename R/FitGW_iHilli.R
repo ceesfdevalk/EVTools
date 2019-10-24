@@ -236,7 +236,7 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
             # g <- hill0[l-1]/normg
             g[id] <- hill0[l[id]-1]/w[l[id]-1]
             dw[id] <- temp3[l[id]-1]
-            dd[id] <- 1+temp4[l[id]-1]/w[l[id]-1] # derivative of thetas to thetaref
+            dd[id] <- pmin(2, pmax(0.5, 1+temp4[l[id]-1]/w[l[id]-1])) # derivative of thetas to thetaref
           }
         }
         theta <- thetaref   # the refined estimator is the output
