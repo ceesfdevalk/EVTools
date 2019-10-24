@@ -239,6 +239,7 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
             dd[id] <- pmin(2, pmax(0.5, 1+temp4[l[id]-1]/w[l[id]-1])) # derivative of thetas to thetaref
           }
         }
+        dd[is.na(dd)] <- 1
         theta <- thetaref   # the refined estimator is the output
         thetaStd <- thetaStd/dd
         
