@@ -183,8 +183,6 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
     }  
     estimates$threshold <- Pthresh
     # Bound iselect from above by preset limit pmax on probability of exceedance
-    a <- max(which(estimates$l< estimates$N*pthresholdmax))
-    print(a)
     iselect <- min(iselect, max(which(estimates$l< estimates$N*pthresholdmax)))
   }
   
