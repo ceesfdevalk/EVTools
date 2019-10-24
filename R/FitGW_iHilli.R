@@ -199,6 +199,7 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
         }
         thetarawStd= th[kraw]*sqrt(r11value/kraw)
         thetaStd= thetarawStd[k-2]
+        thetaStd <- rev(cummax(rev(thetaStd)))  # to avoid unrealistic small values
         
       } else {
         theta <- rep(theta0[1], nl)
@@ -313,8 +314,6 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
         }
       }
     }
-    
-    thetaStd <- rev(cummax(rev(thetaStd)))  # to avoid unrealistic small values
     
     estimates <- list("k"= k, "l"= l, "y"= th[l], 
                       "N"= N, "sigma"= sigma, "r11"= r11,
