@@ -62,7 +62,8 @@
 #'  options may contain the following fields:
 #'  \itemize{
 #'   \item{$pthreshold: fraction of time that value exceeds threshold (double(1))}
-#'   \item{$pthresholdmax: upper bound on pthreshold (in case pthreshold is estimated)}
+#'   \item{$maxpthreshold: upper bound on pthreshold (in case pthreshold is estimated)}
+#'   \item{$minpthreshold: lower bound on pthreshold (in case pthreshold is estimated)}
 #'   \item{$indexselect: if TRUE, threshold is selected based on tail index estimates (logical, default= FALSE)} 
 #'   \item{$kmin: no. of order statistics skipped in determining threshold (integer(1)), default= 20)} 
 #'   \item{$sigma: determines the ratio of k to l ( (no. of order stats used for estimation of tail index and quantile) (double(1)}
@@ -76,7 +77,7 @@
 FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   
   # Default parameters
-  fixedpar <- sigma <- pthreshold <-  pthresholdmax <- indexselect <- NULL
+  fixedpar <- sigma <- pthreshold <-  maxpthreshold <- minpthreshold <- indexselect <- NULL
   
   # Handle missing arguments    
   if (missing(X)) {stop("Data X must be specified.")}
@@ -115,8 +116,10 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   
   # Estimator options
   pthreshold <- options$pthreshold
-  pthresholdmax <- options$pthresholdmax
-  if (length(pthresholdmax)< 1) {pthresholdmax <- 0.5} 
+  maxpthreshold <- options$maxpthreshold
+  if (length(maxpthreshold)< 1) {maxpthreshold <- 0.5} 
+  minpthreshold <- options$minpthreshold
+  if (length(minpthreshold)< 1) {minpthreshold <- 0}
   sigma <- options$sigma
   if (length(sigma)< 1) {sigma <- Inf} # to keep behaviour simple to non-expert
   fixedpar <- options$fixedpar
@@ -183,7 +186,8 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
     }  
     estimates$threshold <- Pthresh
     # Bound iselect from above by preset limit pmax on probability of exceedance
-    iselect <- min(iselect, max(which(estimates$l< estimates$N*pthresholdmax)))
+    iselect <- min(iselect, max(which(estimates$l< estimates$N*maxpthreshold)))
+    iselect <- max(iselect, min(which(estimates$l> estimates$N*minpthreshold)))
   }
   
   # Compute quantiles for selected threshold on refined frequency grid 
