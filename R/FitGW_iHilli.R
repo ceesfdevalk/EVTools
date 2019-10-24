@@ -216,7 +216,7 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
         lg <- length(thetagrid)
         
         err <- rep(Inf, nl)    # error tracking (lowest value sofar)
-        g <- dw <- thetaref <- rep(NA, nl)         # scale estimates
+        g <- dw <- dd <- thetaref <- rep(NA, nl)         # scale estimates
         for (i in 1:lg) {
           ti <- thetagrid[i]
           temp <- cumsum(h(ti, th[1:(mk-1)]))/(1:(mk-1))
@@ -226,6 +226,7 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
           temp1 <- cumsum(log(th[1:(mk-1)])*th[1:(mk-1)]^ti)/(1:(mk-1))
           temp2 <- cumsum(th[1:(mk-1)]^ti)/(1:(mk-1))
           temp3 <- (th[2:mk]^(-ti)*(temp1 - log(th[2:mk])*temp2) - w)/ti #derivative of w to ti
+          temp4 <- cumsum(temp3[1:(mk-2)]/w[1:(mk-2)])/(1:(mk-2)) - temp3[2:(mk-1)]/w[2:(mk-1)]
           
           err1 <- abs(ti + 1 - theta + w1[k-2]/u[k-2])
           id <- (err1< err)
@@ -235,9 +236,12 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
             # g <- hill0[l-1]/normg
             g[id] <- hill0[l[id]-1]/w[l[id]-1]
             dw[id] <- temp3[l[id]-1]
+            dd[id] <- 1+temp4[l[id]-1]/w[l[id]-1] # derivative of thetas to thetaref
           }
         }
         theta <- thetaref   # the refined estimator is the output
+        thetaStd <- thetaStd/dd
+        
       } else {
         ti <- theta0[1]
         temp <- cumsum(h(ti, th[1:(mk-1)]))/(1:(mk-1))
@@ -248,6 +252,7 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
         g <- hill0[l-1]/w[l-1]
         dw <- temp3[l-1]
       }
+      
       
       # value of r11 with l as threshold
       if (is.list(r11)) {
