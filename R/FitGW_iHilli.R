@@ -216,13 +216,16 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
         lg <- length(thetagrid)
         
         err <- rep(Inf, nl)    # error tracking (lowest value sofar)
-        g <- rep(NA, nl)         # scale estimates
-        thetaref <- rep(NA, nl)
+        g <- dw <- thetaref <- rep(NA, nl)         # scale estimates
         for (i in 1:lg) {
           ti <- thetagrid[i]
           temp <- cumsum(h(ti, th[1:(mk-1)]))/(1:(mk-1))
           w <- th[2:mk]^(-ti)*temp + h(ti, 1/th[2:mk])
           w1 <- cumsum(log(w[1:(mk-2)]))/(1:(mk-2))-log(w[2:(mk-1)])
+          
+          temp1 <- cumsum(log(th[1:(mk-1)])*th[1:(mk-1)]^ti)/(1:(mk-1))
+          temp2 <- cumsum(th[1:(mk-1)]^ti)/(1:(mk-1))
+          temp3 <- (th[2:mk]^(-ti)*(temp1 - log(th[2:mk])*temp2) - w)/ti #derivative of w to ti
           
           err1 <- abs(ti + 1 - theta + w1[k-2]/u[k-2])
           id <- (err1< err)
@@ -231,6 +234,7 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
             err[id] <- err1[id]
             # g <- hill0[l-1]/normg
             g[id] <- hill0[l[id]-1]/w[l[id]-1]
+            dw[id] <- temp3[l[id]-1]
           }
         }
         theta <- thetaref   # the refined estimator is the output
@@ -238,7 +242,11 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
         ti <- theta0[1]
         temp <- cumsum(h(ti, th[1:(mk-1)]))/(1:(mk-1))
         w <- th[2:mk]^(-ti)*temp + h(ti, 1/th[2:mk])
+        temp1 <- cumsum(log(th[1:(mk-1)])*th[1:(mk-1)]^ti)/(1:(mk-1))
+        temp2 <- cumsum(th[1:(mk-1)]^ti)/(1:(mk-1))
+        temp3 <- (th[2:mk]^(-ti)*(temp1 - log(th[2:mk])*temp2) - w)/ti #derivative of w to ti
         g <- hill0[l-1]/w[l-1]
+        dw <- temp3[l-1]
       }
       
       # value of r11 with l as threshold
@@ -287,12 +295,14 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
           # (the last term can normally be ignored but with given, precise,
           # theta and logdisp estimates, it may not be negligible)
           # third-order in variance: 
-          hthetavar <- ha1^2*thetaStd^2 + (ha2^2*.5+ha1*ha3*2)*thetaStd^4 +
-                       ha1^2*thetaStd^2 + (ha3^2*(5/12)+ha2*ha4*2*0.5)*thetaStd^6
-          hthetavar <- pmin((h(theta+thetaStd, lambda)-ha)^2, (h(theta-thetaStd, lambda)-ha)^2)
-          # var <- g^2*(ha^2*logdispStd^2+ha1^2*thetaStd^2) + X0lStd^2
-          var <- g^2*(ha^2*logdispStd^2+hthetavar) + X0lStd^2
-          var <- g^2*hthetavar
+          # hthetavar <- ha1^2*thetaStd^2 
+          # #             + (ha2^2*.5+ha1*ha3*2)*thetaStd^4
+          # #             + ha1^2*thetaStd^2 + (ha3^2*(5/12)+ha2*ha4*2*0.5)*thetaStd^6
+          # hthetavar <- pmin((h(theta+thetaStd, lambda)-ha)^2, (h(theta-thetaStd, lambda)-ha)^2)
+          # # var <- g^2*(ha^2*logdispStd^2+ha1^2*thetaStd^2) + X0lStd^2
+          # var <- g^2*hthetavar
+          deriv <- g*ha1 - g^2*ha*dw/hill0[l-1]
+          var <- thetaStd^2*deriv^2
           qStd[, i]= sqrt(var)
           qStd[, i] <- rev(cummax(rev(qStd[, i])))  # to avoid unrealistic small values          
         }
