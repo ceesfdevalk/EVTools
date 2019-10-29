@@ -2,7 +2,7 @@
 #' 
 #' @title FitTail_AllData
 #' 
-#' @description Fit a parametric tail to the values of a time-series and estimate quantiles
+#' @description Fit a tail to the values of a time-series and estimate upper tail quantiles
 #' 
 #' @param X data sample (double(n))
 #' @param freq frequencies of exceedance of the quantiles to be estimated (double(nf))  
@@ -86,9 +86,16 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   } else {
     freq <- sort(freq)
   }
-  if (missing(df)) {df <- "GW"}
+  if (missing(df)) {
+    df <- "GW"
+    # Following is fair choice for common weather/ocean data  
+    warning("Tail not specified; a GW tail is estimated.")
+    }
   if (missing(method)) {
-    method <- "FitGW_iHilli"  # for now: for GP, the default will be changed
+    method <- "FitGW_iHilli" 
+    if (df== "GP") {
+      method <- "FitGP_Mom"
+    }
   }
   if (missing(options)) {options <-NULL}
   
@@ -99,7 +106,6 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   if (is.null(metadata$caseId)) {
     metadata$caseId <- Sys.time()
   }
-  
   # Specify estimator with corresponding options
   if (df== "Weibull") {tailfit <- "FitWbl"}
   if (df== "GW") {tailfit <- "FitGW"}  
@@ -120,6 +126,15 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   if (length(maxpthreshold)< 1) {maxpthreshold <- 0.5} 
   minpthreshold <- options$minpthreshold
   if (length(minpthreshold)< 1) {minpthreshold <- 0}
+  if (minpthreshold> maxpthreshold) {
+    stop("options$minpthreshold larger or equal to options$maxpthreshold")
+  } else if (minpthreshold== maxpthreshold) {
+    minpthreshold <- pthreshold <- maxpthreshold
+  }
+  if (grepl("ML", method)) {
+    warning("Chosen method may take a long time")
+  }
+  
   sigma <- options$sigma
   if (length(sigma)< 1) {sigma <- Inf} # to keep behaviour simple to non-expert
   fixedpar <- options$fixedpar
@@ -137,7 +152,6 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   N <- sum(X> Xmin)+1 
   if (N< 20) {stop("Time series must have at least 19 values above its minimum.")}
   p0 <- N/length(X) # fraction of time that X is above its minimum
-  n <- N
   
   # Determine quantization and dither data if needed
   sX <- -sort(-X)
@@ -160,8 +174,11 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   
   # Tail estimation
   sX <- -sort(-X)
-  n <- min(n, 5.e5)
+  n <- min(N, 5.e5)
   l0 <- round(N*pthreshold)
+  if (l0> n-1) {
+    stop("Choose smaller value of l0: computation lasts too long.")
+  }
   if (length(l0)<1) {l0 <- NULL}
   estimates <- get(tailfit)(X=sX[1:n], method, p=p, N=N, r11=r11es, fixedpar= fixedpar, 
                        l0= l0, sigma= sigma, metadata= metadata)
@@ -186,8 +203,13 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
     }  
     estimates$threshold <- Pthresh
     # Bound iselect from above by preset limit pmax on probability of exceedance
-    iselect <- min(iselect, max(which(estimates$l< estimates$N*maxpthreshold)))
-    iselect <- max(iselect, min(which(estimates$l> estimates$N*minpthreshold)))
+    lmax <- estimates$N*maxpthreshold
+    lmin <- estimates$N*minpthreshold
+    iselect <- min(iselect, max(which(estimates$l< lmax)))
+    iselect <- max(iselect, min(which(estimates$l> lmin)))
+    if (estimates$l[iselect]< lmin) {
+      warning("options$minpthreshold overruled: sample is large, not all data can be processed.")
+    }
   }
   
   # Compute quantiles for selected threshold on refined frequency grid 
