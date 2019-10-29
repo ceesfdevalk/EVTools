@@ -211,7 +211,7 @@ FitGP_Mom <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
         logdispStd <- sqrt(r11value/l)*sqrt(2+gamma^2) # from de Haan & Ferreira
         id <- gamma<0
         gd <- gamma[id]
-        logdispStd[id] <- sqrt(r11value/k*(2-16*gd+51*gd^2-69*gd^3+50*gd^4-24*gd^5)/
+        logdispStd[id] <- sqrt(r11value[id]/l[id]*(2-16*gd+51*gd^2-69*gd^3+50*gd^4-24*gd^5)/
                                  (1-2*gd)/(1-3*gd)/(1-4*gd))
         
         # logdispStd <- sqrt(r11value/l)
@@ -255,7 +255,7 @@ FitGP_Mom <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
             depterm <- 2*g^2*ha*dha*r11value/l*(gamma-1)  
             id <- gamma<0
             gd <- gamma[id]
-            depterm[id] <- 2*g^2*ha*dha*r11value/l*
+            depterm[id] <- 2*g^2*ha[id]*dha[id]*r11value[id]/l[id]*
               (1-gd)^2*(-1+4*gd-12*gd^2)/(1-3*gd)/(1-4*gd)
             var[ind] <- var[ind] + depterm[ind]
           }
