@@ -77,7 +77,7 @@ selectThresholdP1 <- function(theta, thetaStd, k, rthresh, kmin) {
     j= id[jj]-1
     # alpha[jj] <- max((abs(theta[1:j]-theta[j+1]))/thetaStd[1:j])/slf[jj]
     # following is a bit conservative (not quite till the end; difference does not matter in the limit)
-    alpha[jj] <- max((abs(theta[1:j]-theta[j+1])+thetaStd[j+1]*3)/thetaStd[1:j])
+    alpha[jj] <- max((abs(theta[1:j]-theta[j+1])+thetaStd[j+1])/thetaStd[1:j])
     # alpha[jj] <- max((abs(theta[1:j]-theta[j+1]))/thetaStd[1:j])
     bias[jj] <- max(abs(theta[1:j]-theta[j+1])-thetaStd[1:j]*b[jj])
     setTxtProgressBar(pb, j)
@@ -100,7 +100,7 @@ selectThresholdP1 <- function(theta, thetaStd, k, rthresh, kmin) {
   lr <- length(rthresh)
   i <- rep(NA, lr)
   for (j in 1:lr) {
-    i[j] <- max(which(P> max(P)*rthresh[j]))
+    i[j] <- median(which(P> max(P)*rthresh[j]))
   }
   # threshold selection based on max of P
   # i <- max(which(P> quantile(P, 0.99)*rthresh)) # threshold selection based on high quantile of P
