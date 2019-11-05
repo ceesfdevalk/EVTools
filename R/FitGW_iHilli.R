@@ -199,7 +199,7 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
         }
         thetarawStd= th[kraw]*sqrt(r11value/kraw)
         thetaStd= thetarawStd[k-2]
-        thetaStd <- rev(cummax(rev(thetaStd)))  # to avoid unrealistic small values
+        # later! thetaStd <- rev(cummax(rev(thetaStd)))  # to avoid unrealistic small values
         
       } else {
         theta <- rep(theta0[1], nl)
@@ -226,7 +226,7 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
           temp1 <- cumsum(log(th[1:(mk-1)])*th[1:(mk-1)]^ti)/(1:(mk-1))
           temp2 <- cumsum(th[1:(mk-1)]^ti)/(1:(mk-1))
           temp3 <- (th[2:mk]^(-ti)*(temp1 - log(th[2:mk])*temp2) - w)/ti #derivative of w to ti
-          # temp4 <- cumsum(temp3[1:(mk-2)]/w[1:(mk-2)])/(1:(mk-2)) - temp3[2:(mk-1)]/w[2:(mk-1)]
+          temp4 <- cumsum(temp3[1:(mk-2)]/w[1:(mk-2)])/(1:(mk-2)) - temp3[2:(mk-1)]/w[2:(mk-1)]
           
           err1 <- abs(ti + 1 - theta + w1[k-2]/u[k-2])
           id <- (err1< err)
@@ -236,12 +236,13 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
             # g <- hill0[l-1]/normg
             g[id] <- hill0[l[id]-1]/w[l[id]-1]
             dw[id] <- temp3[l[id]-1]
-            # dd[id] <- 1+temp4[l[id]-1]/w[l[id]-1] # derivative of thetas to thetaref
+            dd[id] <- 1+temp4[l[id]-1]/w[l[id]-1] # derivative of thetas to thetaref
           }
         }
         dd[is.na(dd)] <- 1
         theta <- thetaref   # the refined estimator is the output
-        # thetaStd <- thetaStd/dd
+        thetaStd <- thetaStd/dd
+        thetaStd <- rev(cummax(rev(thetaStd)))  # to avoid unrealistic small values
         
       } else {
         ti <- theta0[1]
