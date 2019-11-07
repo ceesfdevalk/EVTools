@@ -149,23 +149,22 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   kmin <- options$kmin
   if (length(kmin)< 1) {kmin <- 20}
   
-  nb <- options$bootstrap$samplesize
+  nb <- options$bootstrap$nsamples
   bt <- options$bootstrap$blocktime
   if (length(nb)> 0) {
     if (nb< 50) {
-      nb <- max(50, nb) # bootstrap sample not too small!
-      warning("Bootstrap sample size adjusted upward to 50.")
+      nb <- max(50, nb) # no. of bootstrap samples not too small!
+      warning("No. of bootstrap samples adjusted upward to 50.")
     }
     if (!length(bt)> 0) {
-      bt <- 1  # 1 block time length is time-unit, normally a year
-      warning("Bootstrap block time set to 1 time-unit.")
+      bt <- 1  # block length is 1 time unit, normally a year
+      warning("Bootstrap block length set to 1 time unit.")
     }
-    lb <- ceil(bl/timestep) # block length in time-steps
+    lb <- ceil(bl/timestep) # block length measured in time steps (rounded upward)
   } else {
     nb <- 0
   }
 
-  
   # Sample size and correction for positive probability of X equal to its lower bound,
   # to prevent fitting of distribution containing an atom at its lowest value, 
   # like with rainfall
@@ -203,7 +202,7 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   
   sX <- -sort(-X)
   n <- min(N, 5.e5)
-  l0 <- round(N*pthreshold)
+  l0 <- round(N*min(pthreshold, p0))
 
   if (length(l0)<1) {l0 <- NULL}
   estimates <- get(tailfit)(X=sX[1:n], method, p=p, N=N, r11=r11es, fixedpar= fixedpar, 
