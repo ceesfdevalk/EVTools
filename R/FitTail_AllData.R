@@ -67,6 +67,7 @@
 #'   \item{$indexselect: if TRUE, threshold is selected based on tail index estimates (logical, default= FALSE)} 
 #'   \item{$kmin: no. of order statistics skipped in determining threshold (integer(1)), default= 20)} 
 #'   \item{$sigma: determines the ratio of k to l ( (no. of order stats used for estimation of tail index and quantile) (double(1)}
+#'   \item{$bootstrap: list. If exists/nonempty, precision is assessed by a moving block bootstrap. May contain $nsamples (no. of bootstrap samples) and $blocktime (block length in terms of time)
 #'   \item{$fixedpar: fixed model parameters not to be estimated, and their standard errors (list; see below)}
 #'   \item{$plotparams: plotparameters (list) with members: $makeplot (default= TRUE), $pconf (coverage probability of confidence interval), $xlim (plot limits for quantile estimates), $freqlim (plot limits for frequencies), $plim (plot limits for fractions of time)}
 #'  }                                
@@ -77,9 +78,11 @@
 FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   
   # Default parameters
+  
   fixedpar <- sigma <- pthreshold <-  maxpthreshold <- minpthreshold <- indexselect <- NULL
   
   # Handle missing arguments    
+  
   if (missing(X)) {stop("Data X must be specified.")}
   if (missing(freq)) {
     freq <- NULL
@@ -100,6 +103,7 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   if (missing(options)) {options <-NULL}
   
   # Ensure that metadata exists and contains a unique identifier
+  
   if (missing(metadata)) {
     metadata <- NULL
   }
@@ -107,6 +111,7 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
     metadata$caseId <- Sys.time()
   }
   # Specify estimator with corresponding options
+  
   if (df== "Weibull") {tailfit <- "FitWbl"}
   if (df== "GW") {tailfit <- "FitGW"}  
   if (df== "logGW") {tailfit <- "FitlogGW"} 
@@ -116,7 +121,8 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
     if (method== "FitGW_iHilli") {method <- "FitGP_Mom"}  
   } 
   
-  # specific parameters
+  # Specific parameters
+  
   timestep <- metadata$timestep
   if (length(timestep)< 1) {timestep= 1} # This makes the probability equal to the frequency
   
@@ -163,6 +169,7 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   # Sample size and correction for positive probability of X equal to its lower bound,
   # to prevent fitting of distribution containing an atom at its lowest value, 
   # like with rainfall
+  
   N <- length(X) 
   if (N< 20) {stop("Time series length must be at least 20.")}
   Xmin <- min(X)
@@ -171,6 +178,7 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   p0 <- N/length(X) # fraction of time that X is above its minimum
   
   # Determine quantization and dither data if needed
+  
   sX <- -sort(-X)
   dX <- -diff(X)
   deltaX <- min(dX[dX> 0])
@@ -180,22 +188,23 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   X <- pmax(X, Xmin) # to prevent a change of range due to dithering
   
   # Estimate extremal index EI and dependence coefficient r11
+  
   EIes <- EI(X, makeplot= FALSE)
   r11es <- r11(X, makeplot= FALSE)
   EIvalue <- max(EIes$EIFS[1:3]) 
   
   # Convert frequency to fraction of time p
+  
   p <- freq*timestep/EIvalue/p0 #  fraction of "the time that X is above its minimum"
   p <- p[p>0 & p< 1]
   if (length(p)< 1) {p <- NULL}
   
   # Tail estimation
+  
   sX <- -sort(-X)
   n <- min(N, 5.e5)
   l0 <- round(N*pthreshold)
-  # if (l0> (n-1) {
-  #   stop("Choose smaller value of pthreshold: computation lasts too long.")
-  # }
+
   if (length(l0)<1) {l0 <- NULL}
   estimates <- get(tailfit)(X=sX[1:n], method, p=p, N=N, r11=r11es, fixedpar= fixedpar, 
                        l0= l0, sigma= sigma, metadata= metadata)
@@ -207,7 +216,7 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   
   if (nb> 0) {            
     
-    # Bootstrap to overrule asymptotic approximations of precisions
+    # Moving block bootstrap to overrule asymptotic approximations of precision
     
     nblocks <- ceil(length(X)/lb)
     istart <- sample(length(X)-lb+1, size= nblocks*nb, replace= TRUE)
@@ -220,8 +229,8 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
       be[[j]] <- get(tailfit)(X=sXb[1:n], method, p=p, N=N, r11= 1, fixedpar= fixedpar, 
                               l0= l0, sigma= sigma, metadata= metadata)
     }
-    # Process estimates from bootstrap samples to obtain standard deviations
     
+    # Process estimates from bootstrap samples to obtain precision estimates 
     tt <- unlist(purrr::map(be, "tailindex"))
     dim(tt) <- c(length(be[[1]]$tailindex), length(be))
     tStd <- apply(tt, 1, sd)
@@ -241,6 +250,7 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   }
   
   # Threshold choice
+  
   if (length(pthreshold) <1) {
     if (!indexselect) {
       Pthresh <- selectThresholdP1(estimates$quantile[, 1], estimates$quantileStd[, 1], 
@@ -265,6 +275,7 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   }
   
   # Compute quantiles for selected threshold on refined frequency grid 
+  
   ls <- estimates$l[iselect]
   lf <- log10(freq)     # Extend frequency array for plotting etc. 
   mlf <- log10(estimates$l[iselect]/estimates$N*EIvalue*p0/timestep)
@@ -285,6 +296,7 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   estimates$selected <- es
   
   # Plotting
+  
   fac <- 1.2
   plotparams <- options$plotparams
   
