@@ -256,7 +256,7 @@ FitGP_Mom <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
             id <- gamma<0
             gd <- gamma[id]
             depterm[id] <- 2*g[id]^2*ha[id]*dha[id]*r11value[id]/l[id]*
-              (1-gd)^2*(-1+4*gd-12*gd^2)/(1-3*gd)/(1-4*gd)
+              (1-gd)^2*(-1+4*gd-12*gd^2)/((1-3*gd)*(1-4*gd))
             var[ind] <- var[ind] + depterm[ind]
           }
           qStd[, i]= sqrt(var)
