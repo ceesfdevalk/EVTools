@@ -143,6 +143,23 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   kmin <- options$kmin
   if (length(kmin)< 1) {kmin <- 20}
   
+  nb <- options$bootstrap$samplesize
+  bt <- options$bootstrap$blocktime
+  if (length(nb)> 0) {
+    if (nb< 50) {
+      nb <- max(50, nb) # bootstrap sample not too small!
+      warning("Bootstrap sample size adjusted upward to 50.")
+    }
+    if (!length(bt)> 0) {
+      bt <- 1  # 1 block time length is time-unit, normally a year
+      warning("Bootstrap block time set to 1 time-unit.")
+    }
+    lb <- ceil(bl/timestep) # block length in time-steps
+  } else {
+    nb <- 0
+  }
+
+  
   # Sample size and correction for positive probability of X equal to its lower bound,
   # to prevent fitting of distribution containing an atom at its lowest value, 
   # like with rainfall
@@ -165,9 +182,9 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   # Estimate extremal index EI and dependence coefficient r11
   EIes <- EI(X, makeplot= FALSE)
   r11es <- r11(X, makeplot= FALSE)
+  EIvalue <- max(EIes$EIFS[1:3]) 
   
   # Convert frequency to fraction of time p
-  EIvalue <- max(EIes$EIFS[1:3]) 
   p <- freq*timestep/EIvalue/p0 #  fraction of "the time that X is above its minimum"
   p <- p[p>0 & p< 1]
   if (length(p)< 1) {p <- NULL}
@@ -187,6 +204,41 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   estimates$freq <- freq  # frequency
   estimates$EIvalue <- EIvalue
   iselect <- which(estimates$l== round(N*pthreshold))
+  
+  if (nb> 0) {            
+    
+    # Bootstrap to overrule asymptotic approximations of precisions
+    
+    nblocks <- ceil(length(X)/lb)
+    istart <- sample(length(X)-lb+1, size= nblocks*nb, replace= TRUE)
+    dim(istart) <- c(nblocks, nb)
+    be <- vector("list", length = nb)  
+    for (j in 1:nb) {
+      is <- rep(istart[, j], each= lb) + rep(0:(lb-1), times= nblocks)
+      Xb <- X[is[1:length(X)]]
+      sXb <- -sort(-Xb)
+      be[[j]] <- get(tailfit)(X=sXb[1:n], method, p=p, N=N, r11= 1, fixedpar= fixedpar, 
+                              l0= l0, sigma= sigma, metadata= metadata)
+    }
+    # Process estimates from bootstrap samples to obtain standard deviations
+    
+    tt <- unlist(purrr::map(be, "tailindex"))
+    dim(tt) <- c(length(be[[1]]$tailindex), length(be))
+    tStd <- apply(tt, 1, sd)
+    estimates$tailindexStd <- rev(cummax(rev(tStd)))
+    
+    qq <- unlist(purrr::map(be, "quantile"))
+    dim(qq) <- c(length(be[[1]]$quantile), length(be))   
+    qStd <- apply(qq, 1, sd)
+    dim(qStd) <- dim(be[[1]]$quantile)
+    qStd <- apply(qStd, 2, f <- function(x) {rev(cummax(rev(x)))})
+    estimates$quantileStd <- qStd
+    
+    ll <- unlist(purrr::map(be, "logdisp"))
+    dim(ll) <- c(length(be[[1]]$logdisp), length(be))   
+    lStd <- apply(ll, 1, sd)
+    estimates$logdispStd <- rev(cummax(rev(lStd)))
+  }
   
   # Threshold choice
   if (length(pthreshold) <1) {
