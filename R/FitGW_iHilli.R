@@ -299,7 +299,7 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
           # ha3 <- (1/theta)*(lambda^theta*log(lambda)^3-3*ha2)
           # ha4 <- (1/theta)*(lambda^theta*log(lambda)^4-4*ha3)
           id <- abs(theta)< 1.e-10
-          if (any(id)) {ha1[id] <- 0.5*(log(lambda))^2}
+          if (any(id, na.rm = TRUE)) {ha1[id] <- 0.5*(log(lambda))^2}
           # the following asymptotic expression is pretty accurate
           # (the last term can normally be ignored but with given, precise,
           # theta and logdisp estimates, it may not be negligible)
