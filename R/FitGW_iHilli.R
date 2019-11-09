@@ -258,7 +258,6 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
         dw <- temp3[l-1]
       }
       
-      
       # value of r11 with l as threshold
       if (is.list(r11)) {
         r11value <- approx(r11$p, r11$r, l/N, rule= 2)$y 
