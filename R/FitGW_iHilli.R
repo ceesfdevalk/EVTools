@@ -240,7 +240,7 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
           }
         }
         dd[is.na(dd)] <- 1
-        id0 <- (thetaref>2) | (thetaref< 2)
+        id0 <- (thetaref>2) | (thetaref< -2)
         if (any(id0)) {thetaref[id0] <- NA}
         theta <- thetaref   # the refined estimator is the output
         thetaStd <- thetaStd/dd
