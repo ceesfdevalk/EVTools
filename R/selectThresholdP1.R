@@ -46,7 +46,7 @@ selectThresholdP1 <- function(theta, thetaStd, k, rthresh, kmin) {
   if (missing(rthresh)) {rthresh <- 0.5}
   if (missing(kmin)) {kmin <- min(k)}  
   # take kmin beyond where theta stuck at its minumum or maximum
-  id1 <- which(is.na(theta))
+  id1 <- which(is.na(theta) | is.na(thetaStd))
   l1 <- length(id1)
   if (l1> 1) {kmin <- max(kmin, k[max(id1)+1])}
   # the highly variable estimates of the index are excluded (not of interest, and noise spoils
