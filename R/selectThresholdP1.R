@@ -101,7 +101,7 @@ selectThresholdP1 <- function(theta, thetaStd, k, rthresh, kmin) {
   lr <- length(rthresh)
   i <- rep(NA, lr)
   for (j in 1:lr) {
-    i[j] <- quantile(which(P> max(P)*rthresh[j]), 2/3)  # this is a choice! Not theory
+    i[j] <- quantile(which(P> max(P)*rthresh[j]), 2/3, type= 1)  # this is a choice! Not theory
   }
   # threshold selection based on max of P
   # i <- max(which(P> quantile(P, 0.99)*rthresh)) # threshold selection based on high quantile of P
