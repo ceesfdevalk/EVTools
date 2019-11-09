@@ -161,7 +161,7 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
       bt <- 1  # block length is 1 time unit, normally a year
       warning("Bootstrap block length set to 1 time unit.")
     }
-    lb <- ceiling(bl/timestep) # block length measured in time steps (rounded upward)
+    lb <- ceiling(bt/timestep) # block length measured in time steps (rounded upward)
   } else {
     nb <- 0
   }
