@@ -223,7 +223,7 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
     
     # Moving block bootstrap to overrule asymptotic approximations of precision
     
-    nblocks <- ceil(length(X)/lb)
+    nblocks <- ceiling(length(X)/lb)
     istart <- sample(length(X)-lb+1, size= nblocks*nb, replace= TRUE)
     dim(istart) <- c(nblocks, nb)
     be <- vector("list", length = nb)  
