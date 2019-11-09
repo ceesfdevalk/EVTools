@@ -48,7 +48,7 @@ selectThresholdP1 <- function(theta, thetaStd, k, rthresh, kmin) {
   # take kmin beyond where theta stuck at its minumum or maximum
   id1 <- which(is.na(theta))
   l1 <- length(id1)
-  if (l1> 1) {kmin <- max(kmin, max(id1)+1)}
+  if (l1> 1) {kmin <- max(kmin, k[max(id1)+1])}
   # the highly variable estimates of the index are excluded (not of interest, and noise spoils
   # the statistics of the fluctuations)
   ind <- k>= kmin  # differenced estimates above this will be taken into account
