@@ -183,7 +183,7 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   dX <- -diff(X)
   deltaX <- min(dX[dX> 0])
   if (max(dX%%deltaX)/deltaX< 0.1) {
-    X <- X + (runif(n)-0.5)*deltaX
+    X <- X + (runif(length(X))-0.5)*deltaX
   }
   X <- pmax(X, Xmin) # to prevent a change of range due to dithering
   
@@ -203,9 +203,14 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   
   sX <- -sort(-X)
   n <- min(N, 5.e5)
-  l0 <- round(N*min(pthreshold, p0))
+  
+  l0 <- N*pthreshold
+  if (length(l0)<1) {
+    l0 <- NULL
+  } else {
+    l0 <- min(l0, round(N*min(pthreshold, p0)))
+  }
 
-  if (length(l0)<1) {l0 <- NULL}
   estimates <- get(tailfit)(X=sX[1:n], method, p=p, N=N, r11=r11es, fixedpar= fixedpar, 
                        l0= l0, sigma= sigma, metadata= metadata)
   estimates$p0 <- p0  # fraction of time that X is above its minimum
