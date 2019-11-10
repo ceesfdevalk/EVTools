@@ -186,6 +186,7 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
     X <- X + (runif(length(X))-0.5)*deltaX
   }
   X <- pmax(X, Xmin) # to prevent a change of range due to dithering
+  print(X[1:200])
   
   # Estimate extremal index EI and dependence coefficient r11
   
