@@ -212,7 +212,7 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
       
       # Refinement of GW index estimator
       if (length(theta0)== 0) {
-        thetagrid <- seq(-2.005, 2.005, .01)   # wide range
+        thetagrid <- seq(-5.005, 5.005, .01)   # wide range
         lg <- length(thetagrid)
         
         err <- rep(Inf, nl)    # error tracking (lowest value sofar)
@@ -240,8 +240,9 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
           }
         }
         dd[is.na(dd)] <- 1
-        id <- (thetaref>2) | (thetaref< -2)
-        if (any(id)) {thetaref[id] <- NA}
+        # better not set as NaN
+        # id <- (thetaref>5) | (thetaref< -5)
+        # if (any(id)) {thetaref[id] <- NA}
         theta <- thetaref   # the refined estimator is the output
         thetaStd <- thetaStd/dd
         thetaStd <- rev(cummax(rev(thetaStd)))  # to avoid unrealistic small values
