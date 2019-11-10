@@ -62,6 +62,7 @@
 #'  
 #'  options may contain the following fields:
 #'  \itemize{
+#'   \item{$dither: width of uniform distribution of noise to add to data (double(1))}
 #'   \item{$pthreshold: fraction of time that value exceeds threshold (double(1))}
 #'   \item{$maxpthreshold: upper bound on pthreshold (in case pthreshold is estimated)}
 #'   \item{$minpthreshold: lower bound on pthreshold (in case pthreshold is estimated)}
@@ -128,6 +129,7 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   if (length(timestep)< 1) {timestep= 1} # This makes the probability equal to the frequency
   
   # Estimator options
+  delta <- options$dither
   pthreshold <- options$pthreshold
   maxpthreshold <- options$maxpthreshold
   if (length(maxpthreshold)< 1) {maxpthreshold <- 0.5} 
@@ -179,11 +181,17 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   
   # Determine quantization and dither data if needed
   
-  sX <- -sort(-X)
-  dX <- -diff(sX)
-  deltaX <- min(dX[dX> 0])
-  if (max(dX%%deltaX)/deltaX< 0.1) {
-    X <- X + (runif(length(X))-0.5)*deltaX
+  # Determine quantization if notand dither data if needed
+  if (length(delta)< 1) {
+    sX <- -sort(-X)
+    dX <- -diff(sX)
+    delta <- min(dX[dX> 0]) 
+    if (max(dX%%delta)/delta> 0.1) {
+      delta <- NULL
+    }
+  }
+  if (length(delta)> 0) {
+    X <- X + (runif(length(X))-0.5)*delta
   }
   X <- pmax(X, Xmin) # to prevent a change of range due to dithering
   
