@@ -248,7 +248,7 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
         theta <- thetaref   # the refined estimator is the output
         thetaStd <- thetaStd/dd
         thetaStd <- rev(cummax(rev(thetaStd)))  # to avoid unrealistic small values
-        thetaStd[id] <- NA
+        # thetaStd[id] <- NA
         
       } else {
         ti <- theta0[1]
