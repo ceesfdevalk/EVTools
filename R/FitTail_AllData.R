@@ -210,7 +210,7 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   # Tail estimation
   
   sX <- -sort(-X)
-  n <- min(N, 5.e5)
+  n <- min(N, 5.e4)
   
   l0 <- N*pthreshold
   if (length(l0)<1) {
