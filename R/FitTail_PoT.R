@@ -35,30 +35,7 @@
 #'   \item{orderstats}{data X sorted (decreasing)}
 #'   \item{df}{see above}
 #'   \item{method}{see above}
-#' In addition, several plots are produced:
-#'   \item{}
 #' 
-#' @details
-#'  
-#'  Pre-determined model parameters are to be supplied in the list fixedpar (see above):
-#'  \itemize{
-#'   \item{$theta0: (optional) value of tailindex in case it is imposed (double(1))}
-#'   \item{$theta0Std: (optional) its standard deviation (double(1))}
-#'   \item{$logdisp0: (optional) value of log of dispersion coeff. in case it is imposed (dispersion coeff. is the raio of scale par. to location par.) (double(1))}
-#'   \item{$logdisp0Std: (optional) its standard deviation (double(1))}        
-#'   }
-#'   
-#' } 
-#'  metadata may contain the following fields (in addition to your own meta data):
-#'  \itemize{
-#'   \item{$varname: variable name}
-#'   \item{$varunit: physical unit of variable}
-#'   \item{$timeunit: time unit (e.g. year)}
-#'   \item{$timestep: time step in units of timeunit}
-#'   \item{$timelength: length of time covered by time-series, in units of timeunit} 
-#'   \item{$nexcess (for PoT only): no. of data values (as opposed to peak values) exceeding the threshold}
-#'  }  
-#'  
 #'  options may contain the following fields:
 #'  \itemize{
 #'   \item{$pthreshold: fraction of time that value exceeds threshold (double(1))}

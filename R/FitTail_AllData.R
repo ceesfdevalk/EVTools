@@ -4,7 +4,7 @@
 #' 
 #' @description Fit a tail to the values of a time-series and estimate upper tail quantiles
 #' 
-#' @param X data sample (double(n))
+#' @param X data sample (double(n) or (double(n, 2)))
 #' @param freq frequencies of exceedance of the quantiles to be estimated (double(nf))  
 #' @param df distribution function to be fitted to the tail: "GP", "GW", "logGW", "Wbl", or "Exp"
 #' @param method (optional) name of R-script to estimate the tail (character)
@@ -171,9 +171,29 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   # Sample size and correction for positive probability of X equal to its lower bound,
   # to prevent fitting of distribution containing an atom at its lowest value, 
   # like with rainfall
-  
-  N <- length(X) 
+
+  X <- data.matrix(X)
+  N <- dim(X)[1] 
   if (N< 20) {stop("Time series length must be at least 20.")}
+  
+  cat <- rep(1, N)
+  if (dim(X)[2]> 1) {
+    cat <- X[, 2]
+    X <- X[, 1]
+    if (any(is.na(cat)) & !is.na(cat[1])) {
+      nbin <- cat[1]
+      if (nbin> 1) { 
+        binw <- (max(cat)-min(cat))/nbin
+        dsa <- diff(sort(cast))
+        delta <- min(dsa[dsa> 0])
+        binw <- ceil(binw/delta)*delta
+        cat <- (((cat+binw/2) %/% binw) %% nbin)*binw
+      }
+    }
+    cats <- sort(unique(cat))
+    lcats <- length(cats)
+  }
+  
   Xmin <- min(X)
   N <- sum(X> Xmin)+1 
   if (N< 20) {stop("Time series must have at least 19 values above its minimum.")}
@@ -181,7 +201,6 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   
   # Determine quantization and dither data if needed
   
-  # Determine quantization if notand dither data if needed
   if (length(delta)< 1) {
     sX <- -sort(-X)
     dX <- -diff(sX)
@@ -209,16 +228,16 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   
   # Tail estimation
   
-  sX <- -sort(-X)
-  n <- min(N, 5.e4)
-  
   l0 <- N*pthreshold
   if (length(l0)<1) {
     l0 <- NULL
   } else {
     l0 <- min(l0, round(N*min(pthreshold, p0)))
   }
-
+  
+  
+  sX <- -sort(-X)
+  n <- min(N, 5.e4)
   estimates <- get(tailfit)(X=sX[1:n], method, p=p, N=N, r11=r11es, fixedpar= fixedpar, 
                        l0= l0, sigma= sigma, metadata= metadata)
   estimates$p0 <- p0  # fraction of time that X is above its minimum

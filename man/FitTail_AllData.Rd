@@ -71,6 +71,7 @@ Pre-determined model parameters are to be supplied in the list fixedpar (see abo
  
  options may contain the following fields:
  \itemize{
+  \item{$dither: width of uniform distribution of noise to add to data (double(1))}
   \item{$pthreshold: fraction of time that value exceeds threshold (double(1))}
   \item{$maxpthreshold: upper bound on pthreshold (in case pthreshold is estimated)}
   \item{$minpthreshold: lower bound on pthreshold (in case pthreshold is estimated)}
