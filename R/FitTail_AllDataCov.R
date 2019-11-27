@@ -131,6 +131,8 @@ FitTail_AllDataCov <- function(X, freq, df, method, options, metadata) {
   if (length(timestep)< 1) {timestep= 1} # This makes the probability equal to the frequency
   
   # Estimator options
+  
+  nbin <- options$nbin
   dither <- options$dither
   pthreshold <- options$pthreshold
   maxpthreshold <- options$maxpthreshold
@@ -213,13 +215,12 @@ cat <- rep(1, N)
 if (dim(X)[2]> 1) {
   cat <- X[, 2]
   X <- X[, 1]
-  if (any(is.na(cat)) & !is.na(cat[1])) {
-    nbin <- cat[1]
+  if (length(nbin)> 0) {
     if (nbin>= 2) { 
       binw <- (max(cat)-min(cat))/nbin
       dsa <- diff(sort(cast))
-      del <- min(dsa[dsa> 0])
-      binw <- ceil(binw/del)*del
+      delta <- min(dsa[dsa> 0])
+      binw <- ceil(binw/delta)*delta
       cat <- (((cat+binw/2) %/% binw) %% nbin)*binw
     }
   }
