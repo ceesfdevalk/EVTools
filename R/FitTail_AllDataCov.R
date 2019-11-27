@@ -127,7 +127,7 @@ FitTail_AllDataCov <- function(X, freq, df, method, options, metadata) {
   } 
   
   # Specific parameters
-  
+  timestep <- 1 
   timestep <- metadata$timestep
   if (length(timestep)< 1) {
     timestep <- 1      # This makes the probability equal to the frequency
