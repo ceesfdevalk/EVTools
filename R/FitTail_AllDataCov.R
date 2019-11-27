@@ -48,6 +48,7 @@
 #'   \item{$logdisp0Std: (optional) its standard deviation (double(1))}        
 #'   }
 #'   
+#'   
 #' } 
 #'  metadata may contain the following fields (in addition to your own meta data):
 #'  \itemize{
