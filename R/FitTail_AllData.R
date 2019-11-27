@@ -168,31 +168,18 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
     nb <- 0
   }
 
-  # Sample size and correction for positive probability of X equal to its lower bound,
-  # to prevent fitting of distribution containing an atom at its lowest value, 
-  # like with rainfall
-
+  #
+  # Covariate: determine categories
+  #
+  
   X <- data.matrix(X)
   N <- dim(X)[1] 
   if (N< 20) {stop("Time series length must be at least 20.")}
   
-  cat <- rep(1, N)
-  if (dim(X)[2]> 1) {
-    cat <- X[, 2]
-    X <- X[, 1]
-    if (any(is.na(cat)) & !is.na(cat[1])) {
-      nbin <- cat[1]
-      if (nbin> 1) { 
-        binw <- (max(cat)-min(cat))/nbin
-        dsa <- diff(sort(cast))
-        delta <- min(dsa[dsa> 0])
-        binw <- ceil(binw/delta)*delta
-        cat <- (((cat+binw/2) %/% binw) %% nbin)*binw
-      }
-    }
-    cats <- sort(unique(cat))
-    lcats <- length(cats)
-  }
+  
+  # Sample size and correction for positive probability of X equal to its lower bound,
+  # to prevent fitting of distribution containing an atom at its lowest value, 
+  # like with rainfall
   
   Xmin <- min(X)
   N <- sum(X> Xmin)+1 
@@ -210,9 +197,10 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
     }
   }
   if (length(delta)> 0) {
-    X <- X + (runif(length(X))-0.5)*delta
+    ind <- X> 0.5*delta
+    X <- X + (runif(sum(ind))-0.5)*delta
   }
-  X <- pmax(X, Xmin) # to prevent a change of range due to dithering
+  X <- pmax(X, Xmin) # should not be necessary
   
   # Estimate extremal index EI and dependence coefficient r11
   
@@ -235,7 +223,8 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
     l0 <- min(l0, round(N*min(pthreshold, p0)))
   }
   
-  
+  estimates <- vector("list", length = lcats)  
+
   sX <- -sort(-X)
   n <- min(N, 5.e4)
   estimates <- get(tailfit)(X=sX[1:n], method, p=p, N=N, r11=r11es, fixedpar= fixedpar, 
