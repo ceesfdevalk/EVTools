@@ -113,14 +113,14 @@ tailplot <- function(params, ...) {
       EI <- 1  # possibly to be modified later if pot
     }
     
-    p0 <- es$p0
-    if (is.null(p0)) {
-      p0 <- 1  
+    pcat<- es$pcat
+    if (is.null(pcat)) {
+      pcat <- 1  
     }    
     
     pot <- FALSE
     if (!is.null(timelength) & timeseries) {
-      if (abs(es$N*timestep-timelength*p0) > timestep) {
+      if (abs(es$N*timestep-timelength*pcat) > timestep) {
         pot <- TRUE
         if (EI== 1 & !is.null(nexcess)) 
           EI <- n/nexcess
@@ -128,9 +128,9 @@ tailplot <- function(params, ...) {
     }
     
     if (is.null(timelength) & !is.null(timestep)) {  # this is never for POT!
-      timelength <- timestep*es$N/p0
+      timelength <- timestep*es$N/pcat
     } else if (!is.null(timelength) & is.null(timestep)) {
-      timestep <- timelength/es$N*p0
+      timestep <- timelength/es$N*pcat
     }
     
     if (is.null(varunit)) {varunit= "-"}
