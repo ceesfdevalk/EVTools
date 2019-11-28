@@ -35,8 +35,7 @@
 #'   \item{orderstats}{data X sorted (decreasing)}
 #'   \item{df}{see above}
 #'   \item{method}{see above}
-#' In addition, several plots are produced:
-#'   \item{}
+#' In addition, several plots are produced.
 #' 
 #' @details
 #'  
@@ -198,7 +197,7 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   }
   if (length(delta)> 0) {
     ind <- X> 0.5*delta
-    X <- X + (runif(sum(ind))-0.5)*delta
+    X[ind] <- X[ind] + (runif(sum(ind))-0.5)*delta
   }
   X <- pmax(X, Xmin) # should not be necessary
   
@@ -222,8 +221,6 @@ FitTail_AllData <- function(X, freq, df, method, options, metadata) {
   } else {
     l0 <- min(l0, round(N*min(pthreshold, p0)))
   }
-  
-  estimates <- vector("list", length = lcats)  
 
   sX <- -sort(-X)
   n <- min(N, 5.e4)
