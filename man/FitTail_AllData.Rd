@@ -7,7 +7,7 @@
 Value <- FitTail_AllData(X, freq= NULL, df= "GW", method= "FitGW_iHilli", options= NULL, metadata= NULL)
 }
 \arguments{
-\item{X}{data sample (double(n))}
+\item{X}{data sample (double(n) or (double(n, 2)))}
 
 \item{freq}{frequencies of exceedance of the quantiles to be estimated (double(nf))}
 
