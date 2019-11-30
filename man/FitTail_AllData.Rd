@@ -49,12 +49,10 @@ Fit a tail to the values of a time-series and estimate upper tail quantiles
 }
 \details{
 Pre-determined model parameters are to be supplied in the list fixedpar (see above):
- \itemize{
-  \item{$theta0: (optional) value of tailindex in case it is imposed (double(1))}
-  \item{$theta0Std: (optional) its standard deviation (double(1))}
-  \item{$logdisp0: (optional) value of log of dispersion coeff. in case it is imposed (dispersion coeff. is the raio of scale par. to location par.) (double(1))}
-  \item{$logdisp0Std: (optional) its standard deviation (double(1))}        
- }
+  \item{$theta0}{(optional) value of tailindex in case it is imposed (double(1))}
+  \item{$theta0Std}{(optional) its standard deviation (double(1))}
+  \item{$logdisp0}{(optional) value of log of dispersion coeff. in case it is imposed (dispersion coeff. is the raio of scale par. to location par.) (double(1))}
+  \item{$logdisp0Std}{(optional) its standard deviation (double(1))}
 }
 \author{
 Cees de Valk \email{cees.de.valk@knmi.nl}
