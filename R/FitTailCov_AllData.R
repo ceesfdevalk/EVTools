@@ -10,9 +10,9 @@
 #' @param method (optional) name of R-script to estimate the tail (character)
 #' @param options (optional) parameters controlling the estimation (list; see Details)
 #' @param metadata (optional) information about the variable and the time-series (list; see Details)
-#' 
+#'
 #' @usage Value <- FitTailCov_AllData(X, freq= NULL, df= "GW", method= "FitGW_iHilli", options= NULL, metadata= NULL)
-#' 
+#'
 #' @return A list, with members: 
 #'   \item{l}{no. of order statistics used for scale and quantile estimation}    
 #'   \item{k}{no. of order statistics used for tail index estimation} 
@@ -36,9 +36,9 @@
 #'   \item{df}{see above}
 #'   \item{method}{see above}
 #'   \item{In addition, several plots are produced (tailindex, quantile, threshold indicator, fitted tail for selected threshold)}
-#' 
+#'
 #' @details
-#'  
+#'
 #'  Pre-determined model parameters are to be supplied in the list fixedpar (see above):
 #'  \itemize{
 #'   \item{$theta0: (optional) value of tailindex in case it is imposed (double(1))}
@@ -73,7 +73,7 @@
 #'          of confidence interval), $xlim (plot limits for quantile estimates), $freqlim (plot limits for 
 #'          frequencies), $plim (plot limits for fractions of time)}
 #'  }                                
-#
+#'
 #' @author Cees de Valk \email{cees.de.valk@knmi.nl}
 #' 
 #' @export

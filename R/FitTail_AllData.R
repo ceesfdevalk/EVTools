@@ -10,9 +10,9 @@
 #' @param method (optional) name of R-script to estimate the tail (character)
 #' @param options (optional) parameters controlling the estimation (list; see Details)
 #' @param metadata (optional) information about the variable and the time-series (list; see Details)
-#' 
+#'
 #' @usage Value <- FitTail_AllData(X, freq= NULL, df= "GW", method= "FitGW_iHilli", options= NULL, metadata= NULL)
-#' 
+#'
 #' @return A list, with members: 
 #'   \item{l}{no. of order statistics used for scale and quantile estimation}    
 #'   \item{k}{no. of order statistics used for tail index estimation} 
@@ -35,19 +35,18 @@
 #'   \item{orderstats}{data X sorted (decreasing)}
 #'   \item{df}{see above}
 #'   \item{method}{see above}
-#'   \item{In addition, several plots are produced (tailindex, quantile, threshold indicator, fitted tail for selected threshold)}
-#' 
+#'   \item{In addition, several plots are produced (tailindex, quantile, threshold indicator, fitted tail for selected threshold)
+#'
 #' @details
-#'  
-#'  
-#'  
+#'
+#'  Pre-determined model parameters are to be supplied in the list fixedpar (see above):
 #'  \itemize{
 #'   \item{$theta0: (optional) value of tailindex in case it is imposed (double(1))}
 #'   \item{$theta0Std: (optional) its standard deviation (double(1))}
 #'   \item{$logdisp0: (optional) value of log of dispersion coeff. in case it is imposed (dispersion coeff. is the raio of scale par. to location par.) (double(1))}
 #'   \item{$logdisp0Std: (optional) its standard deviation (double(1))}        
 #'   }
-#'   
+#'
 #'  metadata may contain the following fields (in addition to your own meta data):
 #'  \itemize{
 #'   \item{caseId: user-chosen identifier for later reference (default: current date/time)}
@@ -58,7 +57,7 @@
 #'   \item{$timelength: length of time covered by time-series, in units of timeunit} 
 #'   \item{$nexcess (for PoT only): no. of data values (as opposed to peak values) exceeding the threshold}
 #'  }  
-#'  
+#'
 #'  options may contain the following fields:
 #'  \itemize{
 #'   \item{$dither: width of uniform distribution of noise to add to data (double(1))}
@@ -72,7 +71,7 @@
 #'   \item{$fixedpar: fixed model parameters not to be estimated, and their standard errors (list; see below)}
 #'   \item{$plotparams: plotparameters (list) with members: $makeplot (default= TRUE), $pconf (coverage probability of confidence interval), $xlim (plot limits for quantile estimates), $freqlim (plot limits for frequencies), $plim (plot limits for fractions of time)}
 #'  }                                
-#
+#'
 #' @author Cees de Valk \email{cees.de.valk@knmi.nl}
 #' 
 #' @export
