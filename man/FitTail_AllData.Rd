@@ -19,6 +19,31 @@ Value <- FitTail_AllData(X, freq= NULL, df= "GW", method= "FitGW_iHilli", option
 
 \item{metadata}{(optional) information about the variable and the time-series (list; see Details)}
 }
+\value{
+A list, with members: 
+  \item{l}{no. of order statistics used for scale and quantile estimation}    
+  \item{k}{no. of order statistics used for tail index estimation} 
+  \item{sigma}{algorithm parameter (see ref. eq. (30))}
+  \item{tailindex}{estimates or imposed value of GW tail index} 
+  \item{tailindexStd}{standard deviations of tail index estimates}
+  \item{logdisp}{estimates or imposed value of log of dispersion coeff.}  
+  \item{logdispStd}{standard deviations of log of dispersion coeff. estimates}
+  \item{scale}{estimates of GW scale parameter}
+  \item{locationStd}{standard deviation of order statistic}
+  \item{lambda}{ratio of logarithms of probabilities of exceedance of quantile and threshold}  
+  \item{p}{probabilities (frwctions of time) of exceedance of quantiles to be estimated} 
+  \item{p0}{probability of exceedance of the lower bound of the variable} 
+  \item{freq}{frequencies of exceedance of quantiles to be estimated}    
+  \item{quantile}{quantile estimates}
+  \item{quantileStd}{standard deviations of quantile estimates}
+  \item{tailindexraw}{raw estimates of GW tail index over all possible thresholds (method: FitGW_iHill.R)} 
+  \item{tailindexrawStd}{standard deviation of tailindexraw}
+  \item{kraw}{no. of order statistics used for estimation of tailindexraw} 
+  \item{orderstats}{data X sorted (decreasing)}
+  \item{df}{see above}
+  \item{method}{see above}
+  \item{In addition, several plots are produced (tailindex, quantile, threshold indicator, fitted tail for selected threshold)}
+}
 \description{
 Fit a tail to the values of a time-series and estimate upper tail quantiles
 }
