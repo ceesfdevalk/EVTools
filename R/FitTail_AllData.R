@@ -35,7 +35,7 @@
 #'   \item{orderstats}{data X sorted (decreasing)}
 #'   \item{df}{see above}
 #'   \item{method}{see above}
-#'   \item{In addition, several plots are produced (tailindex, quantile, threshold indicator, fitted tail for selected threshold)}
+#'   \item{ }{In addition, several plots are produced (tailindex, quantile, threshold indicator, fitted tail for selected threshold)}
 #'
 #' @details
 #'

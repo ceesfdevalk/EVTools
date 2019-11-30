@@ -42,7 +42,7 @@ A list, with members:
   \item{orderstats}{data X sorted (decreasing)}
   \item{df}{see above}
   \item{method}{see above}
-  \item{In addition, several plots are produced (tailindex, quantile, threshold indicator, fitted tail for selected threshold)}
+  \item{ }{In addition, several plots are produced (tailindex, quantile, threshold indicator, fitted tail for selected threshold)}
 }
 \description{
 Fit a tail to the values of a time-series and estimate upper tail quantiles
