@@ -35,7 +35,7 @@
 #'   \item{orderstats}{data X sorted (decreasing)}
 #'   \item{df}{see above}
 #'   \item{method}{see above}
-#'   \item{In addition, several plots are produced (tailindex, quantile, threshold indicator, fitted tail for selected threshold)
+#'   \item{In addition, several plots are produced (tailindex, quantile, threshold indicator, fitted tail for selected threshold)}
 #'
 #' @details
 #'
@@ -45,7 +45,7 @@
 #'   \item{$theta0Std: (optional) its standard deviation (double(1))}
 #'   \item{$logdisp0: (optional) value of log of dispersion coeff. in case it is imposed (dispersion coeff. is the raio of scale par. to location par.) (double(1))}
 #'   \item{$logdisp0Std: (optional) its standard deviation (double(1))}        
-#'   }
+#'  }
 #'
 #'  metadata may contain the following fields (in addition to your own meta data):
 #'  \itemize{
