@@ -21,6 +21,7 @@ Value <- FitTail_AllData(X, freq= NULL, df= "GW", method= "FitGW_iHilli", option
 }
 \value{
 A list, with members: 
+ \itemize{
   \item{l}{no. of order statistics used for scale and quantile estimation}    
   \item{k}{no. of order statistics used for tail index estimation} 
   \item{sigma}{algorithm parameter (see ref. eq. (30))}
@@ -42,6 +43,7 @@ A list, with members:
   \item{orderstats}{data X sorted (decreasing)}
   \item{df}{see above}
   \item{method}{see above}
+ }
 In addition, several plots are produced.
 }
 \description{

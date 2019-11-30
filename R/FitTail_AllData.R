@@ -14,7 +14,6 @@
 #' @usage Value <- FitTail_AllData(X, freq= NULL, df= "GW", method= "FitGW_iHilli", options= NULL, metadata= NULL)
 #' 
 #' @return A list, with members: 
-#'  \itemize{
 #'   \item{l}{no. of order statistics used for scale and quantile estimation}    
 #'   \item{k}{no. of order statistics used for tail index estimation} 
 #'   \item{sigma}{algorithm parameter (see ref. eq. (30))}
@@ -36,12 +35,12 @@
 #'   \item{orderstats}{data X sorted (decreasing)}
 #'   \item{df}{see above}
 #'   \item{method}{see above}
-#'  }
-#' In addition, several plots are produced.
+#'   \item{In addition, several plots are produced (tailindex, quantile, threshold indicator, fitted tail for selected threshold)}
 #' 
 #' @details
 #'  
-#'  Pre-determined model parameters are to be supplied in the list fixedpar (see above):
+#'  
+#'  
 #'  \itemize{
 #'   \item{$theta0: (optional) value of tailindex in case it is imposed (double(1))}
 #'   \item{$theta0Std: (optional) its standard deviation (double(1))}
