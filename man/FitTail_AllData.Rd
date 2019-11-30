@@ -48,12 +48,23 @@ A list, with members:
 Fit a tail to the values of a time-series and estimate upper tail quantiles
 }
 \details{
-Pre-determined model parameters are to be supplied in the list fixedpar (see Arguments), with fields:
+Pre-determined model parameters are to be supplied in the list fixedpar (see Arguments) with fields:
  \itemize{
   \item{$theta0: (optional) value of tailindex in case it is imposed (double(1))}
   \item{$theta0Std: (optional) its standard deviation (double(1))}
   \item{$logdisp0: (optional) value of log of dispersion coeff. in case it is imposed (dispersion coeff. is the raio of scale par. to location par.) (double(1))}
   \item{$logdisp0Std: (optional) its standard deviation (double(1))}        
+ }     
+
+ metadata may contain the following fields (in addition to your own meta data):
+ \itemize{
+  \item{caseId: user-chosen identifier for later reference (default: current date/time)}
+  \item{$varname: variable name}
+  \item{$varunit: physical unit of variable}
+  \item{$timeunit: time unit (e.g. year)}
+  \item{$timestep: time step in units of timeunit}
+  \item{$timelength: length of time covered by time-series, in units of timeunit} 
+  \item{$nexcess (for PoT only): no. of data values (as opposed to peak values) exceeding the threshold}
  }
 }
 \author{
