@@ -45,7 +45,7 @@ A list, with members:
   \item{ }{In addition, several plots are produced (tailindex, quantile, threshold indicator, fitted tail for selected threshold)}
 }
 \description{
-Fit a tail to the values of a time-series and estimate upper tail quantiles
+Fit the tail of the distribution function of the values of a time-series coinciding with a covariate in some bin, and estimate upper tail quantiles
 }
 \details{
 Pre-determined model parameters are to be supplied in the list fixedpar (see above):

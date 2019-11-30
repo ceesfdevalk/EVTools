@@ -2,7 +2,7 @@
 #' 
 #' @title FitTailCov_AllData
 #' 
-#' @description Fit a tail to the values of a time-series and estimate upper tail quantiles
+#' @description Fit the tail of the distribution function of the values of a time-series coinciding with a covariate in some bin, and estimate upper tail quantiles
 #' 
 #' @param X data sample (double(n) or (double(n, 2)))
 #' @param freq frequencies of exceedance of the quantiles to be estimated (double(nf))  
