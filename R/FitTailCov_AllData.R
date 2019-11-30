@@ -35,7 +35,7 @@
 #'   \item{orderstats}{data X sorted (decreasing)}
 #'   \item{df}{see above}
 #'   \item{method}{see above}
-#'   \item{In addition, several plots are produced (tailindex, quantile, threshold indicator, fitted tail for selected threshold)}
+#'   \item{ }{In addition, several plots are produced (tailindex, quantile, threshold indicator, fitted tail for selected threshold)}
 #'
 #' @details
 #'
@@ -66,13 +66,11 @@
 #'   \item{$minpthreshold: lower bound on pthreshold (in case pthreshold is estimated)}
 #'   \item{$indexselect: if TRUE, threshold is selected based on tail index estimates (logical, default= FALSE)} 
 #'   \item{$kmin: no. of order statistics skipped in determining threshold (integer(1)), default= 20)} 
-#'   \item{$bootstrap: list. If exists/nonempty, precision is assessed by a moving block bootstrap. May 
-#'          contain $nsamples (no. of bootstrap samples) and $blocktime (block length in terms of time)
+#'   \item{$sigma: determines the ratio of k to l ( (no. of order stats used for estimation of tail index and quantile) (double(1)}
+#'   \item{$bootstrap: list. If exists/nonempty, precision is assessed by a moving block bootstrap. May contain $nsamples (no. of bootstrap samples) and $blocktime (block length in terms of time)}
 #'   \item{$fixedpar: fixed model parameters not to be estimated, and their standard errors (list; see below)}
-#'   \item{$plotparams: plotparameters (list) with members: $makeplot (default= TRUE), $pconf (coverage probability 
-#'          of confidence interval), $xlim (plot limits for quantile estimates), $freqlim (plot limits for 
-#'          frequencies), $plim (plot limits for fractions of time)}
-#'  }                                
+#'   \item{$plotparams: plotparameters (list) with members: $makeplot (default= TRUE), $pconf (coverage probability of confidence interval), $xlim (plot limits for quantile estimates), $freqlim (plot limits for frequencies), $plim (plot limits for fractions of time)}
+#'  }   
 #'
 #' @author Cees de Valk \email{cees.de.valk@knmi.nl}
 #' 
