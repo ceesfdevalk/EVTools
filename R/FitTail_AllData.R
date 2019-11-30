@@ -39,7 +39,7 @@
 #'
 #' @details
 #'
-#'  Pre-determined model parameters are to be supplied in the list fixedpar (see Arguments):
+#'  Pre-determined model parameters are to be supplied in the list fixedpar (see Arguments), with fields:
 #'  \itemize{
 #'   \item{$theta0: (optional) value of tailindex in case it is imposed (double(1))}
 #'   \item{$theta0Std: (optional) its standard deviation (double(1))}
