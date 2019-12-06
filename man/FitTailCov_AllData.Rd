@@ -69,8 +69,9 @@ Pre-determined model parameters are to be supplied in the list fixedpar (see abo
  
  options may contain the following fields:
  \itemize{
+  \item{$covariate: list, which may contain $binwidth (width of convariate bins, assumed uniform) and (overruled by) $lbin and $ubin, containing the lower resp. upper limits of the bins to consider}
   \item{$dither: width of uniform distribution of noise to add to data (double(1))}
-  \item{$pthreshold: fraction of time that value exceeds threshold (double(1))}
+  \item{$pthreshold: fraction of good values exceeding threshold (double(1))}
   \item{$maxpthreshold: upper bound on pthreshold (in case pthreshold is estimated)}
   \item{$minpthreshold: lower bound on pthreshold (in case pthreshold is estimated)}
   \item{$indexselect: if TRUE, threshold is selected based on tail index estimates (logical, default= FALSE)} 
