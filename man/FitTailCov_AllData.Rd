@@ -7,7 +7,7 @@
 Value <- FitTailCov_AllData(X, freq= NULL, df= "GW", method= "FitGW_iHilli", options= NULL, metadata= NULL)
 }
 \arguments{
-\item{X}{data sample (double(n) or (double(n, 2)))}
+\item{X}{data sample (double(n), optionally with a second column of covariate values (double(n, 2)))}
 
 \item{freq}{frequencies of exceedance of the quantiles to be estimated (double(nf))}
 
@@ -69,7 +69,7 @@ Pre-determined model parameters are to be supplied in the list fixedpar (see abo
  
  options may contain the following fields:
  \itemize{
-  \item{$covariate: list, which may contain $binwidth (width of convariate bins, assumed uniform) and (overruled by) $lbin and $ubin, containing the lower resp. upper limits of the bins to consider}
+  \item{$covariate: list, which may contain $lbin and $ubin (the lower resp. upper limits of the bins of covariate values on which to restrict the tail estimates), or (for an angular covariate) $binwidth (assumed uniform)}
   \item{$dither: width of uniform distribution of noise to add to data (double(1))}
   \item{$pthreshold: fraction of good values exceeding threshold (double(1))}
   \item{$maxpthreshold: upper bound on pthreshold (in case pthreshold is estimated)}
