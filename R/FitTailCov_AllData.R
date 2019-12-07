@@ -4,7 +4,7 @@
 #' 
 #' @description Fit the tail of the frequency distribution of the values of a time-series. Optionally, the distribution of values coinciding with a covariate in some bin is estimated, for each of a set of bins covering the range of the covariate. 
 #' 
-#' @param X data sample (double(n) or (double(n, 2)))
+#' @param X data sample (double(n), optionally with a second column of covariate values (double(n, 2)))
 #' @param freq frequencies of exceedance of the quantiles to be estimated (double(nf))  
 #' @param df distribution function to be fitted to the tail: "GP", "GW", "logGW", "Wbl", or "Exp"
 #' @param method (optional) name of R-script to estimate the tail (character)
@@ -60,7 +60,7 @@
 #'  
 #'  options may contain the following fields:
 #'  \itemize{
-#'   \item{$covariate: list, which may contain $binwidth (width of convariate bins, assumed uniform) and (overruled by) $lbin and $ubin, containing the lower resp. upper limits of the bins to consider}
+#'   \item{$covariate: list, which may contain $lbin and $ubin (the lower resp. upper limits of the bins of covariate values on which to restrict the tail estimates), or (for an angular covariate) $binwidth (assumed uniform)}
 #'   \item{$dither: width of uniform distribution of noise to add to data (double(1))}
 #'   \item{$pthreshold: fraction of good values exceeding threshold (double(1))}
 #'   \item{$maxpthreshold: upper bound on pthreshold (in case pthreshold is estimated)}
@@ -86,7 +86,7 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
   # Handle missing arguments    
   
   if (missing(X)) {stop("Data X must be specified.")}
-  X <- data.matrix(X)      # make sure it has a dimension
+  X <- data.matrix(X)      # make sure X has a dimension
   N <- dim(X)[1] 
   if (N< 20) {
     stop("Time series length must be at least 20.")
