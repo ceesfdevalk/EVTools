@@ -24,8 +24,8 @@
 #'   \item{scale}{estimates of GW scale parameter}
 #'   \item{locationStd}{standard deviation of order statistic}
 #'   \item{lambda}{ratio of logarithms of probabilities of exceedance of quantile and threshold}  
-#'   \item{p}{probabilities (frwctions of time) of exceedance of quantiles to be estimated} 
-#'   \item{p0}{probability of exceedance of the lower bound of the variable} 
+#'   \item{p}{probabilities (fractions of time) of exceedance of quantiles to be estimated} 
+#'   \item{pcat}{probability of exceedance of the lower bound of the variable} 
 #'   \item{freq}{frequencies of exceedance of quantiles to be estimated}    
 #'   \item{quantile}{quantile estimates}
 #'   \item{quantileStd}{standard deviations of quantile estimates}
@@ -38,14 +38,6 @@
 #'   \item{ }{In addition, several plots are produced (tailindex, quantile, threshold indicator, fitted tail for selected threshold)}
 #'
 #' @details
-#'
-#'  Pre-determined model parameters are to be supplied in the list fixedpar (see above):
-#'  \itemize{
-#'   \item{$theta0: (optional) value of tailindex in case it is imposed (double(1))}
-#'   \item{$theta0Std: (optional) its standard deviation (double(1))}
-#'   \item{$logdisp0: (optional) value of log of dispersion coeff. in case it is imposed (dispersion coeff. is the raio of scale par. to location par.) (double(1))}
-#'   \item{$logdisp0Std: (optional) its standard deviation (double(1))}        
-#'   }
 #'   
 #'  metadata may contain the following fields (in addition to your own meta data):
 #'  \itemize{
@@ -73,6 +65,14 @@
 #'   \item{$plotparams: plotparameters (list) with members: $makeplot (default= TRUE), $pconf (coverage probability of confidence interval), $xlim (plot limits for quantile estimates), $freqlim (plot limits for frequencies), $plim (plot limits for fractions of time)}
 #'  }   
 #'
+#'  Pre-determined model parameters are to be supplied in options$fixedpar (see above):
+#'  \itemize{
+#'   \item{$theta0: (optional) value of tailindex in case it is imposed (double(1))}
+#'   \item{$theta0Std: (optional) its standard deviation (double(1))}
+#'   \item{$logdisp0: (optional) value of log of dispersion coeff. in case it is imposed (dispersion coeff. is the raio of scale par. to location par.) (double(1))}
+#'   \item{$logdisp0Std: (optional) its standard deviation (double(1))}        
+#'   }
+#'   
 #' @author Cees de Valk \email{cees.de.valk@knmi.nl}
 #' 
 #' @export
