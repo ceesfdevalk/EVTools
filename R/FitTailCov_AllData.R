@@ -2,7 +2,7 @@
 #' 
 #' @title FitTailCov_AllData
 #' 
-#' @description Fit the tail of the frequency distribution of the values of a time-series. Optionally, the distribution of values coinciding with a covariate in some bin is estimated, for each of a set of bins. 
+#' @description Fit and extrapolate the tail of the frequency distribution of a time-series. Optionally, the distribution of the values coinciding with a covariate in some bin is estimated, for each of a specified set of bins. 
 #' 
 #' @param X data sample (double(n), optionally with a second column of values of a covariate (double(n, 2)))
 #' @param freq frequencies of exceedance of the quantiles to be estimated (double(nf))  

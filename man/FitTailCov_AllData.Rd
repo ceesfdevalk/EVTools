@@ -45,7 +45,7 @@ A list, with members:
   \item{ }{In addition, several plots are produced (tailindex, quantile, threshold indicator, fitted tail for selected threshold)}
 }
 \description{
-Fit the tail of the frequency distribution of the values of a time-series. Optionally, the distribution of values coinciding with a covariate in some bin is estimated, for each of a set of bins.
+Fit and extrapolate the tail of the frequency distribution of a time-series. Optionally, the distribution of the values coinciding with a covariate in some bin is estimated, for each of a specified set of bins.
 }
 \details{
 Pre-determined model parameters are to be supplied in the list fixedpar (see above):
