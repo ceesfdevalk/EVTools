@@ -2,9 +2,9 @@
 #' 
 #' @title FitTailCov_AllData
 #' 
-#' @description Fit the tail of the frequency distribution of the values of a time-series. Optionally, the distribution of values coinciding with a covariate in some bin is estimated, for each of a set of bins covering the range of the covariate. 
+#' @description Fit the tail of the frequency distribution of the values of a time-series. Optionally, the distribution of values coinciding with a covariate in some bin is estimated, for each of a set of bins. 
 #' 
-#' @param X data sample (double(n), optionally with a second column of covariate values (double(n, 2)))
+#' @param X data sample (double(n), optionally with a second column of values of a covariate (double(n, 2)))
 #' @param freq frequencies of exceedance of the quantiles to be estimated (double(nf))  
 #' @param df distribution function to be fitted to the tail: "GP", "GW", "logGW", "Wbl", or "Exp"
 #' @param method (optional) name of R-script to estimate the tail (character)
