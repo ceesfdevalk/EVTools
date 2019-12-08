@@ -231,12 +231,19 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
   lcats <- length(cats)
   
   # certain inputs may be different for different bins
-  if (length(pthreshold)< lcats & length(pthreshold)> 0) {
-    pthreshold <- pthreshold[1]
+  corrlength <- function(x, ll) {
+    if (length(x)< ll & length(x)> 0) {
+      x <- rep(x[1], ll)  
+    } elseif (length(x)> ll & length(x)> 0) {
+      x <- x[1:ll]
+    }
+    return(x)
   }
-  if (length(pthreshold)< lcats & length(pthreshold)> 0) {
-    pthreshold <- pthreshold[1]
-  }
+  pthreshold <- corrlength(pthreshold, lcats)
+  fixedpar$theta0 <- corrlength(fixedpar$theta0, lcats)
+  fixedpar$theta0Std <- corrlength(fixedpar$theta0Std, lcats)
+  fixedpar$logdisp0 <- corrlength(fixedpar$logdisp0, lcats)
+  fixedpar$logdisp0Std <- corrlength(fixedpar$logdisp0Std, lcats)
   
   #
   # Loop over covariate bins (by recursion)
@@ -266,13 +273,19 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
       
       sX <- -sort(-X[ind])
       n <- round(min(N*maxpthreshold*4, 1.e5))
-      if (length(pthreshold)<1) {
+      if (length(pthreshold[i])<1) {
         l0 <- seq(kmin, n, kmin)             # only the values needed for threshold optimisation  
       } else {
-        l0 <- round(N*pthreshold)
+        l0 <- round(N*pthreshold[i])
       }
       
-      es <- get(tailfit)(X=sX[1:n], method, p=p, N=N, r11=r11es, fixedpar= fixedpar, 
+      fixedpar0 <- fixedpar
+      fixedpar0$theta0 <- fixedpar$theta0[i]
+      fixedpar0$theta0Std <- fixedpar$theta0Std[i]
+      fixedpar0$logdisp0 <- fixedpar$logdisp0[i]
+      fixedpar0$logdispStd0 <- fixedpar$logdisp0Std[i]
+      
+      es <- get(tailfit)(X=sX[1:n], method, p=p, N=N, r11=r11es, fixedpar= fixedpar0, 
                          l0= l0, sigma= sigma, metadata= metadata)
       
       # es$cat <- cats[i]
