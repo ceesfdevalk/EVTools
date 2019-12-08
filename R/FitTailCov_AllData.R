@@ -442,10 +442,13 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
       dev.off()
       
       # Plot P-value
-      fname <- paste("ThresholdP-", genname, ".png", sep= "")
-      png(filename= fname,units="in", width=5*fac, height=5*fac, res=72)
-      thresholdplot(plotparams, es)
-      dev.off()
+  
+      if (length(es$threshold)> 0) {
+        fname <- paste("ThresholdP-", genname, ".png", sep= "")
+        png(filename= fname,units="in", width=5*fac, height=5*fac, res=72)
+        thresholdplot(plotparams, es)
+        dev.off()
+      }
     }
     
   } #  for (i in 1:lcats)
