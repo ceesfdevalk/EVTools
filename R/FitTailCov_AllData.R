@@ -234,7 +234,7 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
   corrlength <- function(x, ll) {
     if (length(x)< ll & length(x)> 0) {
       x <- rep(x[1], ll)  
-    } elseif (length(x)> ll & length(x)> 0) {
+    } else if (length(x)> ll & length(x)> 0) {
       x <- x[1:ll]
     }
     return(x)
