@@ -32,6 +32,9 @@ assigncat <- function(y, lbin, ubin, binwidth) {
       }
     }
     cats <- apply(rbind(lbin, ubin), 2, mean)
+    lbin1 <- lbin
+    ubin1 <- ubin
+    cats1 <- cat
     ind <- which(ubin< lbin)
     if (length(ind)== 1) {
       if (ind!= nbin) {
@@ -40,11 +43,11 @@ assigncat <- function(y, lbin, ubin, binwidth) {
       if (any(cats< 0)) {
         stop("lbin and ubin must be nonnegative if any(ubin< lbin).")
       }
-      cats[nbin] <- 0
+      cats[nbin] <- 0    # simple choice: apparently it is circular 
       lbin1 <- c(-Inf, lbin)
       ubin1 <- c(ubin[nbin], ubin[1:(nbin-1)], Inf)
       cats1 <- c(cats[nbin], cats)  # simple choice: apparently it is circular 
-    } else if (length(ind)> 0) {
+    } else if (length(ind)> 0) { 
       stop("options$covariate$ubin< options$covariate$lbin for at most one element.")
     }
     # period <- ubin[nbin]-lbin[1]
