@@ -230,6 +230,14 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
   }
   lcats <- length(cats)
   
+  # certain inputs may be different for different bins
+  if (length(pthreshold)< lcats & length(pthreshold)> 0) {
+    pthreshold <- pthreshold[1]
+  }
+  if (length(pthreshold)< lcats & length(pthreshold)> 0) {
+    pthreshold <- pthreshold[1]
+  }
+  
   #
   # Loop over covariate bins (by recursion)
   #
@@ -270,6 +278,7 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
       # es$cat <- cats[i]
       es$lbin <- lbin[i]
       es$ubin <- ubin[i]
+      es$cats <- cats[i]
       es$pbin <- pbin  # fraction of time that X is above its minimum and cat in cats[i]
       es$p <- p*pbin # real fraction of time
       es$freq <- freq  # frequency
@@ -369,6 +378,10 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
                            l0= ls, sigma= sigma, metadata= metadata)
       
       esel$pbin <- pbin  # fraction of time that X is above its minimum
+      esel$lbin <- lbin[i]
+      esel$ubin <- ubin[i]
+      esel$cats <- cats[i]
+      
       esel$p <- ps*pbin # fraction of time
       esel$freq <- freqs  # frequency
       esel$EIvalue <- EIvalue
@@ -396,7 +409,7 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
     if (is.null(plotparams$makeplot)) {plotparams$makeplot <- TRUE}
     if (plotparams$makeplot) {
       # Plot of tail fit
-      genname <- paste(es$df, "-", metadata$varname, "-", lbin[i], "-", ubin[i], "-", metadata$caseId, sep= "")
+      genname <- paste(es$df, "-", metadata$varname, "-", cats[i], "-", metadata$caseId, sep= "")
       
       fname <- paste("Tail-", genname, ".png", sep= "")
       png(filename= fname,units="in", width=7.5*fac, height=7.5*fac, res=72)
