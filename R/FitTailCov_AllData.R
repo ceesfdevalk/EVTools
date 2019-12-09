@@ -150,7 +150,7 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
   if (minpthreshold> maxpthreshold) {
     stop("options$minpthreshold larger or equal to options$maxpthreshold")
   } else if (minpthreshold== maxpthreshold) {
-    minpthreshold <- pthreshold <- maxpthreshold
+    pthreshold <- maxpthreshold
   }
   if (grepl("ML", method)) {
     warning("Chosen method may take a long time")
@@ -239,6 +239,12 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
     }
     return(x)
   }
+  pick <- function(x, i) {
+    if (length(x)> 1) {
+      x <- x[i]  
+    }
+    return(x)
+  }
   pthreshold <- corrlength(pthreshold, lcats)
   fixedpar$theta0 <- corrlength(fixedpar$theta0, lcats)
   fixedpar$theta0Std <- corrlength(fixedpar$theta0Std, lcats)
@@ -269,21 +275,21 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
       #  p is fraction of "the time that X is above its minimum and cat in cats[i]"
       p <- freq*timestep/EIvalue/pbin
       
-      kmin <- round(N*5.e-4)
+      kmin <- round(N*max(minpthreshold*0.5, 1.e-4))
       
       sX <- -sort(-X[ind])
       n <- round(min(N*maxpthreshold*4, 1.e5))
       if (length(pthreshold[i])<1) {
         l0 <- seq(kmin, n, kmin)             # only the values needed for threshold optimisation  
       } else {
-        l0 <- round(N*pthreshold[i])
-      }
+        l0 <- round(N*pick(pthreshold, i))
+      } 
       
       fixedpar0 <- fixedpar
-      fixedpar0$theta0 <- fixedpar$theta0[i]
-      fixedpar0$theta0Std <- fixedpar$theta0Std[i]
-      fixedpar0$logdisp0 <- fixedpar$logdisp0[i]
-      fixedpar0$logdispStd0 <- fixedpar$logdisp0Std[i]
+      fixedpar0$theta0 <- pick(fixedpar$theta0, i)
+      fixedpar0$theta0Std <- pick(fixedpar$theta0Std, i)
+      fixedpar0$logdisp0 <- pick(fixedpar$logdisp0, i)
+      fixedpar0$logdispStd0 <- pick(fixedpar$logdispStd0, i)
       
       es <- get(tailfit)(X=sX[1:n], method, p=p, N=N, r11=r11es, fixedpar= fixedpar0, 
                          l0= l0, sigma= sigma, metadata= metadata)
