@@ -25,7 +25,7 @@
 #'   \item{locationStd}{standard deviation of order statistic}
 #'   \item{lambda}{ratio of logarithms of probabilities of exceedance of quantile and threshold}  
 #'   \item{p}{probabilities (fractions of time) of exceedance of quantiles to be estimated} 
-#'   \item{pcat}{probability of exceedance of the lower bound of the variable} 
+#'   \item{pbin}{probability (fraction of time) of exceedance of the lower bound of the variable} 
 #'   \item{freq}{frequencies of exceedance of quantiles to be estimated}    
 #'   \item{quantile}{quantile estimates}
 #'   \item{quantileStd}{standard deviations of quantile estimates}
@@ -441,7 +441,7 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
       tailindexplot(es= es)  
       dev.off()
       
-      # Plot of quantile estimates vs. l for the lowest freqency
+      # Plot of quantile estimates vs. l for the lowest frequency
       fname <- paste("Quantile-", genname, ".png", sep= "")
       png(filename= fname,units="in", width=5*fac, height=5*fac, res=72)
       tailquantileplot(plotparams, es) 
