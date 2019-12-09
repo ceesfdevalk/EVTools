@@ -232,10 +232,10 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
   
   # certain inputs may be different for different bins
   corrlength <- function(x, ll) {
-    if (length(x)< ll & length(x)> 0) {
+    if (ll>1 & length(x)== 1) {
       x <- rep(x[1], ll)  
-    } else if (length(x)> ll & length(x)> 0) {
-      x <- x[1:ll]
+    } else if (length(x)> 0 & length(x)!= ll) {
+      stop("length of array supplied in options incompatible with no. of covariate bins.")
     }
     return(x)
   }
@@ -442,7 +442,6 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
       dev.off()
       
       # Plot P-value
-  
       if (length(es$threshold)> 0) {
         fname <- paste("ThresholdP-", genname, ".png", sep= "")
         png(filename= fname,units="in", width=5*fac, height=5*fac, res=72)
