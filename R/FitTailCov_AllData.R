@@ -144,13 +144,17 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
   dither <- options$dither
   pthreshold <- options$pthreshold
   maxpthreshold <- options$maxpthreshold
-  if (length(maxpthreshold)< 1) {maxpthreshold <- 0.5} 
   minpthreshold <- options$minpthreshold
-  if (length(minpthreshold)< 1) {minpthreshold <- 0}
-  if (minpthreshold> maxpthreshold) {
-    stop("options$minpthreshold larger or equal to options$maxpthreshold")
-  } else if (minpthreshold== maxpthreshold) {
-    pthreshold <- maxpthreshold
+  if (length(pthreshold)> 0) {
+    maxpthreshold <- minpthreshold <- pthreshold
+  } else {
+    if (length(maxpthreshold)< 1) {maxpthreshold <- 0.5} 
+    if (length(minpthreshold)< 1) {minpthreshold <- 0}
+    if (minpthreshold> maxpthreshold) {
+      stop("options$minpthreshold larger or equal to options$maxpthreshold")
+    } else if (minpthreshold== maxpthreshold) {
+      pthreshold <- maxpthreshold
+    }
   }
   if (grepl("ML", method)) {
     warning("Chosen method may take a long time")
@@ -235,7 +239,7 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
     if (ll>1 & length(x)== 1) {
       x <- rep(x[1], ll)  
     } else if (length(x)> 0 & length(x)!= ll) {
-      stop("length of array supplied in options incompatible with no. of covariate bins.")
+      stop("length of an array supplied in options is incompatible with no. of covariate bins.")
     }
     return(x)
   }
