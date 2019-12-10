@@ -41,8 +41,8 @@ tailquantileplot <- function(params= NULL, es= NULL) {
                  ", case: ", caseId, sep= "")
   
   freq <- es$freq[1]
-  q <- es$quantile[, 1]
-  qStd <- es$quantileStd[, 1]
+  q <- data.matrix(es$quantile)[, 1]
+  qStd <- data.matrix(es$quantileStd)[, 1]
   id <- es$l< 0.1*es$N
   ylim <- c(quantile(q[id]-qStd[id]*qn, 0.05), quantile(q[id]+qStd[id]*qn, 0.95))
   ylim <- signif(ylim, digits= 2)       

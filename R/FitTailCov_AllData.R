@@ -439,24 +439,28 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
       tailplot(plotparams, es$selected)
       dev.off()
       
-      # Plot of tail index estimates vs. l
-      fname <- paste("Tailindex-", genname, ".png", sep= "")
-      png(filename= fname,units="in", width=5*fac, height=5*fac, res=72)
-      tailindexplot(es= es)  
-      dev.off()
-      
-      # Plot of quantile estimates vs. l for the lowest frequency
-      fname <- paste("Quantile-", genname, ".png", sep= "")
-      png(filename= fname,units="in", width=5*fac, height=5*fac, res=72)
-      tailquantileplot(plotparams, es) 
-      dev.off()
-      
-      # Plot P-value
-      if (length(es$threshold)> 0) {
-        fname <- paste("ThresholdP-", genname, ".png", sep= "")
+      if (length(es$l)> 1) {
+        
+        # Plot of tail index estimates vs. l
+        fname <- paste("Tailindex-", genname, ".png", sep= "")
         png(filename= fname,units="in", width=5*fac, height=5*fac, res=72)
-        thresholdplot(plotparams, es)
+        tailindexplot(es= es)  
         dev.off()
+        
+        # Plot of quantile estimates vs. l for the lowest frequency
+        fname <- paste("Quantile-", genname, ".png", sep= "")
+        png(filename= fname,units="in", width=5*fac, height=5*fac, res=72)
+        tailquantileplot(plotparams, es) 
+        dev.off()
+        
+        # Plot P-value
+        if (length(es$threshold)> 0) {
+          fname <- paste("ThresholdP-", genname, ".png", sep= "")
+          png(filename= fname,units="in", width=5*fac, height=5*fac, res=72)
+          thresholdplot(plotparams, es)
+          dev.off()
+        }   
+        
       }
     }
     
