@@ -252,6 +252,7 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
         
       } else {
         ti <- theta0[1]
+        if (abs(ti)< 1.e-6) {ti <- 1.e-6}
         temp <- cumsum(h(ti, th[1:(mk-1)]))/(1:(mk-1))
         w <- th[2:mk]^(-ti)*temp + h(ti, 1/th[2:mk])
         temp1 <- cumsum(log(th[1:(mk-1)])*th[1:(mk-1)]^ti)/(1:(mk-1))
