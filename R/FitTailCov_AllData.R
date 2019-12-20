@@ -282,7 +282,7 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
       kmin <- round(N*max(minpthreshold*0.5, 1.e-4))
       
       sX <- -sort(-X[ind])
-      n <- round(min(N*maxpthreshold*4, 5.e3*kmin))
+      n <- round(min(N*maxpthreshold*4, 5.e4*sqrt(kmin)))
       if (length(pthreshold[i])<1) {
         l0 <- seq(kmin, n, kmin)             # only the values needed for threshold optimisation  
       } else {
