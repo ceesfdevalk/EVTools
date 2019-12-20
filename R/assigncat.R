@@ -2,7 +2,7 @@
 # 
 #
 assigncat <- function(y, lbin, ubin, cats, binwidth) {
-  ly <- lenth(y)
+  ly <- length(y)
   nbin <- length(lbin)
   
   if (length(binwidth)> 0 & (nbin== 0 & length(ubin)== 0)) {
