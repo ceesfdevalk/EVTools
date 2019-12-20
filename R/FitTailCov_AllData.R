@@ -141,6 +141,7 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
   binwidth <- options$covariate$binwidth
   lbin <- options$covariate$lbin
   ubin <- options$covariate$ubin
+  cats <- options$covariate$cats
   dither <- options$dither
   pthreshold <- options$pthreshold
   maxpthreshold <- options$maxpthreshold
@@ -223,14 +224,15 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
   # Covariate: determine categories
   #
   cat <- data.matrix(rep(TRUE, N))
-  cats <- 1
   if (dim(X)[2]> 1) {
-    assigned <- assigncat(X[, 2], lbin, ubin, binwidth)
+    assigned <- assigncat(X[, 2], lbin, ubin, cats, binwidth)
     cat <- assigned$cat
     cats <- assigned$cats
     lbin <- assigned$lbin
     ubin <- assigned$ubin
     X <- X[, 1]
+  } else {
+    cats <- NA
   }
   lcats <- length(cats)
   
