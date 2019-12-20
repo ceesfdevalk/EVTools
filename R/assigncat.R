@@ -35,8 +35,8 @@ assigncat <- function(y, lbin, ubin, cats, binwidth) {
     } else {
       cats <- NA
     }
-    cat <- rep(FALSE, ly*lbin)
-    dim(cat) <- c(ly, lbin)
+    cat <- rep(FALSE, ly*nbin)
+    dim(cat) <- c(ly, nbin)
     for (i in 1:nbin) {
        if (ubin[i]> lbin[i]) {
          cat[, i] <- y>= lbin[i] & y< ubin[i]
