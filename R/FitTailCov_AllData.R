@@ -222,7 +222,7 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
   #
   # Covariate: determine categories
   #
-  cat <- rep(1, N)
+  cat <- data.matrix(rep(TRUE, N))
   cats <- 1
   if (dim(X)[2]> 1) {
     assigned <- assigncat(X[, 2], lbin, ubin, binwidth)
@@ -263,7 +263,7 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
     
     print(cats[i])
     
-    ind <- cat== cats[i]
+    ind <- cat[, i]
     
     EIes <- EI(X[ind], makeplot= FALSE)
     r11es <- r11(X[ind], makeplot= FALSE)
@@ -313,9 +313,9 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
         for (j in 1:nb) {
           is <- rep(blocks[, j], each= lb) + rep(0:(lb-1), times= nblocks)
           Xb <- X[is[1:length(X)]]
-          catb <- cat[is[1:length(X)]]
+          catb <- cat[is[1:length(X)], ]
           
-          ind <- catb== cats[i]
+          ind <- catb[i, ]
           sXb <- -sort(-Xb[ind])
           be[[j]] <- get(tailfit)(X=sXb[1:n], method, p=p, N=N, r11= 1, fixedpar= fixedpar, 
                                   l0= l0, sigma= sigma, metadata= metadata)
