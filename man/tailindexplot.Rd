@@ -21,6 +21,8 @@ A plot file (.png)
 The parameter list params may contain:
  \itemize{
   \item{$pconf: coverage probability of confidence interval (0.9 by default) (double(1))}
+  \item{$plim: plot limits for sample fraction (double(2))}  
+  \item{$tailindexlim: plot limits for tail index (double(2))}  
   }
 }
 \author{

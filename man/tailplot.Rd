@@ -23,7 +23,6 @@ The parameter list params may contain:
   \item{$pconf: coverage probability of confidence interval (0.9 by default) (double(1))}
   \item{$xlim: plot limits for quantile estimates (double(2))}
   \item{$freqlim: plot limits for frequency (double(2))}
-  \item{$plim: plot limits for fraction of time as alterantive to $freqlim (double(2))}        
   }
 }
 \author{

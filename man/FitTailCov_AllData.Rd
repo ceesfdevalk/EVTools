@@ -32,7 +32,7 @@ A list, with members:
   \item{locationStd}{standard deviation of order statistic}
   \item{lambda}{ratio of logarithms of probabilities of exceedance of quantile and threshold}  
   \item{p}{probabilities (fractions of time) of exceedance of quantiles to be estimated} 
-  \item{pcat}{probability of exceedance of the lower bound of the variable} 
+  \item{pbin}{probability (fraction of time) of exceedance of the lower bound of the variable} 
   \item{freq}{frequencies of exceedance of quantiles to be estimated}    
   \item{quantile}{quantile estimates}
   \item{quantileStd}{standard deviations of quantile estimates}

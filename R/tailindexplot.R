@@ -14,6 +14,8 @@
 #' @details The parameter list params may contain:
 #'  \itemize{
 #'   \item{$pconf: coverage probability of confidence interval (0.9 by default) (double(1))}
+#'   \item{$plim: plot limits for sample fraction (double(2))}  
+#'   \item{$tailindexlim: plot limits for tail index (double(2))}  
 #'   }
 #
 #' @author Cees de Valk \email{ceesfdevalk@gmail.com}
@@ -29,6 +31,8 @@ tailindexplot <- function(params= NULL, es= NULL) {
   pconf <- params$pconf
   if (is.null(pconf)) {pconf <- 0.9}
   qn <- abs(qnorm((1-pconf)/2)) # half width of normal confidence interval
+  plim <- params$plim
+  tailindexlim <- params$tailindexlim
   
   # axis labels 
   ylab <- paste(es$df, "tail index")
@@ -36,8 +40,15 @@ tailindexplot <- function(params= NULL, es= NULL) {
   title <- paste(es$df, " tail index", ", case: ", caseId, sep= "")
   
   med <- median(es$tailindex[es$l< 0.1*es$N])
-  ylim <- 0.5*round(med/0.5)+c(-1, 1)
-  xlim <- c(10^floor(log10(min(es$l)/es$N)), 1)
+  ylim <- tailindexlim
+  if (length(ylim)< 1) {
+    ylim <- 0.5*round(med/0.5)+c(-1, 1)
+  }
+  
+  xlim <- plim
+  if (length(xlim)< 1) {
+    xlim <- c(10^floor(log10(min(es$l)/es$N)), 1)
+  }
   
   # plot
   par(pty= 's')

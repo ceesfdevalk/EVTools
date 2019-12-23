@@ -16,7 +16,6 @@
 #'   \item{$pconf: coverage probability of confidence interval (0.9 by default) (double(1))}
 #'   \item{$xlim: plot limits for quantile estimates (double(2))}
 #'   \item{$freqlim: plot limits for frequency (double(2))}
-#'   \item{$plim: plot limits for fraction of time as alterantive to $freqlim (double(2))}        
 #'   }
 #
 #' @author Cees de Valk \email{ceesfdevalk@gmail.com}
@@ -58,14 +57,15 @@ tailplot <- function(params, ...) {
       params$xlim <- xlim
     }
     
-    if (is.null(params$plim)) {    
-      plim <- c(1, 0)
+    if (is.null(params$freqlim)) {    
+      freqlim <- c(1, 0)
       for (i in 1:les) {
-        plim[1] <- min(plim[1], min(es[[i]]$p))
-        plim[2] <- max(plim[2], max(es[[i]]$p))
-        plim[2] <- max(plim[2], max(exp(-es[[i]]$y)))
+        fq <-   exp(-es[[i]]$y)*EI/timestep
+        freqlim[1] <- min(freqlim[1], min(es[[i]]$freq))
+        freqlim[2] <- max(freqlim[2], max(es[[i]]$freq))
+        freqlim[2] <- max(freqlim[2], max(fq))
       }
-      params$plim <- plim
+      params$freqlim <- freqlim
       
       if (is.null(params$pconf)) {
         params$pconf <- 0.9 # default: 90% confidence interval
@@ -149,7 +149,6 @@ tailplot <- function(params, ...) {
   }
   
   xlim <- params$xlim
-  plim <- params$plim
   qn <- abs(qnorm((1-params$pconf)/2)) # half width of normal confidence interval
   
   # axis labels 
@@ -168,9 +167,6 @@ tailplot <- function(params, ...) {
     mu <- es$p*EI/timestep
   }
   ylim <- params$freqlim
-  if (is.null(ylim)) {
-    ylim <- plim*EI/timestep
-  }
   
   # plot quantile curve
   i <- (params$order-1)%%length(col)+1
