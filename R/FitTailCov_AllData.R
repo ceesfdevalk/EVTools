@@ -87,6 +87,9 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
   
   if (missing(X)) {stop("Data X must be specified.")}
   X <- data.matrix(X)      # make sure X has a dimension
+  id <- !is.na(rowSums(X))
+  X <- data.matrix(X[id, ])
+  
   N <- dim(X)[1] 
   if (N< 20) {
     stop("Time series length must be at least 20.")
