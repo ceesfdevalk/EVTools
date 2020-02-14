@@ -191,9 +191,11 @@ tailplot <- function(params, ...) {
   
   # plot sample curve 
   X <- -sort(-es$orderstats)
-  muX <- (1:length(X))/timelength
+  lX <- length(X)
+  muX <- (1:lX)/timelength
   if (!pot) {muX <- muX*EI}
-  points(X, muX, pch= 20, col= col[i])
-  lines(X, muX, col= col[i], type= 's')
+  id <- unique(round(exp((0:1.e4)*log(lX)*1.e-4)))
+  points(X[id], muX[id], pch= 20, col= col[i])
+  lines(X[id], muX[id], col= col[i], type= 's')
 
 } # klaar
