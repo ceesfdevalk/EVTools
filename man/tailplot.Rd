@@ -4,12 +4,12 @@
 \alias{tailplot}
 \title{tailplot}
 \usage{
-tailplot(params, es1, es2, ...)
+tailplot(es1, es2, ..., params= params)
 }
 \arguments{
-\item{params}{(optional) list (see below)}
-
 \item{...}{one or several lists es1, es2, ..., each containing a tail estimate to be plotted}
+
+\item{params}{(optional) list (see below)}
 }
 \value{
 A plot file (.png)
@@ -18,7 +18,7 @@ A plot file (.png)
 # Plot of tail estimates for one or several samples, with confidence interval
 }
 \details{
-The parameter list params may contain:
+The parameter list params must be explicitly specified with "params= ..." and may contain:
  \itemize{
   \item{$pconf: coverage probability of confidence interval (0.9 by default) (double(1))}
   \item{$xlim: plot limits for quantile estimates (double(2))}
