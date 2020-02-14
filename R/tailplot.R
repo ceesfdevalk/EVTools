@@ -4,14 +4,14 @@
 #' 
 #' @description # Plot of tail estimates for one or several samples, with confidence interval  
 #' 
+#' @param ... one or several lists es1, es2, ..., each containing a tail estimate to be plotted
 #' @param params (optional) list (see below)
-#' @param ... one or several lists es1, es2, ..., each containing a tail estimate to be plotted 
 #' 
-#' @usage  tailplot(params, es1, es2, ...)
+#' @usage  tailplot(es1, es2, ..., params= params)
 #' 
 #' @return A plot file (.png)
 #' 
-#' @details The parameter list params may contain:
+#' @details The parameter list params must be explicitly specified with "params= ..." and may contain:
 #'  \itemize{
 #'   \item{$pconf: coverage probability of confidence interval (0.9 by default) (double(1))}
 #'   \item{$xlim: plot limits for quantile estimates (double(2))}
@@ -21,7 +21,7 @@
 #' @author Cees de Valk \email{ceesfdevalk@gmail.com}
 #' 
 #' @export
-tailplot <- function(params, ...) {
+tailplot <- function(..., params) {
   col <- c("black", "blue", "red", "magenta", "cyan", "grey")
   lwd <- 2
   
@@ -35,7 +35,10 @@ tailplot <- function(params, ...) {
     }
   }
   
-  if (is.null(params)) {
+  if (missing(params)) {
+    params <- NULL
+  }
+  if (length(params)< 1) {
     params <- list()
     params$order <- 0
   }
@@ -60,26 +63,24 @@ tailplot <- function(params, ...) {
     if (is.null(params$freqlim)) {    
       freqlim <- c(1, 0)
       for (i in 1:les) {
-        fq <-   exp(-es[[i]]$y)*EI/timestep
         freqlim[1] <- min(freqlim[1], min(es[[i]]$freq))
         freqlim[2] <- max(freqlim[2], max(es[[i]]$freq))
-        freqlim[2] <- max(freqlim[2], max(fq))
       }
       params$freqlim <- freqlim
-      
-      if (is.null(params$pconf)) {
-        params$pconf <- 0.9 # default: 90% confidence interval
-      }
+    }
+    
+    if (length(params$pconf)< 1) {
+      params$pconf <- 0.9 # default: 90% confidence interval
     }
     
     #
     # plot the successive estimates
     params$order <- 1
-    tailplot(params, es[[1]])
+    tailplot(es[[1]], params= params)
     if (les> 1) {
       for (i in 2:les) {
         params$order <- i
-        tailplot(params, es[[i]])
+        tailplot(es[[i]], params= params)
       }
     }
     return()
@@ -90,7 +91,7 @@ tailplot <- function(params, ...) {
   es <- es[[1]]  # unpack from list
   timeseries <- FALSE
   metadata <- es$metadata
-
+  
   if (!is.null(metadata)) {
     
     varname <- as.character(metadata$varname)
@@ -197,5 +198,5 @@ tailplot <- function(params, ...) {
   id <- unique(round(exp((0:1.e4)*log(lX)*1.e-4)))
   points(X[id], muX[id], pch= 20, col= col[i])
   lines(X[id], muX[id], col= col[i], type= 's')
-
+  
 } # klaar
