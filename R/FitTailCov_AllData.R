@@ -52,7 +52,7 @@
 #'  
 #'  options may contain the following fields:
 #'  \itemize{
-#'   \item{$covariate: list, which may contain $lbin and $ubin (the lower resp. upper limits of the bins of covariate values on which to restrict the tail estimates), or (for an angular covariate) $binwidth (assumed uniform)}
+#'   \item{$covariate: list, which may contain $lbin and $ubin (the lower resp. upper limits of the bins of covariate values on which to restrict the tail estimates), or (for an angular covariate)}
 #'   \item{$dither: width of uniform distribution of noise to add to data (double(1))}
 #'   \item{$pthreshold: fraction of good values exceeding threshold (double(1))}
 #'   \item{$maxpthreshold: upper bound on pthreshold (in case pthreshold is estimated)}
@@ -141,10 +141,8 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
   
   # Estimator options
   
-  binwidth <- options$covariate$binwidth
   lbin <- options$covariate$lbin
   ubin <- options$covariate$ubin
-  cats <- options$covariate$cats
   dither <- options$dither
   pthreshold <- options$pthreshold
   maxpthreshold <- options$maxpthreshold
@@ -228,7 +226,7 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
   #
   cat <- data.matrix(rep(TRUE, N))
   if (dim(X)[2]> 1) {
-    assigned <- assigncat(X[, 2], lbin, ubin, cats, binwidth)
+    assigned <- assigncat(X[, 2], lbin, ubin)
     cat <- assigned$cat
     cats <- assigned$cats
     lbin <- assigned$lbin
