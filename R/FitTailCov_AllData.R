@@ -52,7 +52,7 @@
 #'  
 #'  options may contain the following fields:
 #'  \itemize{
-#'   \item{$covariate: list, which may contain $lbin and $ubin (the lower resp. upper limits of the bins of covariate values on which to restrict the tail estimates), or (for an angular covariate)}
+#'   \item{$covariate: list, which may contain $lbin and $ubin (the lower resp. upper limits of the bins of covariate values on which to restrict the tail estimates)}
 #'   \item{$dither: width of uniform distribution of noise to add to data (double(1))}
 #'   \item{$pthreshold: fraction of good values exceeding threshold (double(1))}
 #'   \item{$maxpthreshold: upper bound on pthreshold (in case pthreshold is estimated)}
