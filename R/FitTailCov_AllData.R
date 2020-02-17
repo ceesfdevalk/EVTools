@@ -226,7 +226,7 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
   #
   cat <- data.matrix(rep(TRUE, N))
   lcats <- 1
-  if (dim(X)[2]> 1 & ) {
+  if (dim(X)[2]> 1) {
     cat <- assigncat(X[, 2], lbin, ubin)
     X <- X[, 1]
     lcats <- length(lbin)
