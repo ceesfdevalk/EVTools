@@ -225,12 +225,12 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
   # Covariate: determine categories
   #
   cat <- data.matrix(rep(TRUE, N))
-  if (dim(X)[2]> 1) {
-    assigned <- assigncat(X[, 2], lbin, ubin)
-    cat <- assigned$cat
+  lcats <- 1
+  if (dim(X)[2]> 1 & ) {
+    cat <- assigncat(X[, 2], lbin, ubin)
     X <- X[, 1]
+    lcats <- length(lbin)
   }
-  lcats <- length(lbin)
   
   # certain inputs may be different for different bins
   corrlength <- function(x, ll) {
