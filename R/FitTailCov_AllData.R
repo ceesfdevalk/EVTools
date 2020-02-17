@@ -228,14 +228,9 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
   if (dim(X)[2]> 1) {
     assigned <- assigncat(X[, 2], lbin, ubin)
     cat <- assigned$cat
-    cats <- assigned$cats
-    lbin <- assigned$lbin
-    ubin <- assigned$ubin
     X <- X[, 1]
-  } else {
-    cats <- NA
   }
-  lcats <- length(cats)
+  lcats <- length(lbin)
   
   # certain inputs may be different for different bins
   corrlength <- function(x, ll) {
@@ -264,7 +259,7 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
   estimates <- vector(mode= "list", length= lcats)
   for (i in 1:lcats) {
     
-    print(cats[i])
+    print(c(lbin[i], ubin[i]))
     
     ind <- cat[, i]
     
@@ -274,12 +269,12 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
     
     Xmin <- min(X[ind])
     N <- sum(X[ind]> Xmin)+1 
-    pbin <- N/length(X)   # fraction of time that X is in cats[i] and above its
-    # minimal value for cats[i]
+    pbin <- N/length(X)   # fraction of time that X is in bin and above its
+    # minimal value
     
     if (N> 20) {
       
-      #  p is fraction of "the time that X is above its minimum and cat in cats[i]"
+      #  p is fraction of "the time that X is above its minimum and X in bin"
       p <- freq*timestep/EIvalue/pbin
       
       kmin <- round(N*max(minpthreshold*0.5, 1.e-4))
@@ -301,11 +296,9 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
       es <- get(tailfit)(X=sX[1:n], method, p=p, N=N, r11=r11es, fixedpar= fixedpar0, 
                          l0= l0, sigma= sigma, metadata= metadata)
       
-      # es$cat <- cats[i]
       es$lbin <- lbin[i]
       es$ubin <- ubin[i]
-      es$cats <- cats[i]
-      es$pbin <- pbin  # fraction of time that X is above its minimum and cat in cats[i]
+      es$pbin <- pbin  # fraction of time that X is above its minimum and in bin
       es$p <- p*pbin # real fraction of time
       es$freq <- freq  # frequency
       es$EIvalue <- EIvalue
@@ -406,7 +399,6 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
       esel$pbin <- pbin  # fraction of time that X is above its minimum
       esel$lbin <- lbin[i]
       esel$ubin <- ubin[i]
-      esel$cats <- cats[i]
       
       esel$p <- ps*pbin # fraction of time
       esel$freq <- freqs  # frequency
@@ -435,7 +427,7 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
     if (is.null(plotparams$makeplot)) {plotparams$makeplot <- TRUE}
     if (plotparams$makeplot) {
       # Plot of tail fit
-      genname <- paste(es$df, "-", metadata$varname, "-", cats[i], "-", metadata$caseId, sep= "")
+      genname <- paste(es$df, "-", metadata$varname, "-", lbin[i], "-", ubin[i], "-", metadata$caseId, sep= "")
       
       fname <- paste("Tail-", genname, ".png", sep= "")
       png(filename= fname,units="in", width=7.5*fac, height=7.5*fac, res=72)
