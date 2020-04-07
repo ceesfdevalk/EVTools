@@ -4,10 +4,10 @@
 #' 
 #' @description # Plot of tail index estimates with confidence interval  
 #' 
-#' @param params (optional) list (see below)
 #' @param es list containing tail estimates from a single sample 
+#' @param params (optional) list (see below)
 #' 
-#' @usage tailindexplot(params, es)
+#' @usage tailindexplot(es, params)
 #' 
 #' @return A plot file (.png)
 #' 
@@ -21,7 +21,7 @@
 #' @author Cees de Valk \email{ceesfdevalk@gmail.com}
 #' 
 #' @export  
-tailindexplot <- function(params= NULL, es= NULL) {
+tailindexplot <- function(es= NULL, params= NULL) {
   lwd <- 2
   metadata <- es$metadata
   caseId <- metadata$caseId
@@ -39,7 +39,7 @@ tailindexplot <- function(params= NULL, es= NULL) {
   xlab <- paste("sample fraction for quantile estimation")
   title <- paste(es$df, " tail index", ", case: ", caseId, sep= "")
   
-  med <- median(es$tailindex[es$l< 0.1*es$N])
+  med <- median(es$tailindex[es$l< 0.1*es$N], na.rm= TRUE)
   ylim <- tailindexlim
   if (length(ylim)< 1) {
     ylim <- 0.5*round(med/0.5)+c(-1, 1)
