@@ -46,14 +46,14 @@ tailplot <- function(..., params) {
     params$order <- 0
   }
   
-  if (!(params$order> 0)) {
+  if (params$order<= 0) {
     
     if (is.null(params$xlim)) {
       xlim <- c(Inf, -Inf)
       for (i in 1:les) {
-        xlim[1] <- min(xlim[1], es[[i]]$location)
-        xlim[2] <- max(xlim[2], max(es[[i]]$quantile))
-        xlim[2] <- max(xlim[2], max(es[[i]]$orderstats))
+        xlim[1] <- min(xlim[1], es[[i]]$location, na.rm= TRUE)
+        xlim[2] <- max(xlim[2], max(es[[i]]$quantile, na.rm= TRUE), na.rm= TRUE)
+        xlim[2] <- max(xlim[2], max(es[[i]]$orderstats, na.rm= TRUE), na.rm= TRUE)
       }
       xlim[2] <- xlim[1] + (xlim[2]-xlim[1])*1.1
       xlim <- round(xlim)
@@ -63,8 +63,8 @@ tailplot <- function(..., params) {
     if (is.null(params$freqlim)) {    
       freqlim <- c(1, 0)
       for (i in 1:les) {
-        freqlim[1] <- min(freqlim[1], min(es[[i]]$freq))
-        freqlim[2] <- max(freqlim[2], max(es[[i]]$freq))
+        freqlim[1] <- min(freqlim[1], min(es[[i]]$freq, na.rm= TRUE), na.rm= TRUE)
+        freqlim[2] <- max(freqlim[2], max(es[[i]]$freq, na.rm= TRUE), na.rm= TRUE)
       }
       params$freqlim <- freqlim
     }
@@ -146,6 +146,7 @@ tailplot <- function(..., params) {
     timestep <- 1
     timelength <- es$N
     EI= 1
+    caseId <- Sys.time()
     
   }
   

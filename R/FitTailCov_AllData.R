@@ -323,7 +323,7 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
         tailindex <- purrr::map(be, "tailindex")
         logdisp <- purrr::map(be, "logdisp")
         scale <- purrr::map(be, "scale")
-        location <- purrr::map(be, "logdisp")
+        location <- purrr::map(be, "location")
         quantile <- purrr::map(be, "quantile")
         k <- purrr::map(be, "k")
         l <- purrr::map(be, "l")
