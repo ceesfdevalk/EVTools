@@ -4,12 +4,12 @@
 \alias{tailindexplot}
 \title{tailindexplot}
 \usage{
-tailindexplot(params, es)
+tailindexplot(es, params)
 }
 \arguments{
-\item{params}{(optional) list (see below)}
-
 \item{es}{list containing tail estimates from a single sample}
+
+\item{params}{(optional) list (see below)}
 }
 \value{
 A plot file (.png)

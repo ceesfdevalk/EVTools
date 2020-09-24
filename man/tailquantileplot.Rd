@@ -4,7 +4,7 @@
 \alias{tailquantileplot}
 \title{tailquantileplot}
 \usage{
-tailquantileplot(params, estimates)
+tailquantileplot(estimates, params)
 }
 \arguments{
 \item{params}{(optional) list (see below)}
