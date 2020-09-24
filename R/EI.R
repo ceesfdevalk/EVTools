@@ -49,15 +49,17 @@ EI <- function(X, l= 50, ngr= 20, makeplot= FALSE) {
     
     # F&S estimator
     S <- which(X> s)
-    T <- diff(S)
-    sT <- sum(T)
-    lT <- length(T)
-    if (max(T)> 2) {
-      theta <- 2*(sT-lT)^2/(sum((T-1)*(T-2))*lT)
-    } else {
-      theta <- 2*sT^2/(sum(T^2)*lT)
+    if (length(S)> 1) {
+      T <- diff(S)
+      sT <- sum(T)
+      lT <- length(T)
+      if (max(T)> 2) {
+        theta <- 2*(sT-lT)^2/(sum((T-1)*(T-2))*lT)
+      } else {
+        theta <- 2*sT^2/(sum(T^2)*lT)
+      }
+      EIFS[i] <- pmin(1, theta)
     }
-    EIFS[i] <- pmin(1, theta)
   }
   
   if (makeplot) {

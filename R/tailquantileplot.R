@@ -52,8 +52,8 @@ tailquantileplot <- function(es= NULL, params= NULL) {
   par(pty= 's')
   plot(es$l/es$N, q, type= "l", log= "x", 
        xlim= xlim, ylim= ylim,  lwd= lwd, 
-       xlab= xlab, ylab= ylab, main= title,
-       yaxp= c(ylim, diff(ylim))) #,  tck = 1)
+       xlab= xlab, ylab= ylab, main= title)
+       # yaxp= c(ylim, diff(ylim))) #,  tck = 1)
   lines(es$l/es$N, q + qStd*qn, lwd= 1) 
   lines(es$l/es$N, q - qStd*qn, lwd= 1) 
   if (length(es$selected)> 0) {
