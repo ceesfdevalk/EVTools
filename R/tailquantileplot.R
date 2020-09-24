@@ -37,10 +37,10 @@ tailquantileplot <- function(es= NULL, params= NULL) {
   # axis labels 
   ylab <- paste(varname, " [", varunit, "]", sep= "")
   xlab <- paste("sample fraction for quantile estimate")
-  title <- paste(es$df, " quantile", " at freq. ", freq[1], "/", timeunit,  
+  title <- paste(es$df, " quantile", " at freq. ", es$freq[1], "/", timeunit,  
                  ", case: ", caseId, sep= "")
   
-  freq <- es$freq[1]
+  # freq <- es$freq[1]
   q <- data.matrix(es$quantile)[, 1]
   qStd <- data.matrix(es$quantileStd)[, 1]
   id <- es$l< 0.1*es$N

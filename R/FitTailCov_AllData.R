@@ -279,7 +279,7 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
       #  p is fraction of "the time that X is above its minimum and X in bin"
       p <- freq*timestep/EIvalue/pbin
       
-      kmin <- round(N*max(minpthreshold*0.5, 1.e-4))
+      kmin <- max(10, round(N*max(minpthreshold*0.5, 1.e-4)))
       
       sX <- -sort(-X[ind])
       n <- round(min(N*maxpthreshold*4, 5.e4*sqrt(kmin)))
@@ -433,7 +433,7 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
       
       fname <- paste("Tail-", genname, ".png", sep= "")
       png(filename= fname,units="in", width=7.5*fac, height=7.5*fac, res=72)
-      tailplot(es$selected, plotparams)
+      tailplot(es$selected, params= plotparams)
       dev.off()
       
       if (length(es$l)> 1) {
@@ -447,7 +447,7 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
         # Plot of quantile estimates vs. l for the lowest frequency
         fname <- paste("Quantile-", genname, ".png", sep= "")
         png(filename= fname,units="in", width=5*fac, height=5*fac, res=72)
-        tailquantileplot(es, plotparams) 
+        tailquantileplot(es, params= plotparams) 
         dev.off()
         
         # Plot P-value

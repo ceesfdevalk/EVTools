@@ -165,6 +165,7 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
     logdispStd <- NULL
     thetaraw <- NULL
     thetarawStd <- NULL
+    X0lStd <- NULL
     kraw <- NULL    
     
     if (nl> 0) {

@@ -183,6 +183,7 @@ tailplot <- function(..., params) {
   } else {
     lines(es$quantile, mu, col= col[i], lwd= lwd)
   }
+  
   one= 1.
   b <- es$quantile[1]
   points(b, mu[1]*one, col= col[i], type="o", cex= 1)
