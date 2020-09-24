@@ -259,10 +259,11 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
   estimates <- vector(mode= "list", length= lcats)
   for (i in 1:lcats) {
     
-    print(" ")
-    print(c(lbin[i], ubin[i]))
-    print(" ")
-    
+    if (lcats <- 1) {    
+      print(" ")
+      print(c(lbin[i], ubin[i]))
+      print(" ")
+    }
     ind <- cat[, i]
     
     EIes <- EI(X[ind], makeplot= FALSE)
