@@ -259,7 +259,7 @@ FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
   estimates <- vector(mode= "list", length= lcats)
   for (i in 1:lcats) {
     
-    if (lcats <- 1) {    
+    if (lcats> 1) {    
       print(" ")
       print(c(lbin[i], ubin[i]))
       print(" ")
