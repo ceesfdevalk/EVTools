@@ -1,6 +1,6 @@
-#' @name  FitTailCov_AllData
+#' @name  FitTailFromAllData
 #' 
-#' @title FitTailCov_AllData
+#' @title FitTailFromAllData
 #' 
 #' @description Fit and extrapolate the tail of the frequency distribution of a time-series. Optionally, the distribution of the values coinciding with a covariate in some bin is estimated, for each of a specified set of bins. 
 #' 
@@ -11,7 +11,7 @@
 #' @param options (optional) parameters controlling the estimation (list; see Details)
 #' @param metadata (optional) information about the variable and the time-series (list; see Details)
 #'
-#' @usage Value <- FitTailCov_AllData(X, freq= NULL, df= "GW", method= "FitGW_iHilli", options= NULL, metadata= NULL)
+#' @usage Value <- FitTailFromAllData(X, freq= NULL, df= "GW", method= "FitGW_iHilli", options= NULL, metadata= NULL)
 #'
 #' @return A list, with members: 
 #'   \item{l}{no. of order statistics used for scale and quantile estimation}    
@@ -76,7 +76,7 @@
 #' @author Cees de Valk \email{cees.de.valk@knmi.nl}
 #' 
 #' @export
-FitTailCov_AllData <- function(X, freq, df, method, options, metadata) {
+FitTailFromAllData <- function(X, freq, df, method, options, metadata) {
   library(purrr)
   
   # Default parameters
