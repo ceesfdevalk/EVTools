@@ -283,12 +283,11 @@ FitGP_MLE2 <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
           # (the last term can normally be ignored but with given, precise,
           # gamma and logdisp estimates, it may not be negligible)
           var <- g^2*(ha^2*logdispStd^2 + dha^2*gammaStd^2) + X0lStd^2
-          ind <- (k== l)
-          if (sum(ind)>0) {
-            # dependence term, specifically for MLE if k=l (from de Haan & Ferreira)
-            depterm <- -2*g^2*ha*dha*(1+gamma)*r11value/l  
-            var[ind] <- var[ind] + depterm[ind]
-          }
+          
+          # dependence term, specifically for MLE if k=l (from de Haan & Ferreira)
+          # depterm <- -2*g^2*ha*dha*(1+gamma)*r11value/l 
+          depterm <- -2*g^2*ha*dha*gammaStd*logdispStd/sqrt(1+(1+gamma)^2) 
+          var <- pmax(0, var + depterm)
           qStd[, i]= sqrt(var)
           qStd[, i] <- rev(cummax(rev(qStd[, i])))  # to avoid unrealistic small values     
         }

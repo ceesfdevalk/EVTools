@@ -2,7 +2,7 @@ Package: EVTools
 Title: Extreme value analysis based on a large deviation principle as model of the tail
 Version: 0.0.0.9000
 Authors@R: person("Cees", "de Valk", email = "ceesfdevalk@gmail.com", role = c("aut", "cre"))
-Description: Extreme value analysis based on a large deviation principle as model of the tail
+Description: Extreme value analysis based on a large deviation principle as model of the tail. See README.
 Depends: R (>= 3.4.3)
 License: What license is it under?
 Encoding: UTF-8
