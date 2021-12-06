@@ -179,7 +179,7 @@ FitGP_Mom <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
       if (is.list(r11)) {
         r11value <- approx(r11$p, r11$r, k/N, rule= 2)$y 
       } else {
-        r11value <- r11
+        r11value <- rep(r11, length(k))
       }
       gammaStd <- sqrt(r11value/k*(1+gamma^2))  
       id <- gamma<0
