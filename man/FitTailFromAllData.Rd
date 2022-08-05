@@ -66,12 +66,13 @@ metadata may contain the following fields (in addition to your own meta data):
   \item{$pthreshold: fraction of good values exceeding threshold (double(1))}
   \item{$maxpthreshold: upper bound on pthreshold (in case pthreshold is estimated)}
   \item{$minpthreshold: lower bound on pthreshold (in case pthreshold is estimated)}
-  \item{$indexselect: if TRUE, threshold is selected based on tail index estimates (logical, default= FALSE)} 
+  \item{$indexselect: if TRUE, threshold is selected based on tail index estimates (logical, default= TRUE)} 
   \item{$kmin: no. of order statistics skipped in determining threshold (integer(1)), default= 20)} 
   \item{$sigma: determines the ratio of k to l ( (no. of order stats used for estimation of tail index and quantile) (double(1)}
   \item{$bootstrap: list. If exists/nonempty, precision is assessed by a moving block bootstrap. May contain $blocktime (block length in terms of time) and $nsamples (no. of bootstrap samples) or $blocks (random starting indices of the blocks, an array of size ($nblocks, $nsamples))}
   \item{$fixedpar: fixed model parameters not to be estimated, and their standard errors (list; see below)}
   \item{$plotparams: plotparameters (list) with members: $makeplot (default= TRUE), $pconf (coverage probability of confidence interval), $xlim (plot limits for quantile estimates), $freqlim (plot limits for frequencies), $plim (plot limits for fractions of time)}
+  \item{$EI: value(s) of extremal index (representing serial dependence) to be used for all covariate bins (double(1)) or for each bin (double(length($covariate$lbin)))}
  }   
 
  Pre-determined model parameters are to be supplied in options$fixedpar (see above):
