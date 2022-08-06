@@ -442,7 +442,7 @@ FitTailFromAllData <- function(X, freq, df, method, options, metadata) {
     fac <- 1.2
     plotparams <- options$plotparams
     if (is.null(plotparams)) {plotparams <- NULL}
-    if (is.null(plotparams$makeplot)) {plotparams$makeplot <- TRUE}
+    if (is.null(plotparams$makeplot)) {plotparams$makeplot <- FALSE}
     if (plotparams$makeplot) {
       # Plot of tail fit
       genname <- paste(es$df, "-", metadata$varname, "-", lbin[i], "-", ubin[i], "-", metadata$caseId, sep= "")
