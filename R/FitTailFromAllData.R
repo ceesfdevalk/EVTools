@@ -88,6 +88,7 @@ FitTailFromAllData <- function(X, freq, df, method, options, metadata) {
   
   if (missing(X)) {stop("Data X must be specified.")}
   X <- data.matrix(X)      # make sure X has a dimension
+  N0 <- dim(X)[1] 
   id <- !is.na(rowSums(X))
   X <- data.matrix(X[id, ])
   
@@ -136,8 +137,13 @@ FitTailFromAllData <- function(X, freq, df, method, options, metadata) {
   # Specific parameters
   timestep <- 1 
   timestep <- metadata$timestep
+  timelength <- metadata$timelength
   if (length(timestep)< 1) {
-    timestep <- 1      # This makes the probability equal to the frequency
+    if (length(timelength)> 0) {
+      timestep <- timelength/N0
+    } else {
+      timestep <- 1      # This makes the probability equal to the frequency
+    }
   }
   
   # Estimator options
