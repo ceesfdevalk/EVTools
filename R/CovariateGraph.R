@@ -38,7 +38,7 @@ CovariateGraph <- function(X, nbin) {
       binw <- (max(cat)-min(cat))/nbin
       dsa <- diff(sort(cat))
       delta <- min(dsa[dsa> 0])
-      binw <- ceil(binw/delta)*delta
+      binw <- ceiling(binw/delta)*delta
       cat <- (((cat+binw/2) %/% binw) %% nbin)*binw
     }
   }
