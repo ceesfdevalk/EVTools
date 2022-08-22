@@ -2,7 +2,7 @@
 # 
 #
 assigncat <- function(y, lbin, ubin) {
-  ly <- dim(y)[1]
+  ly <- length(y)
   nbin <- length(lbin)
   cat <- data.matrix(rep(TRUE, ly))
   if (nbin> 0) {
