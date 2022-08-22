@@ -2,7 +2,7 @@
 # 
 #
 assigncat <- function(y, lbin, ubin) {
-  ly <- length(y)
+  ly <- dim(y)[1]
   nbin <- length(lbin)
   cat <- data.matrix(rep(TRUE, ly))
   if (nbin> 0) {
@@ -15,7 +15,7 @@ assigncat <- function(y, lbin, ubin) {
         if (ubin[i]> lbin[i]) {
           cat[, i] <- y>= lbin[i] & y< ubin[i]
         } else {
-          cat[, i] <- y>= ubin[i] | y< lbin[i]  
+          cat[, i] <- y>= lbin[i] | y< ubin[i]  
         }
       }
     }
