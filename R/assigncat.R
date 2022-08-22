@@ -15,7 +15,7 @@ assigncat <- function(y, lbin, ubin) {
         if (ubin[i]> lbin[i]) {
           cat[, i] <- y>= lbin[i] & y< ubin[i]
         } else {
-          cat[, i] <- y>= lbin[i] | y< ubin[i]  
+          cat[, i] <- y>= ubin[i] | y< lbin[i]  
         }
       }
     }
