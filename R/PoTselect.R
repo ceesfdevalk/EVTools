@@ -17,6 +17,7 @@
 #'
 #' @author Alexandre Tribut, Cees de Valk \email{ceesfdevalk@gmail.com}
 #' 
+#' 
 #' @export
 PoTselect <- function(data, p=NULL, separation=1, threshold=NULL) {
   if (any(is.na(data))) {
