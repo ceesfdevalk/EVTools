@@ -188,6 +188,7 @@ FitGP_Mom <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
       gammaStd <- rev(cummax(rev(gammaStd)))  # to avoid unrealistic small values
       
       if (length(gamma0)> 0){
+        gamma <- rep(gamma0[1], nl)
         if (length(gamma0Std)> 0){
           gammaStd <- rep(gamma0Std[1], nl)
         } else {
