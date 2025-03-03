@@ -181,10 +181,10 @@ FitGW_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
       z <- (xglobal[1:k1]-xglobal[k])/g
       y <- log(Nglobal/k)
       if (abs(theta)< 1.e-10) {
-        f <- -k1*log(y) + k1*logg - sum(z) + y*sum(exp(z)-1)   
+        f <- -k1*log(y) + k1*logg - sum(z) + y*sum(exp(z))   
       } else {
         f <- -k1*log(y) + k1*logg - (1/theta-1)*sum(log(pmax(0, 1+theta*z))) +
-          y*sum(pmax(0, 1+theta*z)^(1/theta)-1)
+          y*sum(pmax(0, 1+theta*z)^(1/theta))
       }
       if (min(1+z*theta)<= 0) {f <- Inf}
       f
@@ -238,7 +238,7 @@ FitGW_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
       } else {
         r11value <- r11
       }
-      thetaStd= th[k]*sqrt(r11value/k) # ?????? must be true: very similar to FitGW_iHilli.R
+      thetaStd= th[k]*sqrt(r11value/k) # ?????? approximation: very similar to FitGW_iHilli.R
       thetaStd <- rev(cummax(rev(thetaStd)))  # to avoid unrealistic small values
       
       if (length(theta0)> 0){
