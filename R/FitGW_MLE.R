@@ -126,7 +126,7 @@ FitGW_MLE <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
     }
     nl <- length(l)
     k <- l  # Newton iteration for k 
-    if (sigma2< Inf){
+    if (sigma< Inf){
       for (jj in 1:10) {
         thk <- log(N/k)
         k <- k-(k-l*(thk/sigma+1)^2)/(1+2*l*(thk/sigma+1)/(k*sigma))
