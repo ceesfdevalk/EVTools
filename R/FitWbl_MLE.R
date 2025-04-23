@@ -55,9 +55,9 @@
 #'         r11 needs to be estimated.
 #'        }
 #'   \item{if X contains only the n (approximately Poisson) peak values above some threshold 
-#'         (in a PoT analysis),  it is recommended to set r11= 1 and take p = f*d/EI and 
+#'         (in a PoT analysis),  it is recommended to set r11= 1 and take p = f*d and 
 #'         N = T/d*EI. EI need to be estimated (see above). In this case, EI can also be 
-#'         estimated as EI= n*d/Tt= n/nt with Tt the time spent above the threshold and 
+#'         estimated also as EI= n*d/Tt= n/nt with Tt the time spent above the threshold and 
 #'         nt the number of time-series values above the threshold. 
 #'        }   
 #'   }   
