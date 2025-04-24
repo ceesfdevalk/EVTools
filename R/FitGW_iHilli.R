@@ -50,7 +50,7 @@
 #'   The serial dependence coefficient r11 can be a positive number, or a list 
 #'   produced by R11.R. 
 #'   
-#'   In case a quantile is to be estimated for a \emph{frequency}, say f, and 
+#'   In case a quantile is to be estimated for a \emph{frequency} f, and 
 #'   \enumerate{
 #'   \item{if X contains all values (possibly above some threshold), then with
 #'   EI an estimate of the Extremal Index from EI.R, set
@@ -59,9 +59,9 @@
 #'         r11 needs to be estimated.
 #'       }
 #'   \item{if X contains only the n (approximately Poisson) peak values above some threshold 
-#'         (in a PoT analysis),  it is recommended to set r11= 1 and take p = f*d/EI and 
-#'         N = T/d*EI. EI need to be estimated (see above). In this case, EI can also be 
-#'         estimated also as EI= n*d/Tt= n/nt with Tt the time spent above the threshold and 
+#'         (in a PoT analysis),  it is recommended to set r11= 1 and take p = f*d and 
+#'         N = T/d*EI. EI need to be estimated (see above). In this case, EI can be 
+#'         estimated as EI= n*d/Tt= n/nt with Tt the time spent above the threshold and 
 #'         nt the number of time-series values above the threshold. 
 #'        } 
 #' } 

@@ -50,7 +50,7 @@
 #'   The serial dependence coefficient r11 can be a positive number, or a list 
 #'   produced by R11.R. 
 #'   
-#'   In case a quantile is to be estimated for a \emph{frequency}, say f, and 
+#'   In case a quantile is to be estimated for a \emph{frequency} f, and 
 #'   \enumerate{
 #'   \item{if X contains all values (possibly above some threshold), then with
 #'   EI an estimate of the Extremal Index from EI.R, set

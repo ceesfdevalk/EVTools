@@ -61,7 +61,7 @@
 #'         estimated also as EI= n*d/Tt= n/nt with Tt the time spent above the threshold and 
 #'         nt the number of time-series values above the threshold. 
 #'        } 
-#' }   
+#' }
 #'  metadata may contain the following fields (in addition to your own meta data):
 #'  \itemize{
 #'   \item{$varname: variable name}
