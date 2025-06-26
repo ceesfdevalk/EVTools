@@ -227,6 +227,7 @@ FitGW_iHilli <- function(X, p, N, r11, fixedpar, l0, sigma, metadata) {
           temp2 <- cumsum(th[1:(mk-1)]^ti)/(1:(mk-1))
           temp3 <- (th[2:mk]^(-ti)*(temp1 - log(th[2:mk])*temp2) - w)/ti #derivative of w to ti
           temp4 <- cumsum(temp3[1:(mk-2)]/w[1:(mk-2)])/(1:(mk-2)) - temp3[2:(mk-1)]/w[2:(mk-1)]
+          temp4[mk-1] <- 2*temp4[mk-2]-temp4[mk-3] # linear extrapolation
           
           err1 <- abs(ti + 1 - theta + w1[k-2]/u[k-2])
           id <- (err1< err)
